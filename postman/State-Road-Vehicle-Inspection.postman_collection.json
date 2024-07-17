@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "71b286b9-1165-46ae-8faf-e961f8ae40be",
+		"name": "State-Road-Vehicle-Inspection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30197696"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "signup",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\":\"Tilak Thapa\",\n    \"email\": \"tilak@gmail.com\",\n    \"password\": \"1234@Tilak\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/auth/signup",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"signup"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Welcome Tilak Thapa, your account is created successfully!\",\n    \"status\": 201,\n    \"statusText\": \"Created\"\n}\n// if email already used\n{\n    \"message\": \"User already exists with this email, Please login!\",\n    \"status\": 400,\n    \"statusText\": \"Bad Request\"\n}\n// other erros\n{\n    \"name\":\"Tilak Thapa\",\n    \"email\": \"tilak@gmail.com\"\n}\n\n ```\n\njson"
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"tilak@gmaidsfl.com\",\n    \"password\": \"1234@Ti\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/auth/login",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"login"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Welcome back Tilak Thapa!\",\n    \"status\": 200,\n    \"statusText\": \"OK\"\n}\n// errors\n{\n    \"message\": \"Invalid credentials, Please try again!\",\n    \"status\": 400,\n    \"statusText\": \"Bad Request\"\n}\n{\n    \"message\": \"User not found, Please create an account!\",\n    \"status\": 404,\n    \"statusText\": \"Not Found\"\n}\n\n ```"
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/auth/logout",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"logout"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Logged out successfully!\",\n    \"status\": 200,\n    \"statusText\": \"OK\"\n}\n\n ```"
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/auth/me",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"me"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Operation successful!\",\n    \"status\": 200,\n    \"statusText\": \"OK\",\n    \"data\": {\n        \"_id\": \"6697878acf8ee03ff20097d5\",\n        \"name\": \"Tilak Thapa\",\n        \"email\": \"tilak@gmail.com\",\n        \"createdAt\": \"2024-07-17T08:57:46.805Z\",\n        \"updatedAt\": \"2024-07-17T08:57:46.805Z\",\n        \"__v\": 0\n    }\n}\n// errors\n// if not logged in\n{\n    \"message\": \"Auth Error, Cookies not found\",\n    \"status\": 401,\n    \"statusText\": \"Unauthorized Access\"\n}\n\n ```"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Mechanics",
+			"item": [
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "signup",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"1234567890\",\n  \"password\": \"strongpassword123\",\n  \"storeName\": \"John's Auto Repair\",\n  \"storeCoordinates\": {\n    \"x\": \"40.7128N\",\n    \"y\": \"74.0060W\"\n  },\n  \"storeAddress\": \"123 Main St, Anytown, AN 12345\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/mechanics/auth/signup",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"mechanics",
+										"auth",
+										"signup"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Welcome John Doe, your account is created successfully!\",\n    \"status\": 201,\n    \"statusText\": \"Created\"\n}\n// if email already used\n{\n    \"message\": \"User already exists with this email, Please login!\",\n    \"status\": 400,\n    \"statusText\": \"Bad Request\"\n}\n// other erros\n{\n    \"name\":\"Tilak Thapa\",\n    \"email\": \"tilak@gmail.com\"\n}\n\n ```\n\njson"
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"strongpassword123\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/mechanics/auth/login",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"mechanics",
+										"auth",
+										"login"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Welcome back Tilak Thapa!\",\n    \"status\": 200,\n    \"statusText\": \"OK\"\n}\n// errors\n{\n    \"message\": \"Invalid credentials, Please try again!\",\n    \"status\": 400,\n    \"statusText\": \"Bad Request\"\n}\n{\n    \"message\": \"User not found, Please create an account!\",\n    \"status\": 404,\n    \"statusText\": \"Not Found\"\n}\n\n ```"
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/mechanics/auth/logout",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"mechanics",
+										"auth",
+										"logout"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Logged out successfully!\",\n    \"status\": 200,\n    \"statusText\": \"OK\"\n}\n\n ```"
+							},
+							"response": []
+						},
+						{
+							"name": "Get User Profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVER_BASE_URL}}/api/v1/mechanics/auth/me",
+									"host": [
+										"{{SERVER_BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"mechanics",
+										"auth",
+										"me"
+									]
+								},
+								"description": "``` json\n{\n    \"message\": \"Operation successful!\",\n    \"status\": 200,\n    \"statusText\": \"OK\",\n    \"data\": {\n        \"storeCoordinates\": {\n            \"x\": \"40.7128N\",\n            \"y\": \"74.0060W\"\n        },\n        \"_id\": \"6697c18f11e955066329202c\",\n        \"name\": \"John Doe\",\n        \"email\": \"john.doe@example.com\",\n        \"phone\": \"1234567890\",\n        \"storeName\": \"John's Auto Repair\",\n        \"storeAddress\": \"123 Main St, Anytown, AN 12345\",\n        \"createdAt\": \"2024-07-17T13:05:19.178Z\",\n        \"updatedAt\": \"2024-07-17T13:05:19.178Z\",\n        \"__v\": 0\n    }\n}\n// errors\n// if not logged in\n{\n    \"message\": \"Auth Error, Cookies not found\",\n    \"status\": 401,\n    \"statusText\": \"Unauthorized Access\"\n}\n\n ```"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Services",
+			"item": [
+				{
+					"name": "Create service",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "thumbnail",
+									"type": "file",
+									"src": "/home/jrtilak/Documents/450793725_465856956385116_3061438839814190487_n.jpg"
+								},
+								{
+									"key": "title",
+									"value": "Something",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "abc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SERVER_BASE_URL}}/api/v1/services",
+							"host": [
+								"{{SERVER_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services"
+							]
+						},
+						"description": "``` json\n{\n    \"message\": \"Service created successfully!\",\n    \"status\": 201,\n    \"statusText\": \"Created\",\n    \"data\": {\n        \"title\": \"Something\",\n        \"description\": \"abc\",\n        \"price\": 1234,\n        \"thumbnail\": {\n            \"fileId\": \"6697de3be375273f60776500\",\n            \"name\": \"450793725_465856956385116_3061438839814190487_n_6PzrxlBFE.jpg\",\n            \"url\": \"https://ik.imagekit.io/kkrd5fprn/service-thumbnails/450793725_465856956385116_3061438839814190487_n_6PzrxlBFE.jpg\",\n            \"thumbnailUrl\": \"https://ik.imagekit.io/kkrd5fprn/tr:n-ik_ml_thumbnail/service-thumbnails/450793725_465856956385116_3061438839814190487_n_6PzrxlBFE.jpg\",\n            \"_id\": \"6697de3c43f66ed022874fd6\"\n        },\n        \"_id\": \"6697de3c43f66ed022874fd5\",\n        \"createdAt\": \"2024-07-17T15:07:40.502Z\",\n        \"updatedAt\": \"2024-07-17T15:07:40.502Z\",\n        \"__v\": 0\n    }\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "get all services",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_BASE_URL}}/api/v1/services",
+							"host": [
+								"{{SERVER_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services"
+							]
+						},
+						"description": "``` json\n{\n    \"message\": \"Operation successful!\",\n    \"status\": 200,\n    \"statusText\": \"OK\",\n    \"data\": [\n        {\n            \"_id\": \"6697df8fe9b5d079cfc2d072\",\n            \"title\": \"Something\",\n            \"description\": \"abc\",\n            \"price\": 1234,\n            \"thumbnail\": {\n                \"fileId\": \"6697df8ee375273f6084d9f4\",\n                \"name\": \"450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n                \"url\": \"https://ik.imagekit.io/kkrd5fprn/service-thumbnails/450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n                \"thumbnailUrl\": \"https://ik.imagekit.io/kkrd5fprn/tr:n-ik_ml_thumbnail/service-thumbnails/450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n                \"_id\": \"6697df8fe9b5d079cfc2d073\"\n            },\n            \"postedBy\": {\n                \"storeCoordinates\": {\n                    \"x\": \"40.7128N\",\n                    \"y\": \"74.0060W\"\n                },\n                \"_id\": \"6697c18f11e955066329202c\",\n                \"name\": \"John Doe\",\n                \"email\": \"john.doe@example.com\",\n                \"phone\": \"1234567890\",\n                \"password\": \"$2b$10$6O2r6RMYPBSz2TH7nlILw.lQE/VQ4jJ3v1QgE.6uLCJ5Hq8Am3ObS\",\n                \"storeName\": \"John's Auto Repair\",\n                \"storeAddress\": \"123 Main St, Anytown, AN 12345\",\n                \"createdAt\": \"2024-07-17T13:05:19.178Z\",\n                \"updatedAt\": \"2024-07-17T13:05:19.178Z\",\n                \"__v\": 0\n            },\n            \"createdAt\": \"2024-07-17T15:13:19.797Z\",\n            \"updatedAt\": \"2024-07-17T15:13:19.797Z\",\n            \"__v\": 0\n        }\n    ]\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "get all services Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_BASE_URL}}/api/v1/services",
+							"host": [
+								"{{SERVER_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services"
+							]
+						},
+						"description": "``` json\n{\n    \"message\": \"Operation successful!\",\n    \"status\": 200,\n    \"statusText\": \"OK\",\n    \"data\": [\n        {\n            \"_id\": \"6697df8fe9b5d079cfc2d072\",\n            \"title\": \"Something\",\n            \"description\": \"abc\",\n            \"price\": 1234,\n            \"thumbnail\": {\n                \"fileId\": \"6697df8ee375273f6084d9f4\",\n                \"name\": \"450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n                \"url\": \"https://ik.imagekit.io/kkrd5fprn/service-thumbnails/450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n                \"thumbnailUrl\": \"https://ik.imagekit.io/kkrd5fprn/tr:n-ik_ml_thumbnail/service-thumbnails/450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n                \"_id\": \"6697df8fe9b5d079cfc2d073\"\n            },\n            \"postedBy\": {\n                \"storeCoordinates\": {\n                    \"x\": \"40.7128N\",\n                    \"y\": \"74.0060W\"\n                },\n                \"_id\": \"6697c18f11e955066329202c\",\n                \"name\": \"John Doe\",\n                \"email\": \"john.doe@example.com\",\n                \"phone\": \"1234567890\",\n                \"password\": \"$2b$10$6O2r6RMYPBSz2TH7nlILw.lQE/VQ4jJ3v1QgE.6uLCJ5Hq8Am3ObS\",\n                \"storeName\": \"John's Auto Repair\",\n                \"storeAddress\": \"123 Main St, Anytown, AN 12345\",\n                \"createdAt\": \"2024-07-17T13:05:19.178Z\",\n                \"updatedAt\": \"2024-07-17T13:05:19.178Z\",\n                \"__v\": 0\n            },\n            \"createdAt\": \"2024-07-17T15:13:19.797Z\",\n            \"updatedAt\": \"2024-07-17T15:13:19.797Z\",\n            \"__v\": 0\n        }\n    ]\n}\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "get services by mechanics id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVER_BASE_URL}}/api/v1/services/mechanics/6697c18f11e955066329202c",
+							"host": [
+								"{{SERVER_BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"services",
+								"mechanics",
+								"6697c18f11e955066329202c"
+							]
+						},
+						"description": "``` json\n{\n    \"message\": \"Operation successful!\",\n    \"status\": 200,\n    \"statusText\": \"OK\",\n    \"data\": {\n        \"_id\": \"6697df8fe9b5d079cfc2d072\",\n        \"title\": \"Something\",\n        \"description\": \"abc\",\n        \"price\": 1234,\n        \"thumbnail\": {\n            \"fileId\": \"6697df8ee375273f6084d9f4\",\n            \"name\": \"450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n            \"url\": \"https://ik.imagekit.io/kkrd5fprn/service-thumbnails/450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n            \"thumbnailUrl\": \"https://ik.imagekit.io/kkrd5fprn/tr:n-ik_ml_thumbnail/service-thumbnails/450793725_465856956385116_3061438839814190487_n_nZ9Czq2pQ.jpg\",\n            \"_id\": \"6697df8fe9b5d079cfc2d073\"\n        },\n        \"postedBy\": {\n            \"storeCoordinates\": {\n                \"x\": \"40.7128N\",\n                \"y\": \"74.0060W\"\n            },\n            \"_id\": \"6697c18f11e955066329202c\",\n            \"name\": \"John Doe\",\n            \"email\": \"john.doe@example.com\",\n            \"phone\": \"1234567890\",\n            \"password\": \"$2b$10$6O2r6RMYPBSz2TH7nlILw.lQE/VQ4jJ3v1QgE.6uLCJ5Hq8Am3ObS\",\n            \"storeName\": \"John's Auto Repair\",\n            \"storeAddress\": \"123 Main St, Anytown, AN 12345\",\n            \"createdAt\": \"2024-07-17T13:05:19.178Z\",\n            \"updatedAt\": \"2024-07-17T13:05:19.178Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2024-07-17T15:13:19.797Z\",\n        \"updatedAt\": \"2024-07-17T15:13:19.797Z\",\n        \"__v\": 0\n    }\n}\n\n ```"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
