@@ -1,4 +1,3 @@
-import LENGTH from "@/constants/length.const";
 import mongoose from "mongoose";
 
 export const userModel = new mongoose.Schema(
@@ -6,13 +5,15 @@ export const userModel = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      minLength: LENGTH.NAME.min,
-      maxLength: LENGTH.NAME.max,
     },
     email: {
       type: String,
       required: true,
       unique: true,
+    },
+    phone: {
+      type: String,
+      required: true,
     },
     password: {
       type: String,
