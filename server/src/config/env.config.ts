@@ -17,6 +17,11 @@ const ENV_CONFIG = {
   MECHANICS_AUTH_TOKEN_ID: "mechanics-auth-token",
 
   NODE_ENV: process.env.NODE_ENV || "development",
+
+  // imagekit related
+  IMAGE_KIT_PUBLIC_KEY: process.env.IMAGE_KIT_PUBLIC_KEY,
+  IMAGE_KIT_PRIVATE_KEY: process.env.IMAGE_KIT_PRIVATE_KEY,
+  IMAGE_KIT_ENDPOINT: process.env.IMAGE_KIT_ENDPOINT,
 } as const;
 
 export default ENV_CONFIG;
