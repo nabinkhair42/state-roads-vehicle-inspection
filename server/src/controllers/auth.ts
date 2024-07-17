@@ -27,7 +27,7 @@ export const handleUserSignup = async (
 
   await newUser.save();
 
-  registerCookies(res, newUser._id.toString());
+  registerCookies(res, newUser._id.toString(), ENV_CONFIG.AUTH_TOKEN_ID);
   return sendRes(res, {
     status: 201,
     message: `Welcome ${newUser.name}, your account is created successfully!`,
@@ -55,7 +55,7 @@ export const handleUserLogin = async (
     });
   }
 
-  registerCookies(res, user._id.toString());
+  registerCookies(res, user._id.toString(), ENV_CONFIG.AUTH_TOKEN_ID);
   return sendRes(res, {
     status: 200,
     message: `Welcome back ${user.name}!`,
