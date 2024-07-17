@@ -17,7 +17,7 @@ export const verifyToken = (cookieId: string) => {
     if (!token || token.trim() === "") {
       const response: IResponse = {
         status: 401,
-        message: "Auth Error, Cookies not found",
+        message: "Sorry, please login to continue...",
       };
       return sendRes(res, response);
     }
