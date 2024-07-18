@@ -1,12 +1,18 @@
 import { sendRes } from "@/middlewares/send-response";
 import appointmentModel from "@/models/appointment.model";
 import serviceModel from "@/models/service.model";
+import userModel from "@/models/user.model";
+import { mailTemplates } from "@/utils/mail-templates";
+import { sendMail } from "@/utils/send-mail";
 import { Request, Response } from "express";
 
 export const handleMakeAppointment = async (req: Request, res: Response) => {
   const serviceId = req.params.serviceId;
+  const userId = res.locals.jwtData.userId;
 
-  const service = await serviceModel.findById(serviceId);
+  const service: any = await serviceModel
+    .findById(serviceId)
+    .populate("postedBy");
   if (!service) {
     return sendRes(res, {
       status: 404,
@@ -15,7 +21,7 @@ export const handleMakeAppointment = async (req: Request, res: Response) => {
   }
 
   const appointmentData = {
-    bookedBy: res.locals.jwtData.userId,
+    bookedBy: userId,
     bookedFor: service.postedBy,
     service: serviceId,
     ...req.body,
@@ -25,15 +31,48 @@ export const handleMakeAppointment = async (req: Request, res: Response) => {
   const appointment = await appointmentModel.create(appointmentData);
   await appointment.save();
 
-  // todo send mail to the mechanic
-  // todo mail to user
+  const user = await userModel.findById(userId);
+
+  // send mail to the user
+  const mailDataForUser = mailTemplates.toUser.appointmentCreated({
+    date: appointment.appointmentDate,
+    usersName: user.name,
+    serviceName: service.title,
+    storeAddress: service.postedBy.storeAddress,
+    storeEmail: service.postedBy.email,
+    storeName: service.postedBy.name,
+    storePhone: service.postedBy.phone,
+  });
+
+  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  sendMail({
+    to: user.email,
+    ...mailDataForUser,
+  });
+
+  // send mail to the mechanic
+  const mailDataForMechanic = mailTemplates.toMechanic.appointmentCreated({
+    date: appointment.appointmentDate,
+    userEmail: user.email,
+    userPhone: user.phone,
+    message: appointment.message,
+    serviceTitle: service.title,
+    userName: user.name,
+    storeName: service.postedBy.storeName,
+  });
+
+  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  sendMail({
+    to: service.postedBy.email,
+    ...mailDataForMechanic,
+  });
+
   // todo send notification to the mechanic
   // todo send notification to the user
 
   return sendRes(res, {
     status: 201,
     message: "Thank you for booking the appointment, we will contact you soon!",
-    data: appointment,
   });
 };
 
@@ -78,7 +117,10 @@ export const handleApproveAppointmentByMechanic = async (
   const appointmentId = req.params.appointmentId;
   const mechanicId = res.locals.jwtData.userId;
 
-  const appointment = await appointmentModel.findById(appointmentId);
+  const appointment: any = await appointmentModel
+    .findById(appointmentId)
+    .populate("bookedBy service bookedFor");
+
   if (!appointment) {
     return sendRes(res, {
       status: 404,
@@ -93,7 +135,7 @@ export const handleApproveAppointmentByMechanic = async (
     });
   }
 
-  if (appointment.bookedFor.toString() !== mechanicId) {
+  if (appointment.bookedFor._id.toString() !== mechanicId.toString()) {
     return sendRes(res, {
       status: 403,
       message: "You are not authorized to approve this appointment",
@@ -103,7 +145,23 @@ export const handleApproveAppointmentByMechanic = async (
   appointment.status = "APPROVED";
   await appointment.save();
 
-  // todo send mail to the user
+  // send mail to the user
+  const mailDataForUser = mailTemplates.toUser.appointmentApproved({
+    date: appointment.appointmentDate,
+    serviceTitle: appointment.service.title,
+    storeAddress: appointment.bookedFor.storeAddress,
+    storeEmail: appointment.bookedFor.email,
+    storeName: appointment.bookedFor.storeName,
+    storePhone: appointment.bookedFor.phone,
+    userName: appointment.bookedBy.name,
+  });
+
+  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  sendMail({
+    to: appointment.bookedBy.email,
+    ...mailDataForUser,
+  });
+
   // todo send notification to the user
 
   return sendRes(res, {
@@ -119,7 +177,9 @@ export const handleRejectAppointmentByMechanic = async (
   const appointmentId = req.params.appointmentId;
   const mechanicId = res.locals.jwtData.userId;
 
-  const appointment = await appointmentModel.findById(appointmentId);
+  const appointment: any = await appointmentModel
+    .findById(appointmentId)
+    .populate("bookedBy service bookedFor");
 
   if (!appointment) {
     return sendRes(res, {
@@ -128,7 +188,7 @@ export const handleRejectAppointmentByMechanic = async (
     });
   }
 
-  if (appointment.bookedFor.toString() !== mechanicId) {
+  if (appointment.bookedFor._id.toString() !== mechanicId.toString()) {
     return sendRes(res, {
       status: 403,
       message: "You are not authorized to reject this appointment",
@@ -145,7 +205,24 @@ export const handleRejectAppointmentByMechanic = async (
   appointment.status = "REJECTED";
   await appointment.save();
 
-  // todo send mail to the user
+  // send mail to the user
+
+  const mailDataForUser = mailTemplates.toUser.appointmentRejected({
+    date: appointment.appointmentDate,
+    serviceTitle: appointment.service.title,
+    storeAddress: appointment.bookedFor.storeAddress,
+    storeEmail: appointment.bookedFor.email,
+    storeName: appointment.bookedFor.name,
+    storePhone: appointment.bookedFor.phone,
+    userName: appointment.bookedBy.name,
+  });
+
+  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  sendMail({
+    to: appointment.bookedBy.email,
+    ...mailDataForUser,
+  });
+
   // todo send notification to the user
 
   return sendRes(res, {
@@ -161,7 +238,10 @@ export const handleCompleteAppointmentByMechanic = async (
   const appointmentId = req.params.appointmentId;
   const mechanicId = res.locals.jwtData.userId;
 
-  const appointment = await appointmentModel.findById(appointmentId);
+  const appointment: any = await appointmentModel
+    .findById(appointmentId)
+    .populate("bookedBy service bookedFor");
+
   if (!appointment) {
     return sendRes(res, {
       status: 404,
@@ -169,7 +249,7 @@ export const handleCompleteAppointmentByMechanic = async (
     });
   }
 
-  if (appointment.bookedFor.toString() !== mechanicId) {
+  if (appointment.bookedFor._id.toString() !== mechanicId.toString()) {
     return sendRes(res, {
       status: 403,
       message: "You are not authorized to complete this appointment",
@@ -186,7 +266,23 @@ export const handleCompleteAppointmentByMechanic = async (
   appointment.status = "COMPLETED";
   await appointment.save();
 
-  // todo send mail to the user
+  // send mail to the user
+  const mailDataForUser = mailTemplates.toUser.appointmentCompleted({
+    date: appointment.appointmentDate,
+    serviceTitle: appointment.service.title,
+    storeAddress: appointment.bookedFor.storeAddress,
+    storeEmail: appointment.bookedFor.email,
+    storeName: appointment.bookedFor.storeName,
+    storePhone: appointment.bookedFor.phone,
+    userName: appointment.bookedBy.name,
+  });
+
+  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  sendMail({
+    to: appointment.bookedBy.email,
+    ...mailDataForUser,
+  });
+
   // todo send notification to the user
 
   return sendRes(res, {
@@ -202,7 +298,10 @@ export const handleCompleteAppointmentByUser = async (
   const appointmentId = req.params.appointmentId;
   const userId = res.locals.jwtData.userId;
 
-  const appointment = await appointmentModel.findById(appointmentId);
+  const appointment: any = await appointmentModel
+    .findById(appointmentId)
+    .populate("bookedBy service bookedFor");
+
   if (!appointment) {
     return sendRes(res, {
       status: 404,
@@ -210,7 +309,7 @@ export const handleCompleteAppointmentByUser = async (
     });
   }
 
-  if (appointment.bookedBy.toString() !== userId) {
+  if (appointment.bookedBy._id.toString() !== userId.toString()) {
     return sendRes(res, {
       status: 403,
       message: "You are not authorized to complete this appointment",
@@ -228,7 +327,22 @@ export const handleCompleteAppointmentByUser = async (
 
   await appointment.save();
 
-  // todo send mail to the mechanic
+  // send mail to the mechanic
+  const mailDataForMechanic = mailTemplates.toMechanic.appointmentCompleted({
+    date: appointment.appointmentDate,
+    userEmail: appointment.bookedBy.email,
+    userPhone: appointment.bookedBy.phone,
+    serviceTitle: appointment.service.title,
+    userName: appointment.bookedBy.name,
+    storeName: appointment.bookedFor.storeName,
+  });
+
+  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  sendMail({
+    to: appointment.bookedFor.email,
+    ...mailDataForMechanic,
+  });
+  
   // todo send notification to the mechanic
 
   return sendRes(res, {
