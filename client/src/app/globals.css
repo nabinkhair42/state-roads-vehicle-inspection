@@ -69,3 +69,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+.neon-card {
+  position: relative;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  transition: transform 0.3s;
+}
+
+.neon-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 255, 0, 0.7), 0 0 35px rgba(0, 255, 0, 0.6), 0 0 45px rgba(0, 255, 0, 0.5);
+}
