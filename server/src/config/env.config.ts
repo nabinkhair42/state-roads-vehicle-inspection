@@ -17,6 +17,16 @@ const ENV_CONFIG = {
   MECHANICS_AUTH_TOKEN_ID: "mechanics-auth-token",
 
   NODE_ENV: process.env.NODE_ENV || "development",
+
+  // imagekit related
+  IMAGE_KIT_PUBLIC_KEY: process.env.IMAGE_KIT_PUBLIC_KEY,
+  IMAGE_KIT_PRIVATE_KEY: process.env.IMAGE_KIT_PRIVATE_KEY,
+  IMAGE_KIT_ENDPOINT: process.env.IMAGE_KIT_ENDPOINT,
+
+  // email related
+  SMTP_USER_EMAIL: process.env.SMTP_USER_EMAIL,
+  SMTP_USER_PASSWORD: process.env.SMTP_USER_PASSWORD,
+  SMTP_HOST: process.env.SMTP_HOST ?? "smtp.gmail.com",
 } as const;
 
 export default ENV_CONFIG;

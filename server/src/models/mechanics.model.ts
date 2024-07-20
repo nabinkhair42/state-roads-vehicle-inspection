@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const userModel = new mongoose.Schema(
+export const mechanicsModel = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -23,11 +23,29 @@ export const userModel = new mongoose.Schema(
     //   type: Boolean,
     //   default: false,
     // },
+    storeName: {
+      type: String,
+      required: true,
+    },
+    storeCoordinates: {
+      x: {
+        type: String,
+        required: true,
+      },
+      y: {
+        type: String,
+        required: true,
+      },
+    },
+    storeAddress: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
-    collection: "users",
+    collection: "mechanics",
   }
 );
 
-export default mongoose.model("User", userModel);
+export default mongoose.model("Mechanics", mechanicsModel);
