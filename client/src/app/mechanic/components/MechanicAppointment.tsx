@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button";
+
 const tableData = [
     {
         name: "ABC Store",
@@ -77,9 +78,12 @@ export function MechanicAppointments() {
                                     <Button variant={"outline"} className="btn btn-primary">Action</Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuItem>Pending</DropdownMenuItem>
-                                    <DropdownMenuItem>Canceled</DropdownMenuItem>
-                                    <DropdownMenuItem>Accepted</DropdownMenuItem>
+                                    <DropdownMenuItem>Cancel</DropdownMenuItem>
+                                    <DropdownMenuItem>Accept</DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                        Completed
+                                    </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </TableCell>
