@@ -2,8 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Clock1, Menu, Settings } from "lucide-react";
-import Notifications from "@/app/mechanic/components/Notification";
-import UserControl from "@/app/mechanic/components/UserControl";
+import Notifications from "@/app/mechanics/components/Notification";
+import UserControl from "@/app/mechanics/components/UserControl";
 import Link from "next/link";
 import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -11,22 +11,20 @@ import { Badge } from "@/components/ui/badge";
 // Define navigation items
 const navItems = [
   { href: "/mechanic", icon: Clock1, label: "My Appointments" },
-  { href: "/mechanic/services", icon: Settings, label: "My Services", badge: 6 },
+  {
+    href: "/mechanic/services",
+    icon: Settings,
+    label: "My Services",
+    badge: 6,
+  },
 ];
 
-
-
 export default function NavBar() {
-
   return (
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
         <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="shrink-0 md:hidden"
-          >
+          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>

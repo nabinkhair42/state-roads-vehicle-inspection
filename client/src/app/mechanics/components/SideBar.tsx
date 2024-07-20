@@ -3,8 +3,8 @@ import { Car, Home, Bell, Clock1, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const navItems = [
-  { href: "/mechanic", icon: Clock1, label: "My Appointments" },
-  { href: "/mechanic/services", icon: Settings, label: "My Services", badge: 6 },
+  { href: "/mechanics", icon: Clock1, label: "My Appointments" },
+  { href: "/mechanics/services", icon: Settings, label: "My Services", badge: 6 },
 ];
 
 export default function SideBar() {

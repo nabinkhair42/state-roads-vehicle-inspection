@@ -1,5 +1,5 @@
-import SideBar from "@/app/mechanic/components/SideBar";
-import NavBar from "@/app/mechanic/components/NavBar";
+import SideBar from "@/app/mechanics/components/SideBar";
+import NavBar from "@/app/mechanics/components/NavBar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
