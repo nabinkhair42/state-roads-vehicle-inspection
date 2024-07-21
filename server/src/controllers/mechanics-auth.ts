@@ -6,6 +6,8 @@ import { registerCookies } from "@/utils/cookies";
 import ENV_CONFIG from "@/config/env.config";
 import mechanicsModel from "@/models/mechanics.model";
 import { IMechanicsLoginSchema, IMechanicsSignupSchema } from "@/zod";
+import appointmentModel from "@/models/appointment.model";
+import serviceModel from "@/models/service.model";
 
 export const handleMechanicsSignup = async (
   req: Request<{}, {}, IMechanicsSignupSchema>,

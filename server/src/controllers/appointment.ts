@@ -237,7 +237,7 @@ export const handleCompleteAppointmentByMechanic = async (
 ) => {
   const appointmentId = req.params.appointmentId;
   const mechanicId = res.locals.jwtData.userId;
-
+  const report = res.locals.file;
   const appointment: any = await appointmentModel
     .findById(appointmentId)
     .populate("bookedBy service bookedFor");
@@ -263,7 +263,16 @@ export const handleCompleteAppointmentByMechanic = async (
     });
   }
 
+  if (!report) {
+    return sendRes(res, {
+      status: 400,
+      message: "Report file is required to complete the appointment",
+    });
+  }
+
   appointment.status = "COMPLETED";
+  appointment.report = report;
+  console.log("report", report);
   await appointment.save();
 
   // send mail to the user
@@ -284,66 +293,6 @@ export const handleCompleteAppointmentByMechanic = async (
   });
 
   // todo send notification to the user
-
-  return sendRes(res, {
-    status: 200,
-    message: "Appointment completed successfully",
-  });
-};
-
-export const handleCompleteAppointmentByUser = async (
-  req: Request,
-  res: Response
-) => {
-  const appointmentId = req.params.appointmentId;
-  const userId = res.locals.jwtData.userId;
-
-  const appointment: any = await appointmentModel
-    .findById(appointmentId)
-    .populate("bookedBy service bookedFor");
-
-  if (!appointment) {
-    return sendRes(res, {
-      status: 404,
-      message: "Appointment not found",
-    });
-  }
-
-  if (appointment.bookedBy._id.toString() !== userId.toString()) {
-    return sendRes(res, {
-      status: 403,
-      message: "You are not authorized to complete this appointment",
-    });
-  }
-
-  if (appointment.status !== "APPROVED") {
-    return sendRes(res, {
-      status: 400,
-      message: "This appointment is not approved yet!",
-    });
-  }
-
-  appointment.status = "COMPLETED";
-
-  await appointment.save();
-
-  // send mail to the mechanic
-  const mailDataForMechanic = mailTemplates.toMechanic.appointmentCompleted({
-    date: appointment.appointmentDate,
-    userEmail: appointment.bookedBy.email,
-    userPhone: appointment.bookedBy.phone,
-    serviceTitle: appointment.service.title,
-    userName: appointment.bookedBy.name,
-    storeName: appointment.bookedFor.storeName,
-  });
-
-  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: appointment.bookedFor.email,
-    ...mailDataForMechanic,
-  });
-  
-  // todo send notification to the mechanic
 
   return sendRes(res, {
     status: 200,

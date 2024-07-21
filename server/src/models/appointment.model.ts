@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import FileModel from "./file.model";
 
 export const appointmentModel = new mongoose.Schema(
   {
@@ -30,6 +31,7 @@ export const appointmentModel = new mongoose.Schema(
       enum: ["PENDING", "APPROVED", "REJECTED", "COMPLETED"],
       default: "PENDING",
     },
+    report: FileModel,
   },
   {
     timestamps: true,

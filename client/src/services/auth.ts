@@ -85,7 +85,7 @@ export const handleGetUserProfile = async (): Promise<IUserProfile> => {
         resolve(res.data?.data);
       })
       .catch((err) => {
-        reject(err.response.data?.message);
+        reject(err.response?.data?.message);
       });
   });
 };
@@ -98,6 +98,36 @@ export const handleGetMechanicProfile = async (): Promise<IMechanicProfile> => {
       })
       .then((res) => {
         resolve(res.data?.data);
+      })
+      .catch((err) => {
+        reject(err.response?.data?.message);
+      });
+  });
+};
+
+export const handleMechanicsLogout = async (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(API_URL.MECHANICS_LOGOUT, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        resolve(res.data?.message);
+      })
+      .catch((err) => {
+        reject(err.response.data?.message);
+      });
+  });
+};
+
+export const handleUserLogout = async (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(API_URL.USER_LOGOUT, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        resolve(res.data?.message);
       })
       .catch((err) => {
         reject(err.response.data?.message);

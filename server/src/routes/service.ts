@@ -39,6 +39,11 @@ serviceRouter.delete(
 serviceRouter.get("/", tryCatch(handleGetAllServices));
 
 serviceRouter.get("/:id", tryCatch(handleGetServiceById));
-serviceRouter.get("/mechanics/:id", tryCatch(handleGetServiceByMechanicId));
+serviceRouter.get(
+  "/mechanics/:id",
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  hasAuthorizedRole(ROLES.MECHANICS),
+  tryCatch(handleGetServiceByMechanicId)
+);
 
 export default serviceRouter;

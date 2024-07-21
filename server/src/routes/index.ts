@@ -4,6 +4,7 @@ import mechanicsAuthRouter from "./mechanics-auth";
 import serviceRouter from "./service";
 import notificationRouter from "./notification";
 import appointmentRouter from "./appointment";
+import statsRouter from "./stats";
 
 const appRouter = Router();
 
@@ -12,5 +13,6 @@ appRouter.use("/mechanics/auth", mechanicsAuthRouter);
 appRouter.use("/services", serviceRouter);
 appRouter.use("/notifications", notificationRouter);
 appRouter.use("/appointments", appointmentRouter);
+appRouter.use("/stats", statsRouter);
 
 export default appRouter;

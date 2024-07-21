@@ -20,6 +20,14 @@ export const serviceModel = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Mechanics",
     },
+    features: {
+      type: [String],
+      required: false,
+    },
+    serviceType: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

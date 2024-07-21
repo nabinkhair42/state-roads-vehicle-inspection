@@ -1,21 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Clock1, Menu, Settings } from "lucide-react";
-import Notifications from "@/app/mechanics/components/Notification";
-import UserControl from "@/app/mechanics/components/UserControl";
+import { Clock1, Home, Menu, Settings } from "lucide-react";
+import Notifications from "@/app/mechanics/_components/notification";
+import UserControl from "@/app/mechanics/_components/user-details";
 import Link from "next/link";
-import { useRef } from "react";
-import { Badge } from "@/components/ui/badge";
 
-// Define navigation items
 const navItems = [
-  { href: "/mechanic", icon: Clock1, label: "My Appointments" },
+  { href: "/mechanics", icon: Home, label: "Dashboard" },
+  { href: "/mechanics/appointments", icon: Clock1, label: "Appointments" },
   {
-    href: "/mechanic/services",
+    href: "/mechanics/services",
     icon: Settings,
-    label: "My Services",
-    badge: 6,
+    label: "Services",
   },
 ];
 
@@ -31,7 +28,7 @@ export default function NavBar() {
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col">
           <nav className="grid gap-2 text-lg font-medium">
-            {navItems.map(({ href, icon: Icon, label, badge }) => (
+            {navItems.map(({ href, icon: Icon, label }) => (
               <Link
                 key={label}
                 href={href}
@@ -39,11 +36,6 @@ export default function NavBar() {
               >
                 <Icon className="h-5 w-5" />
                 {label}
-                {badge && (
-                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                    {badge}
-                  </Badge>
-                )}
               </Link>
             ))}
           </nav>
@@ -51,7 +43,7 @@ export default function NavBar() {
       </Sheet>
       <div className="w-full flex justify-between items-center gap-4 pr-12 md:pr-0">
         Mechanic Admin Side
-        <div className="flex gap-4">
+        <div className="flex gap-4 items-center">
           <Notifications />
           <UserControl />
         </div>
