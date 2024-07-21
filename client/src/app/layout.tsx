@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import ReactQueryProvider from "@/providers/react-query-provider";
 import { Toaster } from "sonner";
+import AuthProvider from "@/providers/auth-provider";
+import StoreProvider from "@/providers/store-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,8 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className} suppressHydrationWarning={true}>
-        <Toaster richColors position="top-right" />
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+        <StoreProvider>
+          <Toaster richColors position="top-right" />
+          <ReactQueryProvider>
+            <AuthProvider>
+              {children}
+              </AuthProvider>
+          </ReactQueryProvider>
+        </StoreProvider>
       </body>
     </html>
   );

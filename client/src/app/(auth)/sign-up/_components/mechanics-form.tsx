@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const MechanicsForm = () => {
+  const [isGettingCoordinates, setIsGettingCoordinates] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
   const {
@@ -53,13 +54,16 @@ const MechanicsForm = () => {
 
   const handleGetCoordinates = () => {
     // ask for permission to get location
+    setIsGettingCoordinates(true);
     navigator.geolocation.getCurrentPosition(
       (position) => {
         setValue("storeCoordinates.x", position.coords.longitude.toString());
         setValue("storeCoordinates.y", position.coords.latitude.toString());
+        setIsGettingCoordinates(false);
       },
       (err) => {
         toast.error("Please provide location permission!");
+        setIsGettingCoordinates(false);
       }
     );
   };
@@ -127,6 +131,7 @@ const MechanicsForm = () => {
           <div className="flex justify-between gap-4">
             <Label htmlFor="name">Store Coordinates</Label>
             <Button
+              isLoading={isGettingCoordinates}
               onClick={handleGetCoordinates}
               type="button"
               variant="secondary"

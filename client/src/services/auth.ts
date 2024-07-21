@@ -6,6 +6,8 @@ import {
 } from "@/zod";
 import axios from "axios";
 import { API_URL } from ".";
+import { IUserProfile } from "@/types/user.types";
+import { IMechanicProfile } from "@/types/mechanics.types";
 
 export const handleUserSignup = async (
   data: ISignupSchema
@@ -66,6 +68,36 @@ export const handleMechanicLogin = async (
       })
       .then((res) => {
         resolve(res.data?.message);
+      })
+      .catch((err) => {
+        reject(err.response.data?.message);
+      });
+  });
+};
+
+export const handleGetUserProfile = async (): Promise<IUserProfile> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(API_URL.USER_PROFILE, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        resolve(res.data?.data);
+      })
+      .catch((err) => {
+        reject(err.response.data?.message);
+      });
+  });
+};
+
+export const handleGetMechanicProfile = async (): Promise<IMechanicProfile> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(API_URL.MECHANICS_PROFILE, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        resolve(res.data?.data);
       })
       .catch((err) => {
         reject(err.response.data?.message);
