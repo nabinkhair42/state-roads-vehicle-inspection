@@ -44,7 +44,7 @@ const UserControl = () => {
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="min-w-40">
+        <DropdownMenuContent align="end" className="min-w-40 z-[9999]">
           <DropdownMenuLabel>
             My Account ({user ? "User" : "Mechanic"})
           </DropdownMenuLabel>
