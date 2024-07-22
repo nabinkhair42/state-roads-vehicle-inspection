@@ -45,10 +45,11 @@ const MechanicsForm = () => {
     mutationFn: handleMechanicLogin,
     onSuccess: (msg) => {
       toast.success(msg);
-      queryClient.invalidateQueries({
-        queryKey: ["mechanics"],
-      });
-      router.replace("/mechanics");
+      queryClient
+        .invalidateQueries({
+          queryKey: ["mechanics"],
+        })
+        .then(() => router.replace("/mechanics"));
     },
     onError: (err: string) => {
       toast.error(err);

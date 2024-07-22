@@ -43,6 +43,9 @@ const Workshop = () => {
         (err) => {
           toast.error("Please provide location permission!");
           setIsGettingCoordinates(false);
+        },
+        {
+          enableHighAccuracy: true,
         }
       );
     })();

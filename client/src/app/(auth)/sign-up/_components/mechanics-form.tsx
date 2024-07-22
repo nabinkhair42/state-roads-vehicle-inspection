@@ -38,10 +38,11 @@ const MechanicsForm = () => {
     mutationFn: handleMechanicSignup,
     onSuccess: (msg) => {
       toast.success(msg);
-      queryClient.invalidateQueries({
-        queryKey: ["mechanics"],
-      });
-      router.replace("/mechanics");
+      queryClient
+        .invalidateQueries({
+          queryKey: ["mechanics"],
+        })
+        .then(() => router.replace("/mechanics"));
     },
     onError: (err: string) => {
       toast.error(err);
@@ -70,6 +71,9 @@ const MechanicsForm = () => {
       (err) => {
         toast.error("Please provide location permission!");
         setIsGettingCoordinates(false);
+      },
+      {
+        enableHighAccuracy: true,
       }
     );
   };
