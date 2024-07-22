@@ -121,13 +121,6 @@ const Workshop = () => {
                     <span>Address: {w.storeAddress}</span>
                     <span>Phone: {w.phone}</span>
                     <span>Email: {w.email}</span>
-                    <Link
-                      href={`/workshop/${w._id}`}
-                      target="_blank"
-                      className="text-blue-500 underline"
-                    >
-                      See more
-                    </Link>
                   </div>
                 </div>
               </Popup>

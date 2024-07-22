@@ -49,7 +49,7 @@ const MechanicsForm = () => {
         .invalidateQueries({
           queryKey: ["mechanics"],
         })
-        .then(() => router.replace("/mechanics"));
+        .then(() => (window.location.href = "/mechanics"));
     },
     onError: (err: string) => {
       toast.error(err);
