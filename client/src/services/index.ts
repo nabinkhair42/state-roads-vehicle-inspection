@@ -23,4 +23,7 @@ export const API_URL = {
 
   // stats
   GET_MECHANICS_STATS: BASE_URL + "/stats/mechanics",
+
+  // workshops
+  GET_ALL_WORKSHOPS: BASE_URL + "/workshops",
 };

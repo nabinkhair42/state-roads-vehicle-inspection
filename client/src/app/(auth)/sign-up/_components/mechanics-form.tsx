@@ -57,8 +57,14 @@ const MechanicsForm = () => {
     setIsGettingCoordinates(true);
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setValue("storeCoordinates.x", position.coords.longitude.toString());
-        setValue("storeCoordinates.y", position.coords.latitude.toString());
+        setValue(
+          "storeCoordinates.longitude",
+          position.coords.longitude.toString()
+        );
+        setValue(
+          "storeCoordinates.latitude",
+          position.coords.latitude.toString()
+        );
         setIsGettingCoordinates(false);
       },
       (err) => {
@@ -145,13 +151,13 @@ const MechanicsForm = () => {
               type="text"
               placeholder="Longitude"
               required
-              {...register("storeCoordinates.x")}
+              {...register("storeCoordinates.longitude")}
             />
             <Input
               type="text"
               placeholder="Latitude"
               required
-              {...register("storeCoordinates.y")}
+              {...register("storeCoordinates.latitude")}
             />
             <ErrorLine message={errors.storeCoordinates?.message} />
           </div>

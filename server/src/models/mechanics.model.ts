@@ -28,11 +28,11 @@ export const mechanicsModel = new mongoose.Schema(
       required: true,
     },
     storeCoordinates: {
-      x: {
+      latitude: {
         type: String,
         required: true,
       },
-      y: {
+      longitude: {
         type: String,
         required: true,
       },

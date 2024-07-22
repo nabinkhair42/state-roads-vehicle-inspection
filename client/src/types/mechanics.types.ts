@@ -1,7 +1,7 @@
 export interface IMechanicProfile {
   storeCoordinates: {
-    x: string;
-    y: string;
+    longitude: string;
+    latitude: string;
   };
   _id: string;
   name: string;

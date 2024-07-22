@@ -20,7 +20,7 @@ const UserControl = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { mechanic } = useAppSelector((state) => state.auth);
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: handleMechanicsLogout,
     onSuccess: (msg) => {
       toast.success(msg);

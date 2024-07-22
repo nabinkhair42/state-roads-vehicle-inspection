@@ -7,8 +7,8 @@ export const MechanicsSignupSchema = z.object({
   password: z.string().min(8, "Password is too short!"),
   storeName: z.string(),
   storeCoordinates: z.object({
-    x: z.string(),
-    y: z.string(),
+    latitude: z.string(),
+    longitude: z.string(),
   }),
   storeAddress: z.string(),
 });
