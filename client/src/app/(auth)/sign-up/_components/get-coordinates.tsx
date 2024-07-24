@@ -49,9 +49,11 @@ const GetCoordinates = ({ isOpen, onOpenChange, onSetCoordinates }: Props) => {
           console.log("Coords: ", position.coords);
           setIsGettingCoordinates(false);
         },
+        
         (err) => {
           toast.error("Please provide location permission!");
           setIsGettingCoordinates(false);
+          console.log (err);
         },
         {
           enableHighAccuracy: true,
@@ -59,6 +61,7 @@ const GetCoordinates = ({ isOpen, onOpenChange, onSetCoordinates }: Props) => {
       );
     })();
   }, []);
+  
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>

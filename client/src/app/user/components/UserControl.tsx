@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { CircleUser } from "lucide-react";
+import { CircleUser, LogInIcon, MailCheck, PhoneCall, User2Icon } from "lucide-react";
 import { useAppSelector } from "@/hooks/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleUserLogout } from "@/services/auth";
@@ -38,14 +38,14 @@ const UserControl = () => {
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-52">
+        <DropdownMenuContent align="end" className="w-fit">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{user?.name}</DropdownMenuItem>
-          <DropdownMenuItem>{user?.email}</DropdownMenuItem>
-          <DropdownMenuItem>{user?.phone}</DropdownMenuItem>
+          <DropdownMenuItem><User2Icon className="mr-2 text-muted-foreground w-5" /> {user?.name}</DropdownMenuItem>
+          <DropdownMenuItem><MailCheck className="mr-2 text-muted-foreground w-5 " />{user?.email}</DropdownMenuItem>
+          <DropdownMenuItem><PhoneCall className="mr-2 text-muted-foreground w-5 " />{user?.phone}</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => mutate()}>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => mutate()}><LogInIcon className="mr-2 text-muted-foreground w-5 " />Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

@@ -86,6 +86,16 @@ export function CalendarForm() {
     },
   });
 
+  const [selectedDate, setSelectedDate]= useState<Date | null>(null);
+
+  const [selectedTime, setSelectedTime]= useState<Date | null>(null);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+
+  
+
   return (
     <main className="flex flex-col lg:flex-row justify-around mt-8 gap-8 mb-8">
       {!isAuthenticated || !user ? (
@@ -94,8 +104,8 @@ export function CalendarForm() {
             You need to be logged in to book an appointment
           </h1>
 
-          <a href="/auth/sign-in">
-            <Button className="min-w-32">Login</Button>
+          <a href="/sign-in">
+            <Button className="min-w-32">Sign in</Button>
           </a>
         </div>
       ) : (
@@ -182,6 +192,8 @@ export function CalendarForm() {
                   <Calendar
                     mode="single"
                     selected={date}
+                    ///REMOVE Selection of previous dates
+                    disabled={{ before: today }}
                     // @ts-ignore
                     onSelect={(date) => setDate(date)}
                     initialFocus
@@ -190,12 +202,12 @@ export function CalendarForm() {
               </Popover>
 
               {/* time input */}
-              <Button variant={"secondary"}>
+              <Button variant={"outline"}>
                 <Datetime
                   dateFormat={false}
                   timeFormat="h:mm A"
-                  className="bg-muted"
-                  value={time}
+                  className="bg-transparent "
+                  value={time}                  
                   onChange={(value) => setTime(value.toString())}
                   inputProps={{
                     placeholder: "Select time",
