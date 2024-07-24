@@ -100,8 +100,8 @@ const Workshop = () => {
           </Marker>
 
           {/* workshops */}
-          {data?.map((w) => (
-            <Marker
+          {data?.map((w,index) => (
+            <Marker key={index}
               icon={divIcon({
                 html: `<div class="flex items-center justify-center gap-2 text-primary w-12 h-12 rounded-full p-0.5">
                 <img src="https://www.svgrepo.com/show/397432/mechanic-medium-light-skin-tone.svg" class="w-full h-full object-contain object-center " />

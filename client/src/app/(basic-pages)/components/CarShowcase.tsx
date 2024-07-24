@@ -32,10 +32,10 @@ const CarShowcase = () => {
             <h1 className="text-center md:text-4xl text-3xl font-Semibold ">Recently Added Cars</h1>
         <div className='w-full h-fit gap-2 lg:gap-6 mb-8 justify-center items-center grid md:grid-cols-2 xl:grid-cols-3'>
             {CardDetails.map((card, index) => (
-                <div className="w-fit px-2 py-6 bg-background border  rounded-lg shadow flex flex-col justify-center items-center gap-4">
+                <div key={index} className="w-fit px-2 py-6 bg-background border  rounded-lg shadow flex flex-col justify-center items-center gap-4">
                     <div className='flex gap-4 flex-col rounded-lg w-fit'>
                         <div className='rounded-lg border shadow'>
-                            <Image className="rounded-lg h-64 object-cover" src={card.image} alt="product image" />
+                            <Image className="rounded-lg h-64 object-cover"  src={card.image} alt="product image" />
                         </div>
                         <div className="px-5 pb-5 flex flex-col gap-3">
                             <h1 className='text-xl'>{card.title}</h1>

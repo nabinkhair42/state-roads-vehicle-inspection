@@ -125,8 +125,8 @@ export function CalendarForm() {
                     <SelectGroup>
                       <SelectLabel>Service</SelectLabel>
                       {["Comprehensive", "Mechanical", "Body and Chassis"].map(
-                        (service) => (
-                          <SelectItem value={service}>{service}</SelectItem>
+                        (service,index) => (
+                          <SelectItem key={index} value={service}>{service}</SelectItem>
                         )
                       )}
                     </SelectGroup>
@@ -157,8 +157,8 @@ export function CalendarForm() {
                           No store available for this service!
                         </p>
                       )}
-                      {data?.map((service) => (
-                        <SelectItem value={service._id}>
+                      {data?.map((service,index) => (
+                        <SelectItem key={index} value={service._id}>
                           {service.postedBy.storeName}
                         </SelectItem>
                       ))}

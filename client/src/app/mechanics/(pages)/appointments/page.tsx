@@ -95,8 +95,8 @@ const MechanicAppointments = () => {
               </TableCell>
             </TableRow>
           ) : (
-            data?.map((data) => (
-              <TableRow>
+            data?.map((data,index) => (
+              <TableRow key={index}>
                 <TableCell>{data.bookedBy.name}</TableCell>
                 <TableCell>{data.service.serviceType}</TableCell>
                 <TableCell>
