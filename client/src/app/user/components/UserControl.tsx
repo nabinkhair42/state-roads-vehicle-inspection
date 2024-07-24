@@ -51,5 +51,4 @@ const UserControl = () => {
     </>
   );
 };
-
 export default UserControl;
