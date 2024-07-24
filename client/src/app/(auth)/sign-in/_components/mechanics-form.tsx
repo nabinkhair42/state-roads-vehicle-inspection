@@ -42,7 +42,6 @@ const MechanicsForm = () => {
   };
 
   const { mutate, isPending } = useMutation({
-    
     mutationFn: handleMechanicLogin,
     onSuccess: (msg) => {
       toast.success(msg);
@@ -50,7 +49,7 @@ const MechanicsForm = () => {
         .invalidateQueries({
           queryKey: ["mechanics"],
         })
-        .then(() => (router.push("/mechanics")));
+        .then(() => (window.location.href = "/mechanics"));
     },
     onError: (err: string) => {
       toast.error(err);
