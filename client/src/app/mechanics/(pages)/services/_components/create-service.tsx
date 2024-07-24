@@ -106,7 +106,7 @@ const CreateService: FC<Props> = ({ isOpen, setIsOpen, disabledServices }) => {
             Fill out the details below to list your service.
           </SheetDescription>
         </SheetHeader>
-        <form className="grid gap-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
           <div className="grid gap-2">
             <Label htmlFor="service-type">Service</Label>
             <Select
