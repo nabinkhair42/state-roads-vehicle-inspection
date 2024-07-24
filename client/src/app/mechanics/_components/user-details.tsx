@@ -25,7 +25,7 @@ const UserControl = () => {
     onSuccess: (msg) => {
       toast.success(msg);
       queryClient.setQueryData(["mechanic"], null);
-      window.location.href = "/";
+      router.push("/");
     },
     onError: (err: string) => {
       toast.error(err);

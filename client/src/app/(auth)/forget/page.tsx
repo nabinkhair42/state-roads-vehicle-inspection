@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 const sendOTP = () => {
+    
         alert("OTP Sent")
         //reerect to verification page
-        window.location.href = "/verification"
+        // window.location.href = "/verification"
     }
 const page = () => {
     

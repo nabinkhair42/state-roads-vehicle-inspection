@@ -14,8 +14,10 @@ import { useAppSelector } from "@/hooks/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleUserLogout } from "@/services/auth";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const UserControl = () => {
+  const router = useRouter();
   const { user } = useAppSelector((state) => state.auth);
   const queryClient = useQueryClient();
   const { mutate } = useMutation({
@@ -23,7 +25,7 @@ const UserControl = () => {
     onSuccess: (msg) => {
       toast.success(msg);
       queryClient.setQueryData(["user"], null);
-      window.location.href = "/";
+      router.push("/");
     },
     onError: (err: string) => {
       toast.error(err);

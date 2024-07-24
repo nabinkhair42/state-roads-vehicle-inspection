@@ -15,7 +15,7 @@ const resendOTP = () => {
 const verified = () => {
     alert("Verified")
     //reerect to verification page
-    window.location.href = "/dashboard"
+    // window.location.href = "/dashboard"
 }
 const page = () => {
     return (
