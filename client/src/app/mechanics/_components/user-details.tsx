@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { CircleUser } from "lucide-react";
+import { CircleUser, Mail, User2Icon } from "lucide-react";
 import { useAppSelector } from "@/hooks/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleMechanicsLogout } from "@/services/auth";
@@ -47,10 +47,10 @@ const UserControl = () => {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{mechanic?.name}</DropdownMenuItem>
-          <DropdownMenuItem>{mechanic?.email}</DropdownMenuItem>
+          <DropdownMenuItem><User2Icon className="mr-2 text-muted-foreground w-5" />{mechanic?.name}</DropdownMenuItem>
+          <DropdownMenuItem><Mail className="mr-2 text-muted-foreground w-5" />{mechanic?.email}</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem className="cursor-pointer" disabled>
             View Profile
           </DropdownMenuItem>
           <DropdownMenuSeparator />
