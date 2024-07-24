@@ -22,6 +22,10 @@ export const appointmentModel = new mongoose.Schema(
       type: Date, // Date and Time
       required: true,
     },
+    appointmentTime: {
+      type: String, // Date and Time
+      required: true,
+    },
     message: {
       type: String,
       required: true,

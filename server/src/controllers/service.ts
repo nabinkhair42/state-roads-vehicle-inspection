@@ -48,10 +48,24 @@ export const handleDeleteServiceById = async (req: Request, res: Response) => {
 };
 
 export const handleGetAllServices = async (req: Request, res: Response) => {
+  const { query } = req.query;
+
+  let queryObj = {};
+
+  // if query is present, search for the query as serviceType
+  if (query) {
+    queryObj = {
+      serviceType: {
+        $regex: query,
+        $options: "i", // case-insensitive
+      },
+    };
+  }
   const services = await serviceModel
     .find()
     .sort({ createdAt: -1 })
-    .populate("postedBy");
+    .populate("postedBy")
+    .where(queryObj);
 
   return sendRes(res, {
     status: 200,

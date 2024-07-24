@@ -39,7 +39,7 @@ const UserForm = () => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
-      router.replace("/");
+      window.location.href = "/";
     },
     onError: (err: string) => {
       toast.error(err);

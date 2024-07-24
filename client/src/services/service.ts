@@ -9,7 +9,6 @@ export const handleCreateService = async (
   }
 ): Promise<string> => {
   const fd = new FormData();
-  fd.append("title", data.title);
   fd.append("description", data.description);
   fd.append("price", data.price.toString());
   fd.append("serviceType", data.serviceType);
@@ -39,6 +38,26 @@ export const handleGetAllMechanicsServices = async (
   id: string
 ): Promise<IService[]> => {
   const url = `${API_URL.GET_MECHANICS_SERVICES}/${id}`;
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        resolve(res.data?.data);
+      })
+      .catch((err) => {
+        reject(err?.response?.data?.message);
+      });
+  });
+};
+
+export const handleGetAllServices = async (
+  query?: string
+): Promise<IService[]> => {
+  const url = query
+    ? `${API_URL.ALL_SERVICES}?query=${query}`
+    : API_URL.ALL_SERVICES;
   return new Promise((resolve, reject) => {
     axios
       .get(url, {

@@ -81,7 +81,7 @@ const MechanicAppointments = () => {
         <TableHeader>
           <TableRow>
             <TableHead>Booked By</TableHead>
-            <TableHead>Service Title</TableHead>
+            <TableHead>Service</TableHead>
             <TableHead>Appointment Date</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Action</TableHead>
@@ -98,7 +98,7 @@ const MechanicAppointments = () => {
             data?.map((data) => (
               <TableRow>
                 <TableCell>{data.bookedBy.name}</TableCell>
-                <TableCell>{data.service.title}</TableCell>
+                <TableCell>{data.service.serviceType}</TableCell>
                 <TableCell>
                   {new Date(data.appointmentDate).toLocaleDateString("en-US", {
                     year: "numeric",

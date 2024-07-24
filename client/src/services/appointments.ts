@@ -1,6 +1,7 @@
 import axios from "axios";
 import { API_URL } from ".";
 import { IAppointment } from "@/types/appointment";
+import { IAppointmentSchema } from "@/zod";
 
 export const handleGetAllMechanicsAppointment = async (): Promise<
   IAppointment[]
@@ -69,6 +70,41 @@ export const handleCompleteAppointment = async ({
       })
       .then((res) => {
         resolve(res.data?.message);
+      })
+      .catch((err) => {
+        reject(err?.response?.data?.message);
+      });
+  });
+};
+
+export const handleBookAppointment = async ({
+  serviceId,
+  ...data
+}: IAppointmentSchema & { serviceId: string }): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`${API_URL.BOOK_APPOINTMENT}/${serviceId}`, data, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        resolve(res.data?.message);
+      })
+      .catch((err) => {
+        reject(err?.response?.data?.message);
+      });
+  });
+};
+
+export const handleGetAllUserAppointments = async (): Promise<
+  IAppointment[]
+> => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(API_URL.GET_USER_APPOINTMENTS, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        resolve(res.data?.data);
       })
       .catch((err) => {
         reject(err?.response?.data?.message);

@@ -1,93 +1,97 @@
 "use client";
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-const tableData = [
-    {
-        name: "ABC Store",
-        service: "Comprehensive Service",
-        date: "20 June",
-        status: "Pending",
-    },
-    {
-        name: "XYZ Store",
-        service: "Oil Change",
-        date: "20 June",
-        status: "Completed",
-    },
-    {
-        name: "PQR Store",
-        service: "Comprehensive Service",
-        date: "20 June",
-        status: "Canceled",
-    }
-]
+import { useQuery } from "@tanstack/react-query";
+import { handleGetAllUserAppointments } from "@/services/appointments";
+import Loading from "@/components/reusable/loading";
+import Link from "next/link";
 
 export function UserAppointments() {
-    return (
-        <Table className="mt-4 border">
-            <TableCaption>A list of your recent Appointments.</TableCaption>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Store Name</TableHead>
-                    <TableHead>Service Type</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead >Status</TableHead>
-                    <TableHead>Action</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {tableData.map((data) => (
-                    <TableRow>
-                        <TableCell>{data.name}</TableCell>
-                        <TableCell>{data.service}</TableCell>
-                        <TableCell>{data.date}</TableCell>
-                        <TableCell>
-                            <Badge
-                                variant={
-                                    data.status === "Pending" ? "pending" :
-                                        data.status === "Completed" ? "success" :
-                                            data.status === "Canceled" ? "destructive" : "default"
-                                }
-                            >
-                                {data.status}
-                            </Badge>
+  const { data, isLoading } = useQuery({
+    queryFn: handleGetAllUserAppointments,
+    queryKey: ["appointments", "user"],
+  });
 
-                        </TableCell>
-                        <TableCell>
-                            <DropdownMenu >
-                                <DropdownMenuTrigger>
-                                    <Button variant={"outline"} className="btn btn-primary">Action</Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                    <DropdownMenuItem>Pending</DropdownMenuItem>
-                                    <DropdownMenuItem>Canceled</DropdownMenuItem>
-                                    <DropdownMenuItem>Accepted</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
-    )
+  return (
+    <Table className="mt-4 border">
+      <TableCaption>A list of your recent Appointments.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Store Name</TableHead>
+          <TableHead>Service Type</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {isLoading ? (
+          <TableRow>
+            <TableCell colSpan={5} className="text-center">
+              <Loading />
+            </TableCell>
+          </TableRow>
+        ) : (
+          data?.map((data) => (
+            <TableRow>
+              <TableCell>{data.bookedBy.name}</TableCell>
+              <TableCell>{data.service.serviceType}</TableCell>
+              <TableCell>
+                {new Date(data.appointmentDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}{" "}
+                - {data.appointmentTime}
+              </TableCell>
+              <TableCell>
+                <Badge
+                  variant={
+                    data.status === "PENDING"
+                      ? "pending"
+                      : data.status === "APPROVED"
+                      ? "success"
+                      : data.status === "REJECTED"
+                      ? "destructive"
+                      : "outline"
+                  }
+                >
+                  {data.status}
+                </Badge>
+              </TableCell>
+              <TableCell>
+                <Button
+                  size={"sm"}
+                  variant={"secondary"}
+                  disabled={data.status !== "COMPLETED"}
+                >
+                  <Link href={data?.report?.url ?? "#"}>View Report</Link>
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))
+        )}
+      </TableBody>
+    </Table>
+  );
 }
 
 export default UserAppointments;

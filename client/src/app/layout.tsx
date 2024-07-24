@@ -21,12 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body className={inter.className} suppressHydrationWarning={true}>
+        <Toaster richColors position="top-right" />
         <StoreProvider>
-          <Toaster richColors position="top-right" />
           <ReactQueryProvider>
-            <AuthProvider>
-              {children}
-              </AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
           </ReactQueryProvider>
         </StoreProvider>
       </body>

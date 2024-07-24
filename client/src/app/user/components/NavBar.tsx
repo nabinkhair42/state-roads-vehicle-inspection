@@ -7,6 +7,7 @@ import UserControl from "@/app/user/components/UserControl";
 import Link from "next/link";
 import { Home, Bell } from "lucide-react"; // Import the missing components
 import { Badge } from "@/components/ui/badge"; // Import the missing component
+import { useAppSelector } from "@/hooks/store";
 
 const navItems = [
   { href: "/user", icon: Clock1, label: "My Appointments" },
@@ -18,11 +19,7 @@ export default function NavBar() {
     <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <Sheet>
         <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="shrink-0 md:hidden"
-          >
+          <Button variant="outline" size="icon" className="shrink-0 md:hidden">
             <Menu className="h-5 w-5" />
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
@@ -50,8 +47,8 @@ export default function NavBar() {
       <div className="w-full flex justify-between items-center gap-4 pr-12 md:pr-0">
         User Admin Side
         <div className="flex gap-4">
-        <Notifications />
-        <UserControl />
+          {/* <Notifications /> */}
+          <UserControl />
         </div>
       </div>
     </header>

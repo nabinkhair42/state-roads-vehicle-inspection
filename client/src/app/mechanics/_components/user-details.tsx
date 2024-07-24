@@ -25,7 +25,7 @@ const UserControl = () => {
     onSuccess: (msg) => {
       toast.success(msg);
       queryClient.setQueryData(["mechanic"], null);
-      router.push("/");
+      window.location.href = "/";
     },
     onError: (err: string) => {
       toast.error(err);
@@ -40,7 +40,7 @@ const UserControl = () => {
             size="icon"
             className="rounded-full p-1 h-fit w-fit"
           >
-            <CircleUser className="h-4 w-4" />
+            <CircleUser className="h-5 w-5" />
             <span className="sr-only">Toggle user menu</span>
           </Button>
         </DropdownMenuTrigger>

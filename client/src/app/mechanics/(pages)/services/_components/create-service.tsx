@@ -37,19 +37,15 @@ import React, { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-const SERVICE_TYPES = [
-  "Comprehensive",
-  "Mechanical",
-  "Body and Chassis",
-  "Other",
-];
+const SERVICE_TYPES = ["Comprehensive", "Mechanical", "Body and Chassis"];
 
 type Props = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  disabledServices: string[];
 };
 
-const CreateService: FC<Props> = ({ isOpen, setIsOpen }) => {
+const CreateService: FC<Props> = ({ isOpen, setIsOpen, disabledServices }) => {
   const [thumbnail, setThumbnail] = React.useState<File | null>(null);
   const router = useRouter();
   const {
@@ -110,15 +106,29 @@ const CreateService: FC<Props> = ({ isOpen, setIsOpen }) => {
             Fill out the details below to list your service.
           </SheetDescription>
         </SheetHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6">
+        <form className="grid gap-6">
           <div className="grid gap-2">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              placeholder="Enter a title for your service"
-              type="text"
-              {...register("title")}
-            />
-            <ErrorLine message={errors.title?.message} />
+            <Label htmlFor="service-type">Service</Label>
+            <Select
+              value={watch("serviceType")}
+              onValueChange={(value) => setValue("serviceType", value)}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select a service type" />
+              </SelectTrigger>
+              <SelectContent>
+                {SERVICE_TYPES.map((type, index) => (
+                  <SelectItem
+                    disabled={disabledServices.includes(type)}
+                    key={index}
+                    value={type}
+                  >
+                    {type}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <ErrorLine message={errors.serviceType?.message} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="price">Price ($)</Label>
@@ -148,25 +158,6 @@ const CreateService: FC<Props> = ({ isOpen, setIsOpen }) => {
                 setThumbnail(e.target.files && e.target.files[0])
               }
             />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="service-type">Service Type</Label>
-            <Select
-              value={watch("serviceType")}
-              onValueChange={(value) => setValue("serviceType", value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a service type" />
-              </SelectTrigger>
-              <SelectContent>
-                {SERVICE_TYPES.map((type, index) => (
-                  <SelectItem key={index} value={type}>
-                    {type}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <ErrorLine message={errors.serviceType?.message} />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="features">Features</Label>

@@ -96,14 +96,14 @@ export function NavigationMenuDemo() {
         ) : (
           <NavigationMenuList className="flex gap-4">
             <NavigationMenuItem>
-              <Link href="/sign-in" legacyBehavior passHref>
+              <a href="/sign-in">
                 <Button variant={"outline"}>Sign In</Button>
-              </Link>
+              </a>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <Link href="/sign-up" legacyBehavior passHref>
+              <a href="/sign-up">
                 <Button>Sign Up</Button>
-              </Link>
+              </a>
             </NavigationMenuItem>
           </NavigationMenuList>
         )}

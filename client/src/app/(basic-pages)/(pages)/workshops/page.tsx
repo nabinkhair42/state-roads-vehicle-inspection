@@ -26,7 +26,7 @@ const Workshop = () => {
   const [isGettingCoordinates, setIsGettingCoordinates] = useState(true);
   const { isLoading, data } = useQuery({
     queryKey: ["workshops"],
-    queryFn: handleGetAllWorkshops,
+    queryFn: () => handleGetAllWorkshops(),
   });
 
   useEffect(() => {
