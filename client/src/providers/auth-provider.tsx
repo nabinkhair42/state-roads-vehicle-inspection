@@ -43,12 +43,7 @@ const AuthProvider = ({ children }: Props) => {
     }
   }, [mechanic.isSuccess, mechanic.isLoading, mechanic.data]);
 
-  if (
-    user.isLoading ||
-    mechanic.isLoading ||
-    mechanic.isFetching ||
-    user.isFetching
-  ) {
+  if (user.isLoading || mechanic.isLoading) {
     return <Loading className="h-screen" />;
   }
 
