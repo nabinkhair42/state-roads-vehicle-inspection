@@ -3,7 +3,7 @@ import userModel from "@/models/user.model";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { generateOTP } from "@/utils/generate-otp";
-import { registerCookies } from "@/utils/cookies";
+import { clearCookies, registerCookies } from "@/utils/cookies";
 import ENV_CONFIG from "@/config/env.config";
 import { ILoginSchema, ISignupSchema } from "@/zod";
 
@@ -78,7 +78,7 @@ export const handleGetUserProfile = async (req: Request, res: Response) => {
 };
 
 export const handleUserLogout = async (req: Request, res: Response) => {
-  res.clearCookie(ENV_CONFIG.AUTH_TOKEN_ID);
+  clearCookies(res, ENV_CONFIG.AUTH_TOKEN_ID);
   return sendRes(res, {
     status: 200,
     message: "Logged out successfully!",

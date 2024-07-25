@@ -2,7 +2,7 @@ import { sendRes } from "@/middlewares/send-response";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { generateOTP } from "@/utils/generate-otp";
-import { registerCookies } from "@/utils/cookies";
+import { clearCookies, registerCookies } from "@/utils/cookies";
 import ENV_CONFIG from "@/config/env.config";
 import mechanicsModel from "@/models/mechanics.model";
 import { IMechanicsLoginSchema, IMechanicsSignupSchema } from "@/zod";
@@ -96,7 +96,7 @@ export const handleGetMechanicsProfile = async (
 };
 
 export const handleMechanicsLogout = async (req: Request, res: Response) => {
-  res.clearCookie(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID);
+  clearCookies(res, ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID);
   return sendRes(res, {
     status: 200,
     message: "Logged out successfully!",
