@@ -40,10 +40,10 @@ export const registerCookies = (
  */
 export const clearCookies = (res: Response, authToken: string) => {
   res.clearCookie(authToken, {
-    httpOnly: true,
-    domain: ENV_CONFIG.FRONTEND_DOMAIN,
-    signed: true,
     path: "/",
+    domain: ENV_CONFIG.FRONTEND_DOMAIN,
+    httpOnly: true,
+    signed: true,
     sameSite: "none",
     secure: true,
   });
