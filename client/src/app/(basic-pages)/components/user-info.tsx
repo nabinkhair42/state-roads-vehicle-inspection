@@ -10,15 +10,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { CircleUser } from "lucide-react";
-import { useAppSelector } from "@/hooks/store";
+import { useAppDispatch, useAppSelector } from "@/hooks/store";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handleMechanicsLogout, handleUserLogout } from "@/services/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { logout } from "@/store/slices/auth-slice";
 
 const UserControl = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { mechanic, user } = useAppSelector((state) => state.auth);
   const { mutate } = useMutation({
     mutationFn: user ? handleUserLogout : handleMechanicsLogout,
@@ -26,6 +28,8 @@ const UserControl = () => {
       toast.success(msg);
       queryClient.setQueryData(["mechanic"], null);
       queryClient.setQueryData(["user"], null);
+      dispatch(logout());
+
       router.push("/");
     },
     onError: (err: string) => {
