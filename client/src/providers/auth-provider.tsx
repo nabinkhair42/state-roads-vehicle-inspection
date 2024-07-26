@@ -31,14 +31,14 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     if (user.isLoading) return;
-    if (user.isSuccess) {
+    if (user.isSuccess && user.data) {
       dispatch(userLogin(user.data));
     }
   }, [user.isSuccess, user.isLoading, user.data]);
 
   useEffect(() => {
     if (mechanic.isLoading) return;
-    if (mechanic.isSuccess) {
+    if (mechanic.isSuccess && mechanic.data) {
       dispatch(mechanicLogin(mechanic.data));
     }
   }, [mechanic.isSuccess, mechanic.isLoading, mechanic.data]);

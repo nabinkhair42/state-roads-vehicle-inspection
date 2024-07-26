@@ -29,7 +29,6 @@ const UserControl = () => {
       queryClient.setQueryData(["mechanic"], null);
       queryClient.setQueryData(["user"], null);
       dispatch(logout());
-
       router.push("/");
     },
     onError: (err: string) => {
