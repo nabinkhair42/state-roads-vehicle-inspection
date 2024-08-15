@@ -1,0 +1,1 @@
+{"version":3,"file":"appointment.zod.js","sourceRoot":"","sources":["../../src/zod/appointment.zod.ts"],"names":[],"mappings":";;;;;;AAAA,8CAAoB;AAEP,QAAA,iBAAiB,GAAG,aAAC,CAAC,MAAM,CAAC;IACxC,eAAe,EAAE,aAAC,CAAC,MAAM,EAAE;IAC3B,OAAO,EAAE,aAAC,CAAC,MAAM,EAAE;IACnB,eAAe,EAAE,aAAC,CAAC,MAAM,EAAE;CAC5B,CAAC,CAAC"}
