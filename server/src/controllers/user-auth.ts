@@ -289,3 +289,41 @@ export const handleVerifyOTPForResetPassword = async (
     message: "You password is updated, you can login now!",
   });
 };
+
+export const handleChangePassword = async (req: Request, res: Response) => {
+  const { oldPassword, newPassword } = req.body;
+
+  if (oldPassword === newPassword) {
+    return sendRes(res, {
+      status: 400,
+      message: "Old password and new password can't be same!",
+    });
+  }
+
+  const user = res.locals.jwtData.userId;
+  const userDoc = await userModel.findById(user);
+  if (!userDoc) {
+    return sendRes(res, {
+      status: 404,
+      message: "User not found!",
+    });
+  }
+
+  const isPasswordValid = await bcrypt.compare(oldPassword, userDoc.password);
+
+  if (!isPasswordValid) {
+    return sendRes(res, {
+      status: 400,
+      message: "Invalid old password!",
+    });
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  await userModel.findByIdAndUpdate(user, { password: hashedPassword });
+
+  return sendRes(res, {
+    status: 200,
+    message: "You password is updated!",
+  });
+};

@@ -7,6 +7,7 @@ import {
   handleResetPassword,
   handleVerifyOTPForResetPassword,
   handleResendOTPForSignup,
+  handleChangePassword,
 } from "@/controllers/user-auth";
 import { validateBody } from "@/middlewares/validate-body";
 import { Router } from "express";
@@ -48,6 +49,18 @@ authRouter.post(
     z.object({ email: z.string().email("Please provide a valid email") })
   ),
   tryCatch(handleResetPassword)
+);
+
+authRouter.put(
+  "/update-password",
+  verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
+  validateBody(
+    z.object({
+      oldPassword: z.string(),
+      newPassword: z.string().min(6),
+    })
+  ),
+  tryCatch(handleChangePassword)
 );
 
 authRouter.post(
