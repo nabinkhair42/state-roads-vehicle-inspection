@@ -6,7 +6,7 @@ import { ROLES } from "@/constants/roles.const";
 
 // use verifyToken before this middleware
 export const hasAuthorizedRole = (role: string) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     const userId = res.locals.jwtData.userId;
 
     if (!userId) {
@@ -17,7 +17,7 @@ export const hasAuthorizedRole = (role: string) => {
     }
 
     if (role === ROLES.MECHANICS) {
-      const user = mechanicsModel.findById(userId);
+      const user = await mechanicsModel.findById(userId);
       res.locals.user = user;
       if (!user) {
         return sendRes(res, {
@@ -25,13 +25,27 @@ export const hasAuthorizedRole = (role: string) => {
           message: "Sorry, you are not authorized to access this resource!",
         });
       }
+
+      if (!user.isVerified) {
+        return sendRes(res, {
+          status: 401,
+          message: "Please verify your account to continue!",
+        });
+      }
     } else if (role === ROLES.USER) {
-      const user = userModel.findById(userId);
+      const user = await userModel.findById(userId);
       res.locals.user = user;
       if (!user) {
         return sendRes(res, {
           status: 401,
           message: "Sorry, you are not authorized to access this resource!",
+        });
+      }
+
+      if (!user.isVerified) {
+        return sendRes(res, {
+          status: 401,
+          message: "Please verify your account to continue!",
         });
       }
     } else {

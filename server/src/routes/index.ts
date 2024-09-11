@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authRouter from "./auth";
+import authRouter from "./user-auth";
 import mechanicsAuthRouter from "./mechanics-auth";
 import serviceRouter from "./service";
 import notificationRouter from "./notification";

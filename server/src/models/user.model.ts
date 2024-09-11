@@ -19,10 +19,10 @@ export const userModel = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // isVerified: { // In later chapters, we might implement email verification
-    //   type: Boolean,
-    //   default: false,
-    // },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

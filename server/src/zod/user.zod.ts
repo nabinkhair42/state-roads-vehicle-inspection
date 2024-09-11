@@ -12,5 +12,14 @@ export const LoginSchema = z.object({
   password: z.string(),
 });
 
+export const ResetPasswordSchema = z.object({
+  email: z.string().email("Please enter a valid email!"),
+  newPassword: z.string().min(8, "Password is too short!"),
+  otp: z.number({
+    message: "Please enter a OTP!",
+  }),
+});
+
 export type ISignupSchema = z.infer<typeof SignupSchema>;
 export type ILoginSchema = z.infer<typeof LoginSchema>;
+export type IResetPasswordSchema = z.infer<typeof ResetPasswordSchema>;
