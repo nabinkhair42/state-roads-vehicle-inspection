@@ -62,3 +62,10 @@ public/_next-video
 !./src/assets/videos/*.js
 !./src/assets/videos/*.ts
 public/_next-video
+
+# next-video
+videos/*
+!videos/*.json
+!videos/*.js
+!videos/*.ts
+public/_next-video
