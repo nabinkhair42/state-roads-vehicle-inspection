@@ -11,7 +11,7 @@ const SimpleHero = () => {
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/10 min-h-screen">
       <div className="container mx-auto px-4 py-20 md:py-32 flex flex-col md:flex-row items-center">
-        <div className="w-full md:w-1/2 mb-10 md:mb-0">
+        <div className="w-full md:w-1/2 mb-10 md:mb-0 container">
           <motion.h1
             className="text-4xl md:text-6xl font-bold mb-6"
             initial={{ opacity: 0, y: -50 }}

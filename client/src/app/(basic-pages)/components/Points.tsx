@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {  Briefcase, Car, Check } from "lucide-react";
+import { Briefcase, Car, CheckCheck } from "lucide-react";
 
 const inspectionCategories = [
   {
@@ -61,12 +61,12 @@ const InspectionPoints: React.FC = () => {
           onValueChange={setActiveCategory}
           className="w-full max-w-4xl mx-auto"
         >
-          <TabsList className="grid w-full grid-cols-3 mb-8 p-1 rounded-lg">
+          <TabsList className="grid w-full grid-cols-3 mb-8 p-1 h-full rounded-lg bg-inherit">
             {inspectionCategories.map((category) => (
               <TabsTrigger
                 key={category.name}
                 value={category.name}
-                className="flex items-center justify-center py-3 px-4 rounded-md transition-all duration-200 data-[state=active]:bg-white data-[state=active]:shadow-md"
+                className="flex items-center justify-center py-3 px-4 rounded-md transition-all duration-200 data-[state=active]:bg-white data-[state=active]:border data-[state=active]:shadow-md"
               >
                 <category.icon className="w-5 h-5 mr-2" />
                 {category.name}
@@ -83,7 +83,7 @@ const InspectionPoints: React.FC = () => {
                   transition={{ duration: 0.3 }}
                 >
                   <Card className="border-0 shadow-lg">
-                    <CardHeader className="bg-gray-50 border-b">
+                    <CardHeader>
                       <CardTitle className="flex items-center text-2xl">
                         <category.icon className="w-6 h-6 mr-3 text-primary" />
                         {category.name} Inspection Points
@@ -97,10 +97,12 @@ const InspectionPoints: React.FC = () => {
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.3, delay: index * 0.1 }}
-                            className="flex items-center bg-gray-50 p-3 rounded-lg"
+                            className="flex items-center p-3 rounded-lg"
                           >
-                            <Check className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
-                            <span className="text-gray-700">{point}</span>
+                            <CheckCheck className="w-5 h-5 text-green-500 mr-3 flex-shrink-0" />
+                            <span className="text-muted-foreground">
+                              {point}
+                            </span>
                           </motion.li>
                         ))}
                       </ul>
