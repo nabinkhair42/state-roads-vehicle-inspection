@@ -8,6 +8,7 @@ import ENV_CONFIG from "@/config/env.config";
 import { ILoginSchema, ISignupSchema } from "@/zod";
 import OTPModel from "@/models/otp.model";
 import { otpMailer } from "@/mailers/otp-mailer";
+import { sendWelcomeMailToUser } from "@/mailers/welcome-user";
 
 export const handleUserSignup = async (
   req: Request<{}, {}, ISignupSchema>,
@@ -39,7 +40,7 @@ export const handleUserSignup = async (
   });
 
   // don t await this
-  otpMailer(otp, newUser.email);
+  sendWelcomeMailToUser(otp, newUser.email, newUser.name);
 
   registerCookies(res, newUser._id.toString(), ENV_CONFIG.AUTH_TOKEN_ID);
   return sendRes(res, {

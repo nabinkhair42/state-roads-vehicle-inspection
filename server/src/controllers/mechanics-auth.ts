@@ -8,6 +8,7 @@ import { IMechanicsLoginSchema, IMechanicsSignupSchema } from "@/zod";
 import OTPModel from "@/models/otp.model";
 import { generateOTP, validateOTP } from "@/utils/generate-otp";
 import { otpMailer } from "@/mailers/otp-mailer";
+import { sendWelcomeMailToUser } from "@/mailers/welcome-user";
 
 export const handleMechanicsSignup = async (
   req: Request<{}, {}, IMechanicsSignupSchema>,
@@ -28,6 +29,18 @@ export const handleMechanicsSignup = async (
   });
 
   await newMechanics.save();
+
+  // /generate otp
+  const otp = generateOTP();
+  await OTPModel.create({
+    userId: newMechanics._id,
+    role: "MECHANIC",
+    otp: parseInt(otp),
+    purpose: "ACCOUNT_VERIFICATION",
+  });
+
+  // don t await this
+  sendWelcomeMailToUser(otp, newMechanics.email, newMechanics.name);
 
   registerCookies(
     res,
