@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React from "react";
 
 type Props = {
@@ -14,7 +14,7 @@ const Loading = ({ className }: Props) => {
         className
       )}
     >
-      <Loader className="h-8 w-8 animate-spin" />
+      <Loader2 className="h-8 w-8 animate-spin" />
     </div>
   );
 };

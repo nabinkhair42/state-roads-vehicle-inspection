@@ -1,44 +1,60 @@
 "use client";
-import { cn } from "@/lib/utils";
+import React from "react";
+import { motion } from "framer-motion";
 import { Cog, ShipWheel, CircleGauge, Hammer } from "lucide-react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+
+const features = [
+  {
+    title: "Qualified Mechanics",
+    description:
+      "Our hand-picked team of mechanics brings years of industry experience, ensuring you're in capable hands.",
+    icon: Hammer,
+  },
+  {
+    title: "Peace of Mind",
+    description:
+      "We eliminate the risk of expensive mistakes, ensuring no nasty surprises when purchasing a car.",
+    icon: ShipWheel,
+  },
+  {
+    title: "Detailed Reports",
+    description:
+      "Our comprehensive 250+ point inspection report includes a one-on-one review with an expert mechanic.",
+    icon: CircleGauge,
+  },
+  {
+    title: "30-Day Guarantee",
+    description:
+      "We offer a 30-day Stateroads vehicle protection guarantee, backing our commitment to excellence.",
+    icon: Cog,
+  },
+];
 
 export function Features() {
-  const features = [
-    {
-      title: "Qualified Mechanics",
-      description:
-        "Our mechanics are a hand picked team that come from many years of experience in the industry - so you're in good hands!",
-      icon: Hammer,
-    },
-    {
-      title: "Peace of Mind",
-      description:
-        "Purchasing the wrong car can be a very expensive mistake.  We remove the risk so there are no nasty surprises",
-      icon: ShipWheel,
-    },
-    {
-      title: "Detailed Reports",
-      description:
-        "Our 250+ point inspection report is the most comprehensive in the industry  includes a one on one telephone review by our expert mechanic to discuss the results and answer questions",
-      icon: CircleGauge,
-    },
-    {
-      title: "Guarantee",
-      description:
-        "We provide a 30 day Stateroads vehicle protection guarantee, so you'll know we're serious when we say we really are the best in the business!  Call us anytime for bookings and enquiries",
-      icon: Cog,
-    },
-  ];
-
   return (
-    <div className="container flex flex-col gap-4">
-      <h1 className="text-center md:text-4xl text-3xl font-Semibold ">Our Features</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 relative max-w-7xl mx-auto">
-        {features.map((feature, index) => (
-          <Feature key={feature.title} {...feature} index={index} />
-        ))}
+    <section className="py-16">
+      <div className="container mx-auto px-4">
+        <motion.h2
+          className="text-4xl font-bold text-center mb-12"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Why Choose Auto Inspector?
+        </motion.h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => (
+            <Feature key={feature.title} {...feature} index={index} />
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -54,32 +70,24 @@ const Feature = ({
   index: number;
 }) => {
   return (
-    <div
-      className={cn(
-        "flex flex-col py-10 relative group/feature ",
-        (index === 0 || index === 3) && "border",
-        index < 4 && "border"
-      )}
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      {index < 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full pointer-events-none" />
-      )}
-      {index >= 4 && (
-        <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full pointer-events-none" />
-      )}
-      <div className="mb-4 relative px-10 text-primary ">
-        <Icon className="h-8 w-8" />
-      </div>
-      <div className="text-lg font-bold mb-2 relative px-10">
-        <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full group-hover/feature:bg-primary transition-all duration-200 origin-center" />
-        <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block ">
-          {title}
-        </span>
-      </div>
-      <p className="text-sm text-muted-foreground dark:text-neutral-300 max-w-xs relative px-10">
-        {description}
-      </p>
-    </div>
+      <Card className="h-full transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        <CardHeader>
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+            <Icon className="h-6 w-6 text-primary" />
+          </div>
+          <CardTitle className="text-xl mb-2">{title}</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            {description}
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </motion.div>
   );
 };
+
 export default Features;

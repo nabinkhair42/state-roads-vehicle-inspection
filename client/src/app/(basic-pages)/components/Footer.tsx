@@ -1,136 +1,165 @@
 "use client";
-import React from 'react'
-import Logo from '@/assets/logo.png';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Separator } from '../../../components/ui/separator';
+
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+} from "lucide-react";
+import Logo from "@/assets/logo.png";
 
 const ContactUs = [
-  {
-    place: 'Melbourne',
-    contact: '03 98508000',
-  },
-
-  {
-    place: 'NSW',
-    contact: '02 96551411',
-  },
-  {
-    place: 'Bris/Gold Coast',
-    contact: '07 33678000',
-  },
-  {
-    place: 'Perth',
-    contact: '08 63232069',
-  },
-]
-
+  { place: "Melbourne", contact: "03 98508000", icon: Phone },
+  { place: "NSW", contact: "02 96551411", icon: Phone },
+  { place: "Bris/Gold Coast", contact: "07 33678000", icon: Phone },
+  { place: "Perth", contact: "08 63232069", icon: Phone },
+];
 
 const CarInspections = [
-
-  {
-    name: 'Body & Chassis Car Inspections',
-    url: '#',
-  },
-  {
-    name: 'Comprehensive Vehicle Inspections',
-    url: '#',
-  },
-  {
-    name: 'Mechanical Inspections',
-    url: '#',
-  },
-  {
-    name: 'Testimonials - customers love us!',
-    url: "#",
-  },
-]
+  { name: "Body & Chassis Car Inspections", url: "#" },
+  { name: "Comprehensive Vehicle Inspections", url: "#" },
+  { name: "Mechanical Inspections", url: "#" },
+  { name: "Testimonials - customers love us!", url: "#" },
+];
 
 const Links = [
-
-  {
-    name: 'Car Checks Melbourne',
-    url: '#',
-  },
-  {
-    name: 'Mobile Vehicle Inspections Melbourne',
-    url: '#',
-  },
-  {
-    name: 'Car Inspections Melbourne',
-    url: '#',
-  },
-  {
-    name: 'Vehicle Inspections Australia Wide',
-    url: '#',
-  },
-]
+  { name: "Car Checks Melbourne", url: "#" },
+  { name: "Mobile Vehicle Inspections Melbourne", url: "#" },
+  { name: "Car Inspections Melbourne", url: "#" },
+  { name: "Vehicle Inspections Australia Wide", url: "#" },
+];
 
 const Footer = () => {
   return (
-    <footer className="p-4 container border-t">
-      <div className="mx-auto max-w-screen-xl">
-        <div className="md:flex md:justify-between">
-          <div className="mb-6 md:mb-0">
-            
-              <Image src={Logo} className="mr-3 h-16 width-12 object-contain" alt="Logo of Company" />
-              <span className="self-center text-sm  ">Just Car Inspections operates in several states
-              around Australia</span>
-            
+    <footer className="border-t bg-background">
+      <div className="container px-4 py-12">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="flex flex-col space-y-4">
+            <Image
+              src={Logo}
+              className="h-16 w-auto object-contain"
+              alt="Just Car Inspections Logo"
+            />
+            <p className="text-sm text-muted-foreground">
+              Just Car Inspections operates in several states around Australia
+            </p>
+            <div className="flex space-x-4">
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Facebook className="h-5 w-5" />
+              </Link>
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Twitter className="h-5 w-5" />
+              </Link>
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Instagram className="h-5 w-5" />
+              </Link>
+              <Link
+                href="#"
+                className="text-muted-foreground hover:text-primary"
+              >
+                <Linkedin className="h-5 w-5" />
+              </Link>
+            </div>
           </div>
-          <div className="grid grid-cols-1 gap-8 sm:gap-6 sm:grid-cols-3">
-            <div>
-              <h2 className="mb-6 text-sm font-semibold ">Contact Us</h2>
-              <ul className="text-muted-foreground">
-                {ContactUs.map((contact, index) => (
-                  <li key={index} className="mb-4 flex flex-col gap-1 text-nowrap justify-start items-start">
-                    <span>{contact.place}</span>
-                    <span className="block text-sm text-primary">{contact.contact}</span>
-                  </li>
-                ))}
-              </ul>
-              
-            </div>
 
-            <div>
-              <h2 className="mb-6 text-sm font-semibold text-wrap">Links</h2>
-              <ul className="text-muted-foreground">
-                {Links.map((link, index) => (
-                  <li key={index} className="mb-4 flex flex-col gap-1 text-nowrap justify-start items-start">
-                    <span></span>
-                    <Link href={link.url} className="block text-sm text-primary">{link.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <div>
+            <h2 className="mb-4 text-lg font-semibold text-foreground">
+              Contact Us
+            </h2>
+            <ul className="space-y-3">
+              {ContactUs.map((contact, index) => (
+                <li key={index} className="flex items-center space-x-2">
+                  <contact.icon className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      {contact.place}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {contact.contact}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="mb-4 text-lg font-semibold text-foreground">
+              Car Inspections
+            </h2>
+            <ul className="space-y-2">
+              {CarInspections.map((inspection, index) => (
+                <li key={index}>
+                  <Link
+                    href={inspection.url}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {inspection.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="mb-4 text-lg font-semibold text-foreground">
+              Quick Links
+            </h2>
+            <ul className="space-y-2">
+              {Links.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    href={link.url}
+                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <Link href="/" className="hover:underline">Vehicle Testing Pty Ltd T/A Stateroads Inspections ABN 86123807447</Link>. All Rights Reserved.
-          </span>
-          {/* <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
-            <a href="#" className="text-gray-500 hover: dark:hover:text-white">
 
-            </a>
-            <a href="#" className="text-gray-500 hover: dark:hover:text-white">
+        <hr className="my-8 border-border" />
 
-            </a>
-            <a href="#" className="text-gray-500 hover: dark:hover:text-white">
-
-            </a>
-            <a href="#" className="text-gray-500 hover: dark:hover:text-white">
-
-            </a>
-            <a href="#" className="text-gray-500 hover: dark:hover:text-white">
-
-            </a>
-          </div> */}
+        <div className="flex flex-col items-center justify-between space-y-4 text-center sm:flex-row sm:space-y-0 sm:text-left">
+          <p className="text-sm text-muted-foreground">
+            © 2024 Vehicle Testing Pty Ltd T/A Stateroads Inspections ABN
+            86123807447. All Rights Reserved.
+          </p>
+          <div className="flex space-x-4">
+            <Link
+              href="/privacy"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="/about"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              About Us
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
-
+export default Footer;
