@@ -57,7 +57,7 @@ const Workshop = () => {
   }, [userLocation]);
 
   return (
-    <div className="flex flex-col gap-6 items-center justify-center">
+    <div className="flex flex-col gap-6 items-center justify-center pt-8">
       <h2 className="text-2xl font-bold text-primary">Nearest Workshops</h2>
       {isLoading || isGettingCoordinates ? (
         <Loading className="h-screen" />
