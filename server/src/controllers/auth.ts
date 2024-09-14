@@ -3,9 +3,9 @@ import userModel from "@/models/user.model";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { generateOTP } from "@/utils/generate-otp";
-import { clearCookies, registerCookies } from "@/utils/cookies";
 import ENV_CONFIG from "@/config/env.config";
 import { ILoginSchema, ISignupSchema } from "@/zod";
+import { createToken } from "@/utils/token-manager";
 
 export const handleUserSignup = async (
   req: Request<{}, {}, ISignupSchema>,
@@ -26,11 +26,22 @@ export const handleUserSignup = async (
   });
 
   await newUser.save();
-
-  registerCookies(res, newUser._id.toString(), ENV_CONFIG.AUTH_TOKEN_ID);
+  const token = createToken(
+    {
+      userId: newUser._id.toString(),
+      role: "USER",
+    },
+    "7d"
+  );
   return sendRes(res, {
     status: 201,
     message: `Welcome ${newUser.name}, your account is created successfully!`,
+    data: {
+      token: {
+        key: ENV_CONFIG.AUTH_TOKEN_ID,
+        value: token,
+      },
+    },
   });
 };
 
@@ -55,10 +66,23 @@ export const handleUserLogin = async (
     });
   }
 
-  registerCookies(res, user._id.toString(), ENV_CONFIG.AUTH_TOKEN_ID);
+  const token = createToken(
+    {
+      userId: user._id.toString(),
+      role: "USER",
+    },
+    "7d"
+  );
+
   return sendRes(res, {
     status: 200,
     message: `Welcome back ${user.name}!`,
+    data: {
+      token: {
+        key: ENV_CONFIG.AUTH_TOKEN_ID,
+        value: token,
+      },
+    },
   });
 };
 
@@ -74,13 +98,5 @@ export const handleGetUserProfile = async (req: Request, res: Response) => {
   return sendRes(res, {
     status: 200,
     data: userDoc,
-  });
-};
-
-export const handleUserLogout = async (req: Request, res: Response) => {
-  clearCookies(res, ENV_CONFIG.AUTH_TOKEN_ID);
-  return sendRes(res, {
-    status: 200,
-    message: "Logged out successfully!",
   });
 };

@@ -2,12 +2,12 @@ import { sendRes } from "@/middlewares/send-response";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { generateOTP } from "@/utils/generate-otp";
-import { clearCookies, registerCookies } from "@/utils/cookies";
 import ENV_CONFIG from "@/config/env.config";
 import mechanicsModel from "@/models/mechanics.model";
 import { IMechanicsLoginSchema, IMechanicsSignupSchema } from "@/zod";
 import appointmentModel from "@/models/appointment.model";
 import serviceModel from "@/models/service.model";
+import { createToken } from "@/utils/token-manager";
 
 export const handleMechanicsSignup = async (
   req: Request<{}, {}, IMechanicsSignupSchema>,
@@ -29,14 +29,22 @@ export const handleMechanicsSignup = async (
 
   await newMechanics.save();
 
-  registerCookies(
-    res,
-    newMechanics._id.toString(),
-    ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID
+  const token = createToken(
+    {
+      userId: newMechanics._id.toString(),
+      role: "MECHANIC",
+    },
+    "7d"
   );
   return sendRes(res, {
     status: 201,
     message: `Welcome ${newMechanics.name}, your account is created successfully!`,
+    data: {
+      token: {
+        key: ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID,
+        value: token,
+      },
+    },
   });
 };
 
@@ -64,14 +72,23 @@ export const handleMechanicsLogin = async (
     });
   }
 
-  registerCookies(
-    res,
-    mechanics._id.toString(),
-    ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID
+  const token = createToken(
+    {
+      userId: mechanics._id.toString(),
+      role: "MECHANIC",
+    },
+    "7d"
   );
+
   return sendRes(res, {
     status: 200,
     message: `Welcome back ${mechanics.name}!`,
+    data: {
+      token: {
+        key: ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID,
+        value: token,
+      },
+    },
   });
 };
 
@@ -92,13 +109,5 @@ export const handleGetMechanicsProfile = async (
   return sendRes(res, {
     status: 200,
     data: mechanicsDoc,
-  });
-};
-
-export const handleMechanicsLogout = async (req: Request, res: Response) => {
-  clearCookies(res, ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID);
-  return sendRes(res, {
-    status: 200,
-    message: "Logged out successfully!",
   });
 };
