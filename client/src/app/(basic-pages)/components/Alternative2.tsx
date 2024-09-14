@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, Car, FileText, Shield } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const features = [
   { icon: CheckCircle, text: "250+ Point Inspection" },
@@ -14,6 +15,15 @@ const features = [
 ];
 
 const DynamicHero = () => {
+  const router = useRouter();
+  const handleBookInspection = () => {
+    router.push("/book-appointment");
+  };
+
+  const handleLearnMore = () => {
+    router.push("/#features");
+  };
+
   return (
     <section className="relative overflow-hidden py-20 min-h-screen">
       <div className="container mx-auto px-4">
@@ -43,8 +53,10 @@ const DynamicHero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Button size="lg">Book an Inspection</Button>
-            <Button variant="outline" size="lg">
+            <Button size={"lg"} onClick={handleBookInspection}>
+              Book an Inspection
+            </Button>
+            <Button variant="outline" size={"lg"} onClick={handleLearnMore}>
               Learn More
             </Button>
           </motion.div>

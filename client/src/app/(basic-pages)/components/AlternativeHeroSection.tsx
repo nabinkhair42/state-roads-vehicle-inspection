@@ -5,11 +5,14 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
-import Hero from "@/assets/hero/OIG3.jpeg"
+import Hero from "@/assets/hero/OIG3.jpeg";
 
 const SimpleHero = () => {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/10 min-h-screen">
+    <section
+      id="features"
+      className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/10"
+    >
       <div className="container mx-auto px-4 py-20 md:py-32 flex flex-col md:flex-row items-center">
         <div className="w-full md:w-1/2 mb-10 md:mb-0 container">
           <motion.h1
@@ -18,29 +21,22 @@ const SimpleHero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            Expert Car Inspections You Can Trust
+            Most Trusted Inspection Service
           </motion.h1>
           <motion.p
-            className="text-xl text-muted-foreground mb-8"
+            className="text-muted-foreground mb-8"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Make confident decisions with our comprehensive 250+ point
-            inspections, detailed reports, and unmatched expertise.
+            Our certified mechanics will provide you with a detailed report
+            within 24 hours of your inspection.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <Button size="lg" className="mr-4">
-              Book an Inspection
-            </Button>
-            <Button variant="outline" size="lg">
-              Learn More
-            </Button>
-          </motion.div>
+          ></motion.div>
           <motion.ul
             className="mt-8 space-y-2"
             initial={{ opacity: 0 }}
