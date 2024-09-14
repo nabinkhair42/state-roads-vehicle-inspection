@@ -9,6 +9,7 @@ import { API_URL } from ".";
 import { IUserProfile } from "@/types/user.types";
 import { IMechanicProfile } from "@/types/mechanics.types";
 import Cookie from "js-cookie";
+import { TOKENS } from "@/constants/token";
 export const handleUserSignup = async (
   data: ISignupSchema
 ): Promise<string> => {
@@ -127,21 +128,14 @@ export const handleGetMechanicProfile = async (): Promise<IMechanicProfile> => {
 
 export const handleMechanicsLogout = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    clearAllCookies();
+    Cookie.remove(TOKENS.MECHANICS_AUTH_TOKEN_ID);
     resolve("You are logged out!");
   });
 };
 
 export const handleUserLogout = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    clearAllCookies();
+    Cookie.remove(TOKENS.AUTH_TOKEN_ID);
     resolve("You are logged out!");
   });
-};
-
-const clearAllCookies = () => {
-  const allCookies = Cookie.get(); // Get all cookies
-  for (const cookieName in allCookies) {
-    Cookie.remove(cookieName); // Remove each cookie
-  }
 };
