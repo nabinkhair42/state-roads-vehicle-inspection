@@ -1,7 +1,6 @@
 import {
   handleUserSignup,
   handleGetUserProfile,
-  handleUserLogout,
   handleUserLogin,
 } from "@/controllers/auth";
 import { validateBody } from "@/middlewares/validate-body";
@@ -24,6 +23,5 @@ authRouter.get(
   verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
   tryCatch(handleGetUserProfile)
 );
-authRouter.get("/logout", tryCatch(handleUserLogout));
 
 export default authRouter;

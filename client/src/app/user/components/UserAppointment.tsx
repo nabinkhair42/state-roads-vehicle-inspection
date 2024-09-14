@@ -50,9 +50,9 @@ export function UserAppointments() {
             </TableCell>
           </TableRow>
         ) : (
-          data?.map((data,index) => (
+          data?.map((data, index) => (
             <TableRow key={index}>
-              <TableCell>{data.bookedBy.name}</TableCell>
+              <TableCell>{data.bookedFor.storeName}</TableCell>
               <TableCell>{data.service.serviceType}</TableCell>
               <TableCell>
                 {new Date(data.appointmentDate).toLocaleDateString("en-US", {

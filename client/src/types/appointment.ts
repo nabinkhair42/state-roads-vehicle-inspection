@@ -5,8 +5,8 @@ import { IUserProfile } from "./user.types";
 
 export interface IAppointment {
   _id: string;
-  bookedBy: IMechanicProfile;
-  bookedFor: IUserProfile;
+  bookedBy: IUserProfile;
+  bookedFor: IMechanicProfile;
   service: IService;
   appointmentDate: string;
   appointmentTime: string;

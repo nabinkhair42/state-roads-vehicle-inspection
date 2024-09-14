@@ -1,7 +1,6 @@
 import {
   handleMechanicsSignup,
   handleGetMechanicsProfile,
-  handleMechanicsLogout,
   handleMechanicsLogin,
 } from "@/controllers/mechanics-auth";
 import { validateBody } from "@/middlewares/validate-body";
@@ -28,6 +27,5 @@ authRouter.get(
   verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
   tryCatch(handleGetMechanicsProfile)
 );
-authRouter.get("/logout", tryCatch(handleMechanicsLogout));
 
 export default authRouter;
