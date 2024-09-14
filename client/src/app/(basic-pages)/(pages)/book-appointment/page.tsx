@@ -6,8 +6,8 @@ import { Separator } from "@/components/ui/separator";
 const BookAppointment = () => {
   return (
     <div className="container flex flex-col">
-      <Steps />
-      <Separator />
+      {/* <Steps />
+      <Separator /> */}
       <CalenderBooking />
     </div>
   );
