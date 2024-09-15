@@ -1,7 +1,10 @@
 "use client";
+
 import * as React from "react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useAppSelector } from "@/hooks/store";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,7 +12,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,114 +31,109 @@ import {
   Store,
   ContactRound,
 } from "lucide-react";
-import Image from "next/image";
-import { useAppSelector } from "@/hooks/store";
 import UserControl from "./user-info";
+import { cn } from "@/lib/utils";
 
 const NavMenuList = [
-  {
-    name: "Home",
-    href: "/",
-    icon: Home,
-  },
-  {
-    name: "Services",
-    href: "/services",
-    icon: MousePointerBan,
-  },
-  {
-    name: "Workshops",
-    href: "/workshops",
-    icon: CarFront,
-  },
-  {
-    name: "Book Appointment",
-    href: "/book-appointment",
-    icon: Store,
-  },
-  {
-    name: "Contact Us",
-    href: "/contact-us",
-    icon: ContactRound,
-  },
+  { name: "Home", href: "/", icon: Home },
+  { name: "Services", href: "/services", icon: MousePointerBan },
+  { name: "Workshops", href: "/workshops", icon: CarFront },
+  { name: "Book Appointment", href: "/book-appointment", icon: Store },
+  { name: "Contact Us", href: "/contact-us", icon: ContactRound },
 ];
 
-export function NavigationMenuDemo() {
+export default function NavigationMenuDemo() {
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const pathname = usePathname();
+
   return (
-    <NavigationMenu className="h-20 flex justify-between items-center shadow-sm border-b sticky top-0 px-10 xl:px-16 w-screen bg-background">
-      <Link href="/" passHref>
-        <Image
-          src={Logo}
-          alt="logo"
-          className="w-fit xl:h-16 h-14 object-contain"
-        />
-      </Link>
+    <NavigationMenu className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between px-4 sm:px-8 lg:px-16">
+        <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src={Logo}
+            alt="logo"
+            className="h-8 w-auto object-contain sm:h-10"
+          />
+        </Link>
 
-      {/* Desktop Menu  */}
-
-      <NavigationMenuList className="hidden md:flex gap-2 xl:gap-8 text-sm text-nowrap ">
-        {NavMenuList.map((item, index) => (
-          <NavigationMenuItem key={index}>
-            <Link
-              href={item.href}
-              passHref
-              className="hover:text-primary transition-colors"
-            >
-              <NavigationMenuLink>{item.name}</NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-        ))}
-      </NavigationMenuList>
-
-      <div className="flex gap-2">
-        {/* Buttons */}
-        {isAuthenticated ? (
-          <UserControl />
-        ) : (
-          <NavigationMenuList className="flex gap-4">
-            <NavigationMenuItem>
-              <a href="/sign-in">
-                <Button variant={"outline"}>Sign In</Button>
-              </a>
+        {/* Desktop Menu */}
+        <NavigationMenuList className="hidden lg:flex">
+          {NavMenuList.map((item, index) => (
+            <NavigationMenuItem key={index}>
+              <Link href={item.href} legacyBehavior passHref>
+                <NavigationMenuLink
+                  className={cn(
+                    "mr-4 transition-colors",
+                    pathname === item.href
+                      ? "text-primary"
+                      : ""
+                  )}
+                >
+                  {item.name}
+                </NavigationMenuLink>
+              </Link>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <a href="/sign-up">
-                <Button>Sign Up</Button>
-              </a>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        )}
-        {/* //Mobile Menu  */}
-        <div className=" md:hidden">
+          ))}
+        </NavigationMenuList>
+
+        <div className="flex items-center space-x-4">
+          {/* Auth Buttons or User Control */}
+          {isAuthenticated ? (
+            <UserControl />
+          ) : (
+            <div className="flex space-x-2">
+              <Link href="/sign-in" passHref>
+                <Button variant="outline" size="sm">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/sign-up" passHref>
+                <Button size="sm">Sign Up</Button>
+              </Link>
+            </div>
+          )}
+
+          {/* Mobile Menu */}
           <Sheet>
-            <SheetTrigger>
-              <Button className="flex md:hidden" variant={"outline"}>
-                <AlignLeft />
+            <SheetTrigger asChild>
+              <Button variant={"outline"} size="icon" className="lg:hidden">
+                <AlignLeft className="h-4 w-4" />
+                <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side={"right"}>
-              <SheetDescription>
-                <ul className="list-none mt-10">
+            <SheetContent side="right">
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
+              <nav className="mt-6">
+                <ul className="space-y-4">
                   {NavMenuList.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex gap-4 hover:text-primary transition-colors"
-                    >
+                    <li key={index}>
                       <Link
                         href={item.href}
-                        passHref
-                        className="px-4 py-2 text-xl flex gap-4 justify-start items-center mt-4"
+                        className={cn(
+                          "flex items-center space-x-2 rounded-md p-2 transition-colors",
+                          pathname === item.href
+                            ? "bg-accent text-accent-foreground"
+                            : "text-foreground/60 hover:bg-accent hover:text-accent-foreground"
+                        )}
                       >
-                        <item.icon />
-                        <NavigationMenuLink className="no-underline">
-                          {item.name}
-                        </NavigationMenuLink>
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.name}</span>
                       </Link>
                     </li>
                   ))}
                 </ul>
-              </SheetDescription>
+              </nav>
+              {!isAuthenticated && (
+                <div className="mt-6 space-y-2">
+                  <Button variant="outline" className="w-full justify-start">
+                    Sign In
+                  </Button>
+                  <Button className="w-full justify-start">Sign Up</Button>
+                </div>
+              )}
             </SheetContent>
           </Sheet>
         </div>
@@ -144,5 +141,3 @@ export function NavigationMenuDemo() {
     </NavigationMenu>
   );
 }
-
-export default NavigationMenuDemo;

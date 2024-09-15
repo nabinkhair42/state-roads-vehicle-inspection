@@ -3,8 +3,13 @@ import { IResponse, sendRes } from "@/middlewares/send-response";
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-export const createToken = (id: string, expiresIn: string) => {
-  const payload = { userId: id };
+export const createToken = (
+  payload: {
+    userId: string;
+    role: "USER" | "MECHANIC";
+  },
+  expiresIn: string
+) => {
   const token = jwt.sign(payload, ENV_CONFIG.JWT_SECRET, {
     expiresIn,
   });
@@ -13,7 +18,8 @@ export const createToken = (id: string, expiresIn: string) => {
 
 export const verifyToken = (cookieId: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const token = req.signedCookies[cookieId];
+    const token = req.cookies[cookieId];
+
     if (!token || token.trim() === "") {
       const response: IResponse = {
         status: 401,

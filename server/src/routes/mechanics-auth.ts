@@ -1,7 +1,6 @@
 import {
   handleMechanicsSignup,
   handleGetMechanicsProfile,
-  handleMechanicsLogout,
   handleMechanicsLogin,
   handleVerifyOTPForMechanicsSignup,
   handleResendOTPForMechanicsSignup,
@@ -77,6 +76,5 @@ authRouter.get(
   verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
   tryCatch(handleGetMechanicsProfile)
 );
-authRouter.get("/logout", tryCatch(handleMechanicsLogout));
 
 export default authRouter;

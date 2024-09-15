@@ -4,11 +4,12 @@ import {
   IMechanicsSignupSchema,
   ISignupSchema,
 } from "@/zod";
-import axios from "axios";
+import axios from "./axios";
 import { API_URL } from ".";
 import { IUserProfile } from "@/types/user.types";
 import { IMechanicProfile } from "@/types/mechanics.types";
-
+import Cookie from "js-cookie";
+import { TOKENS } from "@/constants/token";
 export const handleUserSignup = async (
   data: ISignupSchema
 ): Promise<string> => {
@@ -18,6 +19,11 @@ export const handleUserSignup = async (
         withCredentials: true,
       })
       .then((res) => {
+        const token = res?.data?.data?.token as {
+          key: string;
+          value: string;
+        };
+        Cookie.set(token.key, token.value);
         resolve(res.data?.message);
       })
       .catch((err) => {
@@ -35,6 +41,11 @@ export const handleMechanicSignup = async (
         withCredentials: true,
       })
       .then((res) => {
+        const token = res?.data?.data?.token as {
+          key: string;
+          value: string;
+        };
+        Cookie.set(token.key, token.value);
         resolve(res.data?.message);
       })
       .catch((err) => {
@@ -50,6 +61,11 @@ export const handleUserLogin = async (data: ILoginSchema): Promise<string> => {
         withCredentials: true,
       })
       .then((res) => {
+        const token = res?.data?.data?.token as {
+          key: string;
+          value: string;
+        };
+        Cookie.set(token.key, token.value);
         resolve(res.data?.message);
       })
       .catch((err) => {
@@ -67,6 +83,11 @@ export const handleMechanicLogin = async (
         withCredentials: true,
       })
       .then((res) => {
+        const token = res?.data?.data?.token as {
+          key: string;
+          value: string;
+        };
+        Cookie.set(token.key, token.value);
         resolve(res.data?.message);
       })
       .catch((err) => {
@@ -107,30 +128,14 @@ export const handleGetMechanicProfile = async (): Promise<IMechanicProfile> => {
 
 export const handleMechanicsLogout = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    axios
-      .get(API_URL.MECHANICS_LOGOUT, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        resolve(res.data?.message);
-      })
-      .catch((err) => {
-        reject(err.response.data?.message);
-      });
+    Cookie.remove(TOKENS.MECHANICS_AUTH_TOKEN_ID);
+    resolve("You are logged out!");
   });
 };
 
 export const handleUserLogout = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
-    axios
-      .get(API_URL.USER_LOGOUT, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        resolve(res.data?.message);
-      })
-      .catch((err) => {
-        reject(err.response.data?.message);
-      });
+    Cookie.remove(TOKENS.AUTH_TOKEN_ID);
+    resolve("You are logged out!");
   });
 };

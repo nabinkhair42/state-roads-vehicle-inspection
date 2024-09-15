@@ -2,7 +2,7 @@
 import Loading from "@/components/reusable/loading";
 import { handleGetAllWorkshops } from "@/services/worksops";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { toast } from "sonner";
@@ -10,7 +10,6 @@ import { MapPin } from "lucide-react";
 import { useAppSelector } from "@/hooks/store";
 import { divIcon } from "leaflet";
 import Link from "next/link";
-
 
 const DEFAULT_MALBOURNE_COORDINATES = {
   longitude: 144.9631,
@@ -24,11 +23,16 @@ const Workshop = () => {
   const { isAuthenticated, user, mechanic } = useAppSelector(
     (state) => state.auth
   );
-  const [isGettingCoordinates, setIsGettingCoordinates] = useState(true);
-  const { isLoading, data } = useQuery({
+  const [isGettingCoordinates, setIsGettingCoordinates] = useState(false);
+  const [hasGivenLocationPermission, setHasGivenLocationPermission] =
+    useState(false);
+
+  const { isLoading, data, isError } = useQuery({
     queryKey: ["workshops"],
     queryFn: () => handleGetAllWorkshops(),
   });
+
+  const mapRef = useRef<any>();
 
   useEffect(() => {
     (async () => {
@@ -38,12 +42,13 @@ const Workshop = () => {
             longitude: position.coords.longitude,
             latitude: position.coords.latitude,
           });
-          console.log("Coords: ", position.coords);
           setIsGettingCoordinates(false);
+          setHasGivenLocationPermission(true);
         },
         (err) => {
           toast.error("Please provide location permission!");
           setIsGettingCoordinates(false);
+          setHasGivenLocationPermission(false);
         },
         {
           enableHighAccuracy: true,
@@ -53,11 +58,16 @@ const Workshop = () => {
   }, []);
 
   useEffect(() => {
-    // console.log("User location: ", userLocation);
+    if (mapRef.current) {
+      mapRef.current.setView(
+        [userLocation.latitude, userLocation.longitude],
+        13
+      );
+    }
   }, [userLocation]);
 
   return (
-    <div className="flex flex-col gap-6 items-center justify-center">
+    <div className="flex flex-col gap-6 items-center justify-center pt-8">
       <h2 className="text-2xl font-bold text-primary">Nearest Workshops</h2>
       {isLoading || isGettingCoordinates ? (
         <Loading className="h-screen" />
@@ -72,7 +82,8 @@ const Workshop = () => {
           }}
           center={[userLocation.latitude, userLocation.longitude]}
           zoom={13}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
+          ref={mapRef}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -89,7 +100,7 @@ const Workshop = () => {
             <Popup>
               <div className="flex flex-col items-center justify-center gap-2 text-center">
                 <h2 className="text-base font-bold text-primary">
-                  Your Location
+                  Your Location - {!hasGivenLocationPermission && "Unknown"}
                 </h2>
                 <div className="flex gap-2 items-center justify-center text-xs">
                   {/* x and y */}
@@ -101,32 +112,42 @@ const Workshop = () => {
           </Marker>
 
           {/* workshops */}
-          {data?.map((w,index) => (
-            <Marker key={index}
-              icon={divIcon({
-                html: `<div class="flex items-center justify-center gap-2 text-primary w-12 h-12 rounded-full p-0.5">
+          {!isError &&
+            data?.map((w, index) => {
+              if (
+                !w.storeCoordinates.latitude ||
+                !w.storeCoordinates.longitude
+              ) {
+                return null;
+              }
+              return (
+                <Marker
+                  key={index}
+                  icon={divIcon({
+                    html: `<div class="flex items-center justify-center gap-2 text-primary w-12 h-12 rounded-full p-0.5">
                 <img src="https://www.svgrepo.com/show/397432/mechanic-medium-light-skin-tone.svg" class="w-full h-full object-contain object-center " />
               </div>`,
-              })}
-              position={[
-                Number(w.storeCoordinates.latitude),
-                Number(w.storeCoordinates.longitude),
-              ]}
-            >
-              <Popup>
-                <div className="flex flex-col items-center justify-center gap-2 text-center">
-                  <h2 className="text-base font-bold text-primary">
-                    {w.storeName}
-                  </h2>
-                  <div className="flex gap-0.5 flex-col items-center justify-center text-xs">
-                    <span>Address: {w.storeAddress}</span>
-                    <span>Phone: {w.phone}</span>
-                    <span>Email: {w.email}</span>
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
+                  })}
+                  position={[
+                    Number(w.storeCoordinates.latitude),
+                    Number(w.storeCoordinates.longitude),
+                  ]}
+                >
+                  <Popup>
+                    <div className="flex flex-col items-center justify-center gap-2 text-center">
+                      <h2 className="text-base font-bold text-primary">
+                        {w.storeName}
+                      </h2>
+                      <div className="flex gap-0.5 flex-col items-center justify-center text-xs">
+                        <span>Address: {w.storeAddress}</span>
+                        <span>Phone: {w.phone}</span>
+                        <span>Email: {w.email}</span>
+                      </div>
+                    </div>
+                  </Popup>
+                </Marker>
+              );
+            })}
         </MapContainer>
       )}
     </div>

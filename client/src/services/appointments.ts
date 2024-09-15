@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axios";
 import { API_URL } from ".";
 import { IAppointment } from "@/types/appointment";
 import { IAppointmentSchema } from "@/zod";

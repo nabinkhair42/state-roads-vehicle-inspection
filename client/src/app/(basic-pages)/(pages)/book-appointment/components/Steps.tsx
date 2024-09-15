@@ -19,7 +19,7 @@ const Steps = () => {
                         <Zap className='w-12 h-12 text-primary' />
                     </div>
                     <h6 className="mb-2 text-2xl font-bold">Step 1</h6>
-                    <p className="max-w-md mb-3 text-sm sm:mx-auto text-muted-foreground text-muted-foreground">
+                    <p className="max-w-md mb-3 text-sm sm:mx-auto text-muted-foreground ">
                         Select the service of your choice.
                     </p>
 

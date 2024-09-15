@@ -86,15 +86,12 @@ export function CalendarForm() {
     },
   });
 
-  const [selectedDate, setSelectedDate]= useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const [selectedTime, setSelectedTime]= useState<Date | null>(null);
+  const [selectedTime, setSelectedTime] = useState<Date | null>(null);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
-
-  
 
   return (
     <main className="flex flex-col lg:flex-row justify-around mt-8 gap-8 mb-8">
@@ -125,8 +122,10 @@ export function CalendarForm() {
                     <SelectGroup>
                       <SelectLabel>Service</SelectLabel>
                       {["Comprehensive", "Mechanical", "Body and Chassis"].map(
-                        (service,index) => (
-                          <SelectItem key={index} value={service}>{service}</SelectItem>
+                        (service, index) => (
+                          <SelectItem key={index} value={service}>
+                            {service}
+                          </SelectItem>
                         )
                       )}
                     </SelectGroup>
@@ -157,9 +156,9 @@ export function CalendarForm() {
                           No store available for this service!
                         </p>
                       )}
-                      {data?.map((service,index) => (
+                      {data?.map((service, index) => (
                         <SelectItem key={index} value={service._id}>
-                          {service.postedBy.storeName}
+                          {service?.postedBy?.storeName ?? "Unknown Store"}
                         </SelectItem>
                       ))}
                     </SelectGroup>
@@ -207,7 +206,7 @@ export function CalendarForm() {
                   dateFormat={false}
                   timeFormat="h:mm A"
                   className="bg-transparent "
-                  value={time}                  
+                  value={time}
                   onChange={(value) => setTime(value.toString())}
                   inputProps={{
                     placeholder: "Select time",

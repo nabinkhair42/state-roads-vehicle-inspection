@@ -1,5 +1,5 @@
 import { IServiceSchema } from "@/zod";
-import axios from "axios";
+import axios from "./axios";
 import { API_URL } from ".";
 import { IService } from "@/types/service.type";
 
