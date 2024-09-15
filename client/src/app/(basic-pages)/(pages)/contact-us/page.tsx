@@ -95,6 +95,10 @@ const ContactUS = () => {
               </div>
             </div>
           </div>
+
+          <div>
+            <iframe className="w-full h-96 mt-16" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3152.154320165223!2d144.9619503152587!3d-37.79910597975403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad643d6e1e6a1f7%3A0x9e4b1c6d2c1b4f4c!2sUniversity%20of%20Melbourne!5e0!3m2!1sen!2sau!4v1631862946487!5m2!1sen!2sau" width="600" height="450" style={{border:0}} loading="lazy"></iframe>
+          </div>
         </div>
         
       </section>
