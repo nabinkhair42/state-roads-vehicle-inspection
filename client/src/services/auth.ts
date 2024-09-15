@@ -4,7 +4,7 @@ import {
   IMechanicsSignupSchema,
   ISignupSchema,
 } from "@/zod";
-import axios from "axios";
+import axios from "./axios";
 import { API_URL } from ".";
 import { IUserProfile } from "@/types/user.types";
 import { IMechanicProfile } from "@/types/mechanics.types";
