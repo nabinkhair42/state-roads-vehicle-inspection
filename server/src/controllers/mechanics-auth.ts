@@ -42,10 +42,12 @@ export const handleMechanicsSignup = async (
   // don t await this
   sendWelcomeMailToUser(otp, newMechanics.email, newMechanics.name);
 
-  registerCookies(
-    res,
-    newMechanics._id.toString(),
-    ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID
+  const token = createToken(
+    {
+      userId: newMechanics._id.toString(),
+      role: "MECHANIC",
+    },
+    "7d"
   );
   return sendRes(res, {
     status: 201,
@@ -292,7 +294,6 @@ export const handleVerifyOTPForMechanicsResetPassword = async (
       message: "OTP is expired, Please request a new one!",
     });
   }
-  console.log(otpRecord.otp, userOtp);
 
   const { isValid, reason } = validateOTP({
     existingOTP: otpRecord.otp,
