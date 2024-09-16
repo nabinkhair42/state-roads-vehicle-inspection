@@ -180,7 +180,7 @@ export const handleApproveAppointmentByMechanic = async (
     for: appointment.bookedBy._id,
     role: "User",
     title: "Appointment Approved",
-    message: `Your appointment for ${appointment.service.title} in ${appointment.bookedFor.storeName} has been approved.`,
+    message: `Your appointment for ${appointment.service.serviceType} in ${appointment.bookedFor.storeName} has been approved.`,
   });
 
   return sendRes(res, {
@@ -247,7 +247,7 @@ export const handleRejectAppointmentByMechanic = async (
     for: appointment.bookedBy._id,
     role: "User",
     title: "Appointment Rejected",
-    message: `Your appointment for ${appointment.service.title} in ${appointment.bookedFor.storeName} has been rejected.`,
+    message: `Your appointment for ${appointment.service.serviceType} in ${appointment.bookedFor.storeName} has been rejected.`,
   });
 
   return sendRes(res, {
@@ -321,7 +321,7 @@ export const handleCompleteAppointmentByMechanic = async (
     for: appointment.bookedBy._id,
     role: "User",
     title: "Appointment Completed",
-    message: `Your appointment for ${appointment.service.title} in ${appointment.bookedFor.storeName} has been completed.`,
+    message: `Your appointment for ${appointment.service.serviceType} in ${appointment.bookedFor.storeName} has been completed.`,
   });
 
   return sendRes(res, {
