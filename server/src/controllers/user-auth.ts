@@ -8,6 +8,8 @@ import OTPModel from "@/models/otp.model";
 import { sendWelcomeMailToUser } from "@/mailers/welcome-user";
 import { sendAccountVerificationOTP } from "@/mailers/send-account-verification-otp";
 import { sendPasswordResetOtp } from "@/mailers/send-password-reset-otp";
+import { createToken } from "@/utils/token-manager";
+import ENV_CONFIG from "@/config/env.config";
 
 export const handleUserSignup = async (
   req: Request<{}, {}, ISignupSchema>,
@@ -41,51 +43,65 @@ export const handleUserSignup = async (
   // don t await this
   sendWelcomeMailToUser(otp, newUser.email, newUser.name);
 
+  const token = createToken(
+    {
+      userId: newUser._id.toString(),
+      role: "USER",
+    },
+    "7d"
+  );
+
   return sendRes(res, {
     status: 201,
     message: `Welcome ${newUser.name}, your account is created successfully!`,
+    data: {
+      token: {
+        key: ENV_CONFIG.AUTH_TOKEN_ID,
+        value: token,
+      },
+    },
   });
 };
 
-export const handleUserLogin = async (
-  req: Request<{}, {}, ILoginSchema>,
-  res: Response
-) => {
-  const body = req.body;
-  const user = await userModel.findOne({ email: body.email });
-  if (!user) {
-    return sendRes(res, {
-      status: 404,
-      message: "User not found, Please create an account!",
-    });
-  }
-
-  const isPasswordValid = await bcrypt.compare(body.password, user.password);
-  if (!isPasswordValid) {
-    return sendRes(res, {
-      status: 400,
-      message: "Invalid credentials, Please try again!",
-    });
-  }
-
-  return sendRes(res, {
-    status: 200,
-    message: `Welcome back ${user.name}!`,
-  });
-};
-
-export const handleGetUserProfile = async (req: Request, res: Response) => {
+export const handleResendOTPForSignup = async (req: Request, res: Response) => {
   const user = res.locals.jwtData.userId;
-  const userDoc = await userModel.findById(user).select("-password");
+
+  const userDoc = await userModel.findById(user);
   if (!userDoc) {
     return sendRes(res, {
       status: 404,
       message: "User not found!",
     });
   }
+
+  if (userDoc.isVerified) {
+    return sendRes(res, {
+      status: 400,
+      message: "Your account is already verified!",
+    });
+  }
+
+  // this is because we want to delete the previous otp
+  await OTPModel.findOneAndDelete({
+    userId: user,
+    purpose: "ACCOUNT_VERIFICATION",
+    role: "USER",
+  });
+
+  const otp = generateOTP();
+
+  await OTPModel.create({
+    userId: user,
+    role: "USER",
+    otp: parseInt(otp),
+    purpose: "ACCOUNT_VERIFICATION",
+  });
+
+  sendAccountVerificationOTP(otp, userDoc.email, userDoc.name);
+
   return sendRes(res, {
     status: 200,
-    data: userDoc,
+    message: "OTP sent to your email!",
   });
 };
 
@@ -140,45 +156,60 @@ export const handleVerifyOTPForSignup = async (req: Request, res: Response) => {
   });
 };
 
-export const handleResendOTPForSignup = async (req: Request, res: Response) => {
-  const user = res.locals.jwtData.userId;
+export const handleUserLogin = async (
+  req: Request<{}, {}, ILoginSchema>,
+  res: Response
+) => {
+  const body = req.body;
+  const user = await userModel.findOne({ email: body.email });
 
-  const userDoc = await userModel.findById(user);
+  if (!user) {
+    return sendRes(res, {
+      status: 404,
+      message: "User not found, Please create an account!",
+    });
+  }
+
+  const isPasswordValid = await bcrypt.compare(body.password, user.password);
+  if (!isPasswordValid) {
+    return sendRes(res, {
+      status: 400,
+      message: "Invalid credentials, Please try again!",
+    });
+  }
+
+  const token = createToken(
+    {
+      userId: user._id.toString(),
+      role: "USER",
+    },
+    "7d"
+  );
+
+  return sendRes(res, {
+    status: 200,
+    message: `Welcome back ${user.name}!`,
+    data: {
+      token: {
+        key: ENV_CONFIG.AUTH_TOKEN_ID,
+        value: token,
+      },
+    },
+  });
+};
+
+export const handleGetUserProfile = async (req: Request, res: Response) => {
+  const user = res.locals.jwtData.userId;
+  const userDoc = await userModel.findById(user).select("-password");
   if (!userDoc) {
     return sendRes(res, {
       status: 404,
       message: "User not found!",
     });
   }
-
-  if (userDoc.isVerified) {
-    return sendRes(res, {
-      status: 400,
-      message: "Your account is already verified!",
-    });
-  }
-
-  // this is because we want to delete the previous otp
-  await OTPModel.findOneAndDelete({
-    userId: user,
-    purpose: "ACCOUNT_VERIFICATION",
-    role: "USER",
-  });
-
-  const otp = generateOTP();
-
-  await OTPModel.create({
-    userId: user,
-    role: "USER",
-    otp: parseInt(otp),
-    purpose: "ACCOUNT_VERIFICATION",
-  });
-
-  sendAccountVerificationOTP(otp, userDoc.email, userDoc.name);
-
   return sendRes(res, {
     status: 200,
-    message: "OTP sent to your email!",
+    data: userDoc,
   });
 };
 

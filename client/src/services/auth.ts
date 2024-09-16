@@ -10,25 +10,168 @@ import { IUserProfile } from "@/types/user.types";
 import { IMechanicProfile } from "@/types/mechanics.types";
 import Cookie from "js-cookie";
 import { TOKENS } from "@/constants/token";
-export const handleUserSignup = async (
-  data: ISignupSchema
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(API_URL.USER_SIGNUP, data, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        const token = res?.data?.data?.token as {
-          key: string;
-          value: string;
-        };
-        Cookie.set(token.key, token.value);
-        resolve(res.data?.message);
-      })
-      .catch((err) => {
-        reject(err.response.data?.message);
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
+export const useUserSignUp = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (data: ISignupSchema): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(API_URL.USER_SIGNUP, data, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            const token = res?.data?.data?.token as {
+              key: string;
+              value: string;
+            };
+            Cookie.set(token.key, token.value);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["user"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
       });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+      router.push("/verify-email/user");
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
+  });
+};
+
+export const useResendOTPForUserSignup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(API_URL.RESEND_OTP_USER_SIGNUP, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            queryClient.invalidateQueries({
+              queryKey: ["user"],
+            });
+            resolve(res.data?.message);
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
+      });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
+  });
+};
+
+export const useVerifyOTPForUserSignup = () => {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (otp: number): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            API_URL.VERIFY_OTP_USER_SIGNUP,
+            { otp },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            resolve(res.data?.message);
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
+      });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+      router.push("/");
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
+  });
+};
+
+export const useUserProfile = () => {
+  return useQuery({
+    queryKey: ["user"],
+    queryFn: async (): Promise<IUserProfile> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(API_URL.USER_PROFILE, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            resolve(res.data?.data);
+          })
+          .catch((err) => {
+            reject(err.response?.data?.message);
+          });
+      });
+    },
+    staleTime: Infinity,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
+export const useUserLogin = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (data: ILoginSchema): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(API_URL.USER_LOGIN, data, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            const token = res?.data?.data?.token as {
+              key: string;
+              value: string;
+            };
+            Cookie.set(token.key, token.value);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["user"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
+      });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+      router.push("/");
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
   });
 };
 
@@ -38,26 +181,6 @@ export const handleMechanicSignup = async (
   return new Promise((resolve, reject) => {
     axios
       .post(API_URL.MECHANICS_SIGNUP, data, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        const token = res?.data?.data?.token as {
-          key: string;
-          value: string;
-        };
-        Cookie.set(token.key, token.value);
-        resolve(res.data?.message);
-      })
-      .catch((err) => {
-        reject(err.response.data?.message);
-      });
-  });
-};
-
-export const handleUserLogin = async (data: ILoginSchema): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(API_URL.USER_LOGIN, data, {
         withCredentials: true,
       })
       .then((res) => {
@@ -92,21 +215,6 @@ export const handleMechanicLogin = async (
       })
       .catch((err) => {
         reject(err.response.data?.message);
-      });
-  });
-};
-
-export const handleGetUserProfile = async (): Promise<IUserProfile> => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(API_URL.USER_PROFILE, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        resolve(res.data?.data);
-      })
-      .catch((err) => {
-        reject(err.response?.data?.message);
       });
   });
 };

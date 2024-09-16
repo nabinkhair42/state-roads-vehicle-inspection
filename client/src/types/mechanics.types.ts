@@ -11,4 +11,5 @@ export interface IMechanicProfile {
   storeAddress: string;
   createdAt: string;
   updatedAt: string;
+  isVerified: boolean;
 }

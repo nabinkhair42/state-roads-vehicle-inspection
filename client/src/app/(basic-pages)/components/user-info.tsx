@@ -56,7 +56,12 @@ const UserControl = () => {
           <DropdownMenuItem>{user?.name ?? mechanic?.name}</DropdownMenuItem>
           <DropdownMenuItem>{user?.email ?? mechanic?.email}</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => {
+              router.push("/user/");
+            }}
+            className="cursor-pointer"
+          >
             View Profile
           </DropdownMenuItem>
           {mechanic ? (

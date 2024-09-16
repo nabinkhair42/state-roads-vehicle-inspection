@@ -17,14 +17,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ILoginSchema, LoginSchema } from "@/zod";
 import ErrorLine from "@/components/reusable/error-line";
-import { handleUserLogin } from "@/services/auth";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useUserLogin } from "@/services/auth";
 
 const UserForm = () => {
-  const queryClient = useQueryClient();
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -37,19 +32,7 @@ const UserForm = () => {
     mutate(data);
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: handleUserLogin,
-    onSuccess: (msg) => {
-      toast.success(msg);
-      queryClient.invalidateQueries({
-        queryKey: ["user"],
-      });
-      router.push("/");  ////TODO 
-    },
-    onError: (err: string) => {
-      toast.error(err);
-    },
-  });
+  const { mutate, isPending } = useUserLogin();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,13 +1,11 @@
 "use client";
 import Loading from "@/components/reusable/loading";
 import { useAppDispatch } from "@/hooks/store";
-import {
-  handleGetMechanicProfile,
-  handleGetUserProfile,
-} from "@/services/auth";
+import { handleGetMechanicProfile, useUserProfile } from "@/services/auth";
 import { mechanicLogin, userLogin } from "@/store/slices/auth-slice";
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import React, { use, useEffect } from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -15,18 +13,15 @@ type Props = {
 
 const AuthProvider = ({ children }: Props) => {
   const dispatch = useAppDispatch();
-  const user = useQuery({
-    queryFn: handleGetUserProfile,
-    staleTime: Infinity,
-    queryKey: ["user"],
-    retry: false,
-  });
+  const router = useRouter();
+  const user = useUserProfile();
 
   const mechanic = useQuery({
     queryFn: handleGetMechanicProfile,
     staleTime: Infinity,
     queryKey: ["mechanic"],
     retry: false,
+    refetchOnWindowFocus: false,
   });
 
   useEffect(() => {
@@ -42,6 +37,18 @@ const AuthProvider = ({ children }: Props) => {
       dispatch(mechanicLogin(mechanic.data));
     }
   }, [mechanic.isSuccess, mechanic.isLoading, mechanic.data]);
+
+  useEffect(() => {
+    if (user.isSuccess && !user?.data?.isVerified) {
+      router.replace("/verify-email/user");
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (mechanic.isSuccess && !mechanic?.data?.isVerified) {
+      router.replace("/verify-email/mechanic");
+    }
+  }, [mechanic]);
 
   if (user.isLoading || mechanic.isLoading) {
     return <Loading className="h-screen" />;

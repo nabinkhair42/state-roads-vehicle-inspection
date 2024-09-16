@@ -5,4 +5,5 @@ export interface IUserProfile {
   phone: string;
   createdAt: string;
   updatedAt: string;
+  isVerified: boolean;
 }

@@ -1,7 +1,6 @@
 import {
   handleUserSignup,
   handleGetUserProfile,
-  handleUserLogout,
   handleUserLogin,
   handleVerifyOTPForSignup,
   handleResetPassword,
@@ -68,7 +67,5 @@ authRouter.post(
   validateBody(ResetPasswordSchema),
   tryCatch(handleVerifyOTPForResetPassword)
 );
-
-authRouter.get("/logout", tryCatch(handleUserLogout));
 
 export default authRouter;

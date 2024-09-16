@@ -14,26 +14,26 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import Link from "next/link";
+import {
+  useResendOTPForUserSignup,
+  useVerifyOTPForUserSignup,
+} from "@/services/auth";
+import { useState } from "react";
 
-const resendOTP = () => {
-  alert("Resend Sent");
-};
-const verified = () => {
-  alert("Verified");
-  //reerect to verification page
-  // window.location.href = "/dashboard"
-};
-const page = () => {
+const Page = () => {
+  const resendOTP = useResendOTPForUserSignup();
+  const verifyOTP = useVerifyOTPForUserSignup();
+
+  const [otp, setOtp] = useState("");
   return (
     <div className="w-screen h-screen flex justify-center place-items-center">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Verification</CardTitle>
+          <CardTitle className="text-2xl">Account Verification</CardTitle>
           <CardDescription>Enter the OTP sent to your email.</CardDescription>
         </CardHeader>
         <CardContent>
-          <InputOTP maxLength={6}>
+          <InputOTP maxLength={6} value={otp} onChange={(e) => setOtp(e)}>
             <InputOTPGroup>
               <InputOTPSlot index={0} />
               <InputOTPSlot index={1} />
@@ -48,18 +48,26 @@ const page = () => {
           </InputOTP>
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
-          <Button className="w-full" onClick={verified}>
-            Verify
+          <Button
+            className="w-full"
+            onClick={() => {
+              verifyOTP.mutate(Number(otp));
+            }}
+            disabled={verifyOTP.isPending}
+          >
+            {verifyOTP.isPending ? "Verifying..." : "Verify"}
           </Button>
           <CardDescription>
-            OTP not found?
-            <Link
-              href="/"
+            Did&apos;t receive the OTP?{" "}
+            <button
               className="underline text-primary"
-              onClick={resendOTP}
+              onClick={() => {
+                resendOTP.mutate();
+              }}
+              disabled={resendOTP.isPending}
             >
-              Resend OTP
-            </Link>
+              {resendOTP.isPending ? "Sending..." : "Resend OTP"}
+            </button>
           </CardDescription>
         </CardFooter>
       </Card>
@@ -67,4 +75,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
