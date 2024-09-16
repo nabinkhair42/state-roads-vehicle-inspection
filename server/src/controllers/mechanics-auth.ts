@@ -6,9 +6,10 @@ import mechanicsModel from "@/models/mechanics.model";
 import { IMechanicsLoginSchema, IMechanicsSignupSchema } from "@/zod";
 import OTPModel from "@/models/otp.model";
 import { generateOTP, validateOTP } from "@/utils/generate-otp";
-import { otpMailer } from "@/mailers/otp-mailer";
 import { sendWelcomeMailToUser } from "@/mailers/welcome-user";
 import { createToken } from "@/utils/token-manager";
+import { sendAccountVerificationOTP } from "@/mailers/send-account-verification-otp";
+import { sendPasswordResetOtp } from "@/mailers/send-password-reset-otp";
 
 export const handleMechanicsSignup = async (
   req: Request<{}, {}, IMechanicsSignupSchema>,
@@ -216,7 +217,7 @@ export const handleResendOTPForMechanicsSignup = async (
     purpose: "ACCOUNT_VERIFICATION",
   });
 
-  otpMailer(otp, userDoc.email);
+  sendAccountVerificationOTP(otp, userDoc.email, userDoc.name);
 
   return sendRes(res, {
     status: 200,
@@ -252,7 +253,7 @@ export const handleResetMechanicsPassword = async (
     purpose: "RESET_PASSWORD",
   });
 
-  otpMailer(otp, user.email);
+  sendPasswordResetOtp(otp, user.email, user.name);
 
   return sendRes(res, {
     status: 200,

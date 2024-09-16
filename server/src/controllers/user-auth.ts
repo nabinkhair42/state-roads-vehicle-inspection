@@ -3,12 +3,11 @@ import userModel from "@/models/user.model";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { generateOTP, validateOTP } from "@/utils/generate-otp";
-import { clearCookies, registerCookies } from "@/utils/cookies";
-import ENV_CONFIG from "@/config/env.config";
 import { ILoginSchema, ISignupSchema } from "@/zod";
 import OTPModel from "@/models/otp.model";
-import { otpMailer } from "@/mailers/otp-mailer";
 import { sendWelcomeMailToUser } from "@/mailers/welcome-user";
+import { sendAccountVerificationOTP } from "@/mailers/send-account-verification-otp";
+import { sendPasswordResetOtp } from "@/mailers/send-password-reset-otp";
 
 export const handleUserSignup = async (
   req: Request<{}, {}, ISignupSchema>,
@@ -42,7 +41,6 @@ export const handleUserSignup = async (
   // don t await this
   sendWelcomeMailToUser(otp, newUser.email, newUser.name);
 
-  registerCookies(res, newUser._id.toString(), ENV_CONFIG.AUTH_TOKEN_ID);
   return sendRes(res, {
     status: 201,
     message: `Welcome ${newUser.name}, your account is created successfully!`,
@@ -70,7 +68,6 @@ export const handleUserLogin = async (
     });
   }
 
-  registerCookies(res, user._id.toString(), ENV_CONFIG.AUTH_TOKEN_ID);
   return sendRes(res, {
     status: 200,
     message: `Welcome back ${user.name}!`,
@@ -89,14 +86,6 @@ export const handleGetUserProfile = async (req: Request, res: Response) => {
   return sendRes(res, {
     status: 200,
     data: userDoc,
-  });
-};
-
-export const handleUserLogout = async (req: Request, res: Response) => {
-  clearCookies(res, ENV_CONFIG.AUTH_TOKEN_ID);
-  return sendRes(res, {
-    status: 200,
-    message: "Logged out successfully!",
   });
 };
 
@@ -185,7 +174,7 @@ export const handleResendOTPForSignup = async (req: Request, res: Response) => {
     purpose: "ACCOUNT_VERIFICATION",
   });
 
-  otpMailer(otp, userDoc.email);
+  sendAccountVerificationOTP(otp, userDoc.email, userDoc.name);
 
   return sendRes(res, {
     status: 200,
@@ -218,7 +207,7 @@ export const handleResetPassword = async (req: Request, res: Response) => {
     purpose: "RESET_PASSWORD",
   });
 
-  otpMailer(otp, user.email);
+  sendPasswordResetOtp(otp, user.email, user.name);
 
   return sendRes(res, {
     status: 200,
