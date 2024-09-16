@@ -47,7 +47,7 @@ export default function NavBar() {
       <div className="w-full flex justify-between items-center gap-4 pr-12 md:pr-0">
         User Admin Side
         <div className="flex gap-4">
-          {/* <Notifications /> */}
+          <Notifications />
           <UserControl />
         </div>
       </div>

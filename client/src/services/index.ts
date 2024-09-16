@@ -33,4 +33,9 @@ export const API_URL = {
 
   // workshops
   GET_ALL_WORKSHOPS: BASE_URL + "/workshops",
+
+  // notifications
+  GET_USER_NOTIFICATIONS: BASE_URL + "/notifications/user",
+  GET_MECHANIC_NOTIFICATIONS: BASE_URL + "/notifications/mechanic",
+  VIEW_NOTIFICATIONS: BASE_URL + "/notifications/view",
 };

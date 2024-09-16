@@ -4,10 +4,9 @@ export const notificationModel = new mongoose.Schema(
   {
     for: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "refType",
       required: true,
     },
-    refType: {
+    role: {
       type: String,
       enum: ["Mechanics", "User"],
       required: true,
@@ -28,6 +27,7 @@ export const notificationModel = new mongoose.Schema(
   {
     timestamps: true,
     collection: "notifications",
+    expires: 604800, // 7 days
   }
 );
 

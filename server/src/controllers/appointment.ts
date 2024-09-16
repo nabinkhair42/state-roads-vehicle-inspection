@@ -1,5 +1,6 @@
 import { sendRes } from "@/middlewares/send-response";
 import appointmentModel from "@/models/appointment.model";
+import notificationModel from "@/models/notification.model";
 import serviceModel from "@/models/service.model";
 import userModel from "@/models/user.model";
 import { mailTemplates } from "@/utils/mail-templates";
@@ -33,39 +34,53 @@ export const handleMakeAppointment = async (req: Request, res: Response) => {
 
   const user = await userModel.findById(userId);
 
+  await notificationModel.create({
+    for: user?.id,
+    role: "User",
+    title: "Appointment Created",
+    message: `Your appointment for ${service.serviceType} in ${service.postedBy.storeName} has been created.`,
+  });
+
+  await notificationModel.create({
+    for: service.postedBy._id,
+    role: "Mechanics",
+    title: "New Appointment",
+    message: `${user.name} has scheduled a new appointment for ${service.serviceType}`,
+  });
+
   // send mail to the user
-  const mailDataForUser = mailTemplates.toUser.appointmentCreated({
-    date: appointment.appointmentDate,
-    usersName: user.name,
-    serviceName: service.title,
-    storeAddress: service.postedBy.storeAddress,
-    storeEmail: service.postedBy.email,
-    storeName: service.postedBy.name,
-    storePhone: service.postedBy.phone,
-  });
+  // const mailDataForUser = mailTemplates.toUser.appointmentCreated({
+  //   date: appointment.appointmentDate,
+  //   usersName: user.name,
+  //   serviceName: service.title,
+  //   storeAddress: service.postedBy.storeAddress,
+  //   storeEmail: service.postedBy.email,
+  //   storeName: service.postedBy.name,
+  //   storePhone: service.postedBy.phone,
+  // });
 
-  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: user.email,
-    ...mailDataForUser,
-  });
+  // // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  // sendMail({
+  //   to: user.email,
+  //   ...mailDataForUser,
+  // });
 
-  // send mail to the mechanic
-  const mailDataForMechanic = mailTemplates.toMechanic.appointmentCreated({
-    date: appointment.appointmentDate,
-    userEmail: user.email,
-    userPhone: user.phone,
-    message: appointment.message,
-    serviceTitle: service.title,
-    userName: user.name,
-    storeName: service.postedBy.storeName,
-  });
+  // // send mail to the mechanic
+  // const mailDataForMechanic = mailTemplates.toMechanic.appointmentCreated({
+  //   date: appointment.appointmentDate,
+  //   userEmail: user.email,
+  //   userPhone: user.phone,
+  //   message: appointment.message,
+  //   serviceTitle: service.title,
+  //   userName: user.name,
+  //   storeName: service.postedBy.storeName,
+  // });
 
-  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: service.postedBy.email,
-    ...mailDataForMechanic,
-  });
+  // // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  // sendMail({
+  //   to: service.postedBy.email,
+  //   ...mailDataForMechanic,
+  // });
 
   // todo send notification to the mechanic
   // todo send notification to the user
