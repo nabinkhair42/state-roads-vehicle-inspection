@@ -21,10 +21,10 @@ import {
   MechanicsLoginSchema,
 } from "@/zod";
 import ErrorLine from "@/components/reusable/error-line";
-import { handleMechanicLogin, handleUserLogin } from "@/services/auth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { useMechanicLogin } from "@/services/auth";
 
 const MechanicsForm = () => {
   const queryClient = useQueryClient();
@@ -41,20 +41,7 @@ const MechanicsForm = () => {
     mutate(data);
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: handleMechanicLogin,
-    onSuccess: (msg) => {
-      toast.success(msg);
-      queryClient
-        .invalidateQueries({
-          queryKey: ["mechanics"],
-        })
-        .then(() => (window.location.href = "/mechanics"));
-    },
-    onError: (err: string) => {
-      toast.error(err);
-    },
-  });
+  const { mutate, isPending } = useMechanicLogin();
 
   return (
     <>

@@ -85,7 +85,7 @@ export const useResendOTPForUserSignup = () => {
 export const useVerifyOTPForUserSignup = () => {
   const router = useRouter();
   return useMutation({
-    mutationFn: (otp: number): Promise<string> => {
+    mutationFn: (otp: string): Promise<string> => {
       return new Promise((resolve, reject) => {
         axios
           .post(
@@ -175,65 +175,168 @@ export const useUserLogin = () => {
   });
 };
 
-export const handleMechanicSignup = async (
-  data: IMechanicsSignupSchema
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(API_URL.MECHANICS_SIGNUP, data, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        const token = res?.data?.data?.token as {
-          key: string;
-          value: string;
-        };
-        Cookie.set(token.key, token.value);
-        resolve(res.data?.message);
-      })
-      .catch((err) => {
-        reject(err.response.data?.message);
+export const useMechanicsSignup = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (data: IMechanicsSignupSchema): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(API_URL.MECHANICS_SIGNUP, data, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            const token = res?.data?.data?.token as {
+              key: string;
+              value: string;
+            };
+            Cookie.set(token.key, token.value);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["mechanics"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
       });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+      router.push("/verify-email/mechanic");
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
   });
 };
 
-export const handleMechanicLogin = async (
-  data: IMechanicsLoginSchema
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    axios
-      .post(API_URL.MECHANICS_LOGIN, data, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        const token = res?.data?.data?.token as {
-          key: string;
-          value: string;
-        };
-        Cookie.set(token.key, token.value);
-        resolve(res.data?.message);
-      })
-      .catch((err) => {
-        reject(err.response.data?.message);
+export const useResendOTPForMechanicsSignup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(API_URL.RESEND_OTP_MECHANICS_SIGNUP, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            queryClient.invalidateQueries({
+              queryKey: ["mechanics"],
+            });
+            resolve(res.data?.message);
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
       });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
   });
 };
 
-export const handleGetMechanicProfile = async (): Promise<IMechanicProfile> => {
-  return new Promise((resolve, reject) => {
-    axios
-      .get(API_URL.MECHANICS_PROFILE, {
-        withCredentials: true,
-      })
-      .then((res) => {
-        resolve(res.data?.data);
-      })
-      .catch((err) => {
-        reject(err.response?.data?.message);
+export const useVerifyOTPForMechanicsSignup = () => {
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (otp: string): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            API_URL.VERIFY_OTP_MECHANICS_SIGNUP,
+            { otp },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            resolve(res.data?.message);
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
       });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+      router.push("/");
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
   });
 };
 
+export const useMechanicLogin = () => {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (data: IMechanicsLoginSchema): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(API_URL.MECHANICS_LOGIN, data, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            const token = res?.data?.data?.token as {
+              key: string;
+              value: string;
+            };
+            Cookie.set(token.key, token.value);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["mechanics"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
+      });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+      router.push("/mechanics");
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
+  });
+};
+
+export const useMechanicProfile = () => {
+  return useQuery({
+    queryKey: ["mechanics"],
+    queryFn: async (): Promise<IMechanicProfile> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .get(API_URL.MECHANICS_PROFILE, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            resolve(res.data?.data);
+          })
+          .catch((err) => {
+            reject(err.response?.data?.message);
+          });
+      });
+    },
+    staleTime: Infinity,
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
+};
+
+// do not convert logout to hooks
 export const handleMechanicsLogout = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
     Cookie.remove(TOKENS.MECHANICS_AUTH_TOKEN_ID);

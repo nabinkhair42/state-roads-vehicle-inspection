@@ -15,7 +15,7 @@ export const LoginSchema = z.object({
 export const ResetPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email!"),
   newPassword: z.string().min(8, "Password is too short!"),
-  otp: z.number({
+  otp: z.string({
     message: "Please enter a OTP!",
   }),
 });

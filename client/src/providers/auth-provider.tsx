@@ -1,7 +1,7 @@
 "use client";
 import Loading from "@/components/reusable/loading";
 import { useAppDispatch } from "@/hooks/store";
-import { handleGetMechanicProfile, useUserProfile } from "@/services/auth";
+import { useMechanicProfile, useUserProfile } from "@/services/auth";
 import { mechanicLogin, userLogin } from "@/store/slices/auth-slice";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -16,13 +16,7 @@ const AuthProvider = ({ children }: Props) => {
   const router = useRouter();
   const user = useUserProfile();
 
-  const mechanic = useQuery({
-    queryFn: handleGetMechanicProfile,
-    staleTime: Infinity,
-    queryKey: ["mechanic"],
-    retry: false,
-    refetchOnWindowFocus: false,
-  });
+  const mechanic = useMechanicProfile();
 
   useEffect(() => {
     if (user.isLoading) return;

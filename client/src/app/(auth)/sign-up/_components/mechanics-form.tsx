@@ -17,10 +17,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { IMechanicsSignupSchema, MechanicsSignupSchema } from "@/zod";
 import ErrorLine from "@/components/reusable/error-line";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { handleMechanicSignup } from "@/services/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import GetCoordinates from "./get-coordinates";
+import { useMechanicsSignup } from "@/services/auth";
 
 const MechanicsForm = () => {
   const [isGettingCoordinates, setIsGettingCoordinates] = useState(false);
@@ -37,20 +37,7 @@ const MechanicsForm = () => {
     resolver: zodResolver(MechanicsSignupSchema),
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: handleMechanicSignup,
-    onSuccess: (msg) => {
-      toast.success(msg);
-      queryClient
-        .invalidateQueries({
-          queryKey: ["mechanics"],
-        })
-        .then(() => (window.location.href = "/mechanics"));
-    },
-    onError: (err: string) => {
-      toast.error(err);
-    },
-  });
+  const { mutate, isPending } = useMechanicsSignup();
 
   const onSubmit: SubmitHandler<IMechanicsSignupSchema> = (data) => {
     mutate(data);
@@ -180,14 +167,18 @@ const MechanicsForm = () => {
             </div>
             <div className="space-y-1 flex gap-2 justify-center items-center">
               <Input
+                disabled
                 type="text"
                 placeholder="Longitude"
                 required
+                className="opacity-100 cursor-default"
                 {...register("storeCoordinates.longitude")}
               />
               <Input
+                disabled
                 type="text"
                 placeholder="Latitude"
+                className="opacity-100 cursor-default"
                 required
                 {...register("storeCoordinates.latitude")}
               />

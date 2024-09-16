@@ -13,7 +13,7 @@ const otpModel = new mongoose.Schema(
       enum: ["MECHANIC", "USER"],
     },
     otp: {
-      type: Number,
+      type: String,
       required: true,
     },
     purpose: {

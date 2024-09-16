@@ -25,6 +25,8 @@ export const API_URL = {
   REJECT_APPOINTMENT: BASE_URL + "/appointments/status/reject", // :id
   COMPLETE_APPOINTMENT: BASE_URL + "/appointments/status/complete", // :id
   BOOK_APPOINTMENT: BASE_URL + "/appointments", // :id
+  RESEND_OTP_MECHANICS_SIGNUP: BASE_URL + "/mechanics/auth/signup/resend-otp",
+  VERIFY_OTP_MECHANICS_SIGNUP: BASE_URL + "/mechanics/auth/verify",
 
   // stats
   GET_MECHANICS_STATS: BASE_URL + "/stats/mechanics",

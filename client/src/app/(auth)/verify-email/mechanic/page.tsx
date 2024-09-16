@@ -15,14 +15,15 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import {
-  useResendOTPForUserSignup,
-  useVerifyOTPForUserSignup,
+  useResendOTPForMechanicsSignup,
+  useVerifyOTPForMechanicsSignup,
 } from "@/services/auth";
+
 import { useState } from "react";
 
 const Page = () => {
-  const resendOTP = useResendOTPForUserSignup();
-  const verifyOTP = useVerifyOTPForUserSignup();
+  const resendOTP = useResendOTPForMechanicsSignup();
+  const verifyOTP = useVerifyOTPForMechanicsSignup();
 
   const [otp, setOtp] = useState("");
   return (
