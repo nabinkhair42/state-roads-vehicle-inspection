@@ -27,13 +27,12 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
-import { handleCreateService } from "@/services/service";
+import { useCreateService } from "@/services/service";
 import { IServiceSchema, ServiceSchema } from "@/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -79,15 +78,9 @@ const CreateService: FC<Props> = ({ isOpen, setIsOpen, disabledServices }) => {
     mutate({ ...data, thumbnail });
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: handleCreateService,
-    onSuccess: (data) => {
-      toast.success(data);
+  const { mutate, isPending } = useCreateService({
+    onSuccess() {
       setIsOpen(false);
-      router.push("/mechanics/services");
-    },
-    onError: (error: string) => {
-      toast.error(error);
     },
   });
 
@@ -116,7 +109,7 @@ const CreateService: FC<Props> = ({ isOpen, setIsOpen, disabledServices }) => {
               <SelectTrigger>
                 <SelectValue placeholder="Select a service type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-[9999]">
                 {SERVICE_TYPES.map((type, index) => (
                   <SelectItem
                     disabled={disabledServices.includes(type)}

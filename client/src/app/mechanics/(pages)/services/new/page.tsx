@@ -4,16 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import CreateService from "../_components/create-service";
 import { useQuery } from "@tanstack/react-query";
-import { handleGetAllMechanicsServices } from "@/services/service";
+import { useGetAllMechanicsServices } from "@/services/service";
 import { useAppSelector } from "@/hooks/store";
 
 const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { mechanic } = useAppSelector((state) => state.auth);
-  const { data, isLoading } = useQuery({
-    queryFn: () => handleGetAllMechanicsServices(mechanic?._id!),
-    queryKey: ["services", mechanic?._id],
-  });
+  const { data, isLoading } = useGetAllMechanicsServices(mechanic?._id!);
   return (
     <>
       <CreateService
