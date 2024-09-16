@@ -21,7 +21,7 @@ const appointmentRouter = Router();
 
 appointmentRouter.post(
   "/:serviceId",
-  verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.USER),
   validateBody(AppointmentSchema),
   tryCatch(handleMakeAppointment)
@@ -29,14 +29,14 @@ appointmentRouter.post(
 
 appointmentRouter.get(
   "/user",
-  verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.USER),
   tryCatch(handleGetAppointmentsByUser)
 );
 
 appointmentRouter.get(
   "/mechanics",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   tryCatch(handleGetAppointmentsByMechanic)
 );
@@ -45,14 +45,14 @@ appointmentRouter.get(
 
 appointmentRouter.put(
   "/status/approve/:appointmentId",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   tryCatch(handleApproveAppointmentByMechanic)
 );
 
 appointmentRouter.put(
   "/status/reject/:appointmentId",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   tryCatch(handleRejectAppointmentByMechanic)
 );
@@ -61,7 +61,7 @@ appointmentRouter.put(
   "/status/complete/:appointmentId",
   parseFile("report"),
   remoteUploadFile("appointment-reports"),
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   tryCatch(handleCompleteAppointmentByMechanic)
 );

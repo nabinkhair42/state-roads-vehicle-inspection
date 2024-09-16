@@ -35,13 +35,13 @@ authRouter.post(
 
 authRouter.post(
   "/verify",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   tryCatch(handleVerifyOTPForMechanicsSignup)
 );
 
 authRouter.get(
   "/signup/resend-otp",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   tryCatch(handleResendOTPForMechanicsSignup)
 );
 
@@ -55,7 +55,7 @@ authRouter.post(
 
 authRouter.put(
   "/update-password",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   validateBody(
     z.object({
       oldPassword: z.string(),
@@ -73,7 +73,7 @@ authRouter.post(
 
 authRouter.get(
   "/me",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   tryCatch(handleGetMechanicsProfile)
 );
 

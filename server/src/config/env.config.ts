@@ -14,7 +14,9 @@ const ENV_CONFIG = {
   FRONTEND_URL: process.env.FRONTEND_URL,
   JWT_SECRET: process.env.JWT_SECRET,
   AUTH_TOKEN_ID: "auth-token",
+  AUTH_HEADER_ID: "X-User-Token",
   MECHANICS_AUTH_TOKEN_ID: "mechanics-auth-token",
+  MECHANICS_AUTH_HEADER_ID: "X-Mechanics-Token",
 
   NODE_ENV: process.env.NODE_ENV || "development",
 

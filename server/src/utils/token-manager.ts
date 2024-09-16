@@ -16,9 +16,9 @@ export const createToken = (
   return token;
 };
 
-export const verifyToken = (cookieId: string) => {
+export const verifyToken = (headerId: string) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const token = req.cookies[cookieId];
+    const token = req.headers[headerId.toLowerCase()] as string;
 
     if (!token || token.trim() === "") {
       const response: IResponse = {

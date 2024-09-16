@@ -9,7 +9,7 @@ import { Router } from "express";
 const statsRouter = Router();
 statsRouter.get(
   "/mechanics",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   tryCatch(handleGetMechanicsStats)
 );

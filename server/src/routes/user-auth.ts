@@ -26,19 +26,19 @@ authRouter.post(
 authRouter.post("/login", validateBody(LoginSchema), tryCatch(handleUserLogin));
 authRouter.get(
   "/me",
-  verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.AUTH_HEADER_ID),
   tryCatch(handleGetUserProfile)
 );
 
 authRouter.post(
   "/verify",
-  verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.AUTH_HEADER_ID),
   tryCatch(handleVerifyOTPForSignup)
 );
 
 authRouter.get(
   "/signup/resend-otp",
-  verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.AUTH_HEADER_ID),
   tryCatch(handleResendOTPForSignup)
 );
 
@@ -52,7 +52,7 @@ authRouter.post(
 
 authRouter.put(
   "/update-password",
-  verifyToken(ENV_CONFIG.AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.AUTH_HEADER_ID),
   validateBody(
     z.object({
       oldPassword: z.string(),

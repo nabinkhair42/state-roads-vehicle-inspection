@@ -19,8 +19,8 @@ export const generateOTP = () => {
 };
 
 export const validateOTP = (data: {
-  otp: number;
-  existingOTP: number;
+  otp: string | number;
+  existingOTP: string | number;
   expiresAt: Date;
 }): {
   isValid: boolean;
@@ -35,7 +35,7 @@ export const validateOTP = (data: {
       reason: "EXPIRED",
     };
   }
-  if (data.otp === data.existingOTP) {
+  if (data.otp == data.existingOTP) {
     return {
       isValid: true,
     };

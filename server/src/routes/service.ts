@@ -20,7 +20,7 @@ const serviceRouter = Router();
 
 serviceRouter.post(
   "/",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   parseFile("thumbnail"),
   remoteUploadFile("service-thumbnails"),
@@ -31,7 +31,7 @@ serviceRouter.post(
 
 serviceRouter.delete(
   "/:id",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   tryCatch(handleDeleteServiceById)
 );
@@ -41,7 +41,7 @@ serviceRouter.get("/", tryCatch(handleGetAllServices));
 serviceRouter.get("/:id", tryCatch(handleGetServiceById));
 serviceRouter.get(
   "/mechanics/:id",
-  verifyToken(ENV_CONFIG.MECHANICS_AUTH_TOKEN_ID),
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
   hasAuthorizedRole(ROLES.MECHANICS),
   tryCatch(handleGetServiceByMechanicId)
 );
