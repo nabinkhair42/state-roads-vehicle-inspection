@@ -49,41 +49,38 @@ export const handleMakeAppointment = async (req: Request, res: Response) => {
   });
 
   // send mail to the user
-  // const mailDataForUser = mailTemplates.toUser.appointmentCreated({
-  //   date: appointment.appointmentDate,
-  //   usersName: user.name,
-  //   serviceName: service.title,
-  //   storeAddress: service.postedBy.storeAddress,
-  //   storeEmail: service.postedBy.email,
-  //   storeName: service.postedBy.name,
-  //   storePhone: service.postedBy.phone,
-  // });
+  const mailDataForUser = mailTemplates.toUser.appointmentCreated({
+    date: appointment.appointmentDate,
+    usersName: user.name,
+    serviceName: service.title,
+    storeAddress: service.postedBy.storeAddress,
+    storeEmail: service.postedBy.email,
+    storeName: service.postedBy.name,
+    storePhone: service.postedBy.phone,
+  });
 
   // // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  // sendMail({
-  //   to: user.email,
-  //   ...mailDataForUser,
-  // });
+  sendMail({
+    to: user.email,
+    ...mailDataForUser,
+  });
 
-  // // send mail to the mechanic
-  // const mailDataForMechanic = mailTemplates.toMechanic.appointmentCreated({
-  //   date: appointment.appointmentDate,
-  //   userEmail: user.email,
-  //   userPhone: user.phone,
-  //   message: appointment.message,
-  //   serviceTitle: service.title,
-  //   userName: user.name,
-  //   storeName: service.postedBy.storeName,
-  // });
+  // send mail to the mechanic
+  const mailDataForMechanic = mailTemplates.toMechanic.appointmentCreated({
+    date: appointment.appointmentDate,
+    userEmail: user.email,
+    userPhone: user.phone,
+    message: appointment.message,
+    serviceTitle: service.title,
+    userName: user.name,
+    storeName: service.postedBy.storeName,
+  });
 
-  // // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  // sendMail({
-  //   to: service.postedBy.email,
-  //   ...mailDataForMechanic,
-  // });
-
-  // todo send notification to the mechanic
-  // todo send notification to the user
+  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
+  sendMail({
+    to: service.postedBy.email,
+    ...mailDataForMechanic,
+  });
 
   return sendRes(res, {
     status: 201,
@@ -177,7 +174,14 @@ export const handleApproveAppointmentByMechanic = async (
     ...mailDataForUser,
   });
 
-  // todo send notification to the user
+  //  send notification to the user
+
+  await notificationModel.create({
+    for: appointment.bookedBy._id,
+    role: "User",
+    title: "Appointment Approved",
+    message: `Your appointment for ${appointment.service.title} in ${appointment.bookedFor.storeName} has been approved.`,
+  });
 
   return sendRes(res, {
     status: 200,
@@ -238,7 +242,13 @@ export const handleRejectAppointmentByMechanic = async (
     ...mailDataForUser,
   });
 
-  // todo send notification to the user
+  //  send notification to the user
+  await notificationModel.create({
+    for: appointment.bookedBy._id,
+    role: "User",
+    title: "Appointment Rejected",
+    message: `Your appointment for ${appointment.service.title} in ${appointment.bookedFor.storeName} has been rejected.`,
+  });
 
   return sendRes(res, {
     status: 200,
@@ -287,7 +297,6 @@ export const handleCompleteAppointmentByMechanic = async (
 
   appointment.status = "COMPLETED";
   appointment.report = report;
-  console.log("report", report);
   await appointment.save();
 
   // send mail to the user
@@ -307,7 +316,13 @@ export const handleCompleteAppointmentByMechanic = async (
     ...mailDataForUser,
   });
 
-  // todo send notification to the user
+  // send notification to the user
+  await notificationModel.create({
+    for: appointment.bookedBy._id,
+    role: "User",
+    title: "Appointment Completed",
+    message: `Your appointment for ${appointment.service.title} in ${appointment.bookedFor.storeName} has been completed.`,
+  });
 
   return sendRes(res, {
     status: 200,
