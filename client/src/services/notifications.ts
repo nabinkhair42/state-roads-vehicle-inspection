@@ -18,8 +18,8 @@ export const useUserNotifications = () => {
           });
       });
     },
-    staleTime: 1000 * 60,
-    refetchInterval: 1000 * 60,
+    staleTime: 0,
+    refetchInterval: 1000 * 30, // every
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: true,
   });
@@ -40,8 +40,8 @@ export const useMechanicsNotifications = () => {
           });
       });
     },
-    staleTime: 1000 * 60,
-    refetchInterval: 1000 * 60,
+    staleTime: 0,
+    refetchInterval: 1000 * 30, // every
     refetchIntervalInBackground: true,
     refetchOnWindowFocus: true,
   });

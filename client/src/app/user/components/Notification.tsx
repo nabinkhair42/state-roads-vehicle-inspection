@@ -14,10 +14,12 @@ import NotificationComponent from "@/components/ui/notification";
 import { useUserNotifications } from "@/services/notifications";
 import { INotification } from "@/types/notification.types";
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation";
 
 const NotificationPopOut = () => {
   const { isLoading, data, isError } = useUserNotifications();
-
+  const router = useRouter();
   const [notifications, setNotifications] = useState<{
     read: INotification[];
     unread: INotification[];
@@ -39,10 +41,15 @@ const NotificationPopOut = () => {
       <DropdownMenuTrigger asChild>
         <Button
           disabled={isLoading}
-          className="rounded-full w-fit h-fit p-2"
+          className="rounded-full w-fit h-fit p-2 relative"
           variant={"outline"}
           size={"icon"}
         >
+          {notifications?.unread?.length > 0 && (
+            <Badge className="absolute top-0 right-0 rounded-full p-1 text-xs">
+              {notifications?.unread?.length}
+            </Badge>
+          )}
           <Bell className="h-[24px]  w-[24px]" />
         </Button>
       </DropdownMenuTrigger>
@@ -96,13 +103,25 @@ const NotificationPopOut = () => {
           </>
         )}
 
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Button className="w-full" variant={"ghost"} size={"sm"}>
-              View All
-            </Button>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
+        {!(
+          notifications?.read?.length === 0 &&
+          notifications?.unread?.length === 0
+        ) && (
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <Button
+                onClick={() => {
+                  router.push("/user/notifications");
+                }}
+                className="w-full"
+                variant={"ghost"}
+                size={"sm"}
+              >
+                View All
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

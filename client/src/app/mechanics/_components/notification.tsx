@@ -14,6 +14,7 @@ import NotificationComponent from "@/components/ui/notification";
 import { useMechanicsNotifications } from "@/services/notifications";
 import { INotification } from "@/types/notification.types";
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 
 const NotificationPopOut = () => {
   const { isLoading, data, isError } = useMechanicsNotifications();
@@ -38,11 +39,16 @@ const NotificationPopOut = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="rounded-full w-fit h-fit p-1"
+          className="rounded-full w-fit h-fit p-1 relative"
           variant={"outline"}
           size={"icon"}
           disabled={isLoading}
         >
+          {notifications?.unread?.length > 0 && (
+            <Badge className="absolute top-0 right-0 rounded-full p-1 text-xs">
+              {notifications?.unread?.length}
+            </Badge>
+          )}
           <Bell className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>

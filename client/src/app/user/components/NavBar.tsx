@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Clock1, Menu } from "lucide-react";
+import { Clock1, Menu, User2 } from "lucide-react";
 import Notifications from "@/app/user/components/Notification";
 import UserControl from "@/app/user/components/UserControl";
 import Link from "next/link";
@@ -11,7 +11,8 @@ import { useAppSelector } from "@/hooks/store";
 
 const navItems = [
   { href: "/user", icon: Clock1, label: "My Appointments" },
-  // { href: "/user/notification", icon: Bell, label: "Notifications", badge: 6 },
+  { href: "/user/notifications", icon: Bell, label: "Notifications" },
+  { href: "/user/account", icon: User2, label: "Account" },
 ];
 
 export default function NavBar() {

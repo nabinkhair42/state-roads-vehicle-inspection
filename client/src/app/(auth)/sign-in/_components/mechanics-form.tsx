@@ -80,7 +80,7 @@ const MechanicsForm = () => {
               <Key />
               Login
             </Button>
-            <Link className="text-primary text-sm" href="/forget">
+            <Link className="text-primary text-sm" href="/forget-password">
               Forget Password?
             </Link>
             <p className="flex gap-2 justify-center items-center text-sm">

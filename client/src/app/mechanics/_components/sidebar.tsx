@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Car, Home, Clock1, Settings } from "lucide-react";
+import { Car, Home, Clock1, Settings, User2, Bell } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +12,8 @@ const navItems = [
     icon: Settings,
     label: "Services",
   },
+  { href: "/mechanics/notifications", icon: Bell, label: "Notifications" },
+  { href: "/mechanics/account", icon: User2, label: "Account" },
 ];
 
 export default function SideBar() {

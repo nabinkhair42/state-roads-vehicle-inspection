@@ -23,8 +23,8 @@ const otpModel = new mongoose.Schema(
     },
     expiresAt: {
       type: Date,
-      default: new Date().getTime() + OPT_EXPIRATION_IN_SEC * 1000,
-      expires: 0,
+      default: () => new Date(Date.now() + OPT_EXPIRATION_IN_SEC * 1000),
+      expires: OPT_EXPIRATION_IN_SEC, // TTL in seconds
     },
   },
   {

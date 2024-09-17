@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { Car, Home, Bell, Clock1 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Car, Home, Bell, Clock1, User2 } from "lucide-react";
 
 const navItems = [
   { href: "/user", icon: Clock1, label: "My Appointments" },
-  // { href: "/user/notification", icon: Bell, label: "Notifications", badge: 6 },
+  { href: "/user/notifications", icon: Bell, label: "Notifications" },
+  { href: "/user/account", icon: User2, label: "Account" },
 ];
 
 export default function SideBar() {

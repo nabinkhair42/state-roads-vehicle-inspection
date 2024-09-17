@@ -202,16 +202,12 @@ export function CalendarForm() {
 
               {/* time input */}
               <Button variant={"outline"}>
-                <Datetime
-                  dateFormat={false}
-                  timeFormat="h:mm A"
-                  className="bg-transparent "
+                <input
+                  type="time"
+                  name=""
+                  id=""
                   value={time}
-                  onChange={(value) => setTime(value.toString())}
-                  inputProps={{
-                    placeholder: "Select time",
-                    className: "w-40",
-                  }}
+                  onChange={(e) => setTime(e.target.value)}
                 />
               </Button>
             </CardContent>

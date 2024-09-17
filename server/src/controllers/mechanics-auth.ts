@@ -36,7 +36,7 @@ export const handleMechanicsSignup = async (
   await OTPModel.create({
     userId: newMechanics._id,
     role: "MECHANIC",
-    otp: parseInt(otp),
+    otp: otp,
     purpose: "ACCOUNT_VERIFICATION",
   });
 
@@ -213,7 +213,7 @@ export const handleResendOTPForMechanicsSignup = async (
   await OTPModel.create({
     userId: user,
     role: "MECHANIC",
-    otp: parseInt(otp),
+    otp: otp,
     purpose: "ACCOUNT_VERIFICATION",
   });
 
@@ -249,7 +249,7 @@ export const handleResetMechanicsPassword = async (
   await OTPModel.create({
     userId: user._id,
     role: "MECHANIC",
-    otp: parseInt(otp),
+    otp: otp,
     purpose: "RESET_PASSWORD",
   });
 

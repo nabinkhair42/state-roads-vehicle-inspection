@@ -36,7 +36,7 @@ export const handleUserSignup = async (
   await OTPModel.create({
     userId: newUser._id,
     role: "USER",
-    otp: parseInt(otp),
+    otp: otp,
     purpose: "ACCOUNT_VERIFICATION",
   });
 
@@ -93,7 +93,7 @@ export const handleResendOTPForSignup = async (req: Request, res: Response) => {
   await OTPModel.create({
     userId: user,
     role: "USER",
-    otp: parseInt(otp),
+    otp: otp,
     purpose: "ACCOUNT_VERIFICATION",
   });
 
@@ -234,7 +234,7 @@ export const handleResetPassword = async (req: Request, res: Response) => {
   await OTPModel.create({
     userId: user._id,
     role: "USER",
-    otp: parseInt(otp),
+    otp: otp,
     purpose: "RESET_PASSWORD",
   });
 

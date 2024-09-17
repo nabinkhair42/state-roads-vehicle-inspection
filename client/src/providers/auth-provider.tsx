@@ -33,13 +33,13 @@ const AuthProvider = ({ children }: Props) => {
   }, [mechanic.isSuccess, mechanic.isLoading, mechanic.data]);
 
   useEffect(() => {
-    if (user.isSuccess && !user?.data?.isVerified) {
+    if (user.isSuccess && user.data && !user?.data?.isVerified) {
       router.replace("/verify-email/user");
     }
   }, [user]);
 
   useEffect(() => {
-    if (mechanic.isSuccess && !mechanic?.data?.isVerified) {
+    if (mechanic.isSuccess && mechanic.data && !mechanic?.data?.isVerified) {
       router.replace("/verify-email/mechanic");
     }
   }, [mechanic]);

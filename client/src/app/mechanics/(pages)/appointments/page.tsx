@@ -35,6 +35,10 @@ const MechanicAppointments = () => {
   const { data, isLoading } = useQuery({
     queryFn: handleGetAllMechanicsAppointment,
     queryKey: ["appointments"],
+    staleTime: 0,
+    refetchInterval: 1000 * 30, // every
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
   });
 
   const { mutate: approve, isPending: isApproving } = useMutation({
@@ -95,7 +99,7 @@ const MechanicAppointments = () => {
               </TableCell>
             </TableRow>
           ) : (
-            data?.map((data,index) => (
+            data?.map((data, index) => (
               <TableRow key={index}>
                 <TableCell>{data.bookedBy.name}</TableCell>
                 <TableCell>{data.service.serviceType}</TableCell>

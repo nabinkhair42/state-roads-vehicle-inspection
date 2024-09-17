@@ -1,7 +1,17 @@
+"use client";
 import SideBar from "@/app/user/components/SideBar";
 import NavBar from "@/app/user/components/NavBar";
+import { useUserProfile } from "@/services/auth";
+import Loading from "@/components/reusable/loading";
+import NotFound from "@/components/pages/not-found";
+import { useAppSelector } from "@/hooks/store";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, user } = useAppSelector((s) => s.auth);
+
+  if (!isAuthenticated || !user) {
+    return <NotFound />;
+  }
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <SideBar />

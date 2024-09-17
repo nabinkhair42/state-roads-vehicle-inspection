@@ -1,4 +1,5 @@
 import {
+  IChangePasswordSchema,
   ILoginSchema,
   IMechanicsLoginSchema,
   IMechanicsSignupSchema,
@@ -348,5 +349,41 @@ export const handleUserLogout = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
     Cookie.remove(TOKENS.AUTH_TOKEN_ID);
     resolve("You are logged out!");
+  });
+};
+
+export const useUpdatePassword = ({ onSuccess }: { onSuccess: () => void }) => {
+  return useMutation({
+    mutationFn: (
+      data: IChangePasswordSchema & {
+        role: "user" | "mechanic";
+      }
+    ): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            data.role === "user"
+              ? API_URL.UPDATE_USER_PASSWORD
+              : API_URL.UPDATE_MECHANIC_PASSWORD,
+            data,
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            resolve(res.data?.message);
+          })
+          .catch((err) => {
+            reject(err.response.data?.message);
+          });
+      });
+    },
+    onSuccess: (msg) => {
+      toast.success(msg);
+      onSuccess();
+    },
+    onError: (err: string) => {
+      toast.error(err);
+    },
   });
 };

@@ -12,6 +12,8 @@ export const API_URL = {
   USER_PROFILE: BASE_URL + "/auth/me",
   RESEND_OTP_USER_SIGNUP: BASE_URL + "/auth/signup/resend-otp",
   VERIFY_OTP_USER_SIGNUP: BASE_URL + "/auth/verify",
+  UPDATE_USER_PASSWORD: BASE_URL + "/auth/update-password",
+  UPDATE_MECHANIC_PASSWORD: BASE_URL + "/mechanics/auth/update-password",
 
   //services
   CREATE_SERVICE: BASE_URL + "/services",

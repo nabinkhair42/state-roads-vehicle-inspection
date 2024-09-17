@@ -28,6 +28,10 @@ export function UserAppointments() {
   const { data, isLoading } = useQuery({
     queryFn: handleGetAllUserAppointments,
     queryKey: ["appointments", "user"],
+    staleTime: 0,
+    refetchInterval: 1000 * 30, // every
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
   });
 
   return (

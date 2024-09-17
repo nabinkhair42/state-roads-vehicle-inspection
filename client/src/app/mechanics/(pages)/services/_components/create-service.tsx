@@ -74,6 +74,10 @@ const CreateService: FC<Props> = ({ isOpen, setIsOpen, disabledServices }) => {
       if (typeof data[key] === "string" && data[key].length === 0) {
         return toast.error(`Please enter a valid ${key}`);
       }
+
+      if (data.price < 1) {
+        return toast.error("Please enter price greater than 0");
+      }
     });
     mutate({ ...data, thumbnail });
   };
