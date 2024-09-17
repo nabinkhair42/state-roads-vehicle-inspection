@@ -74,7 +74,7 @@ const UserForm = () => {
             <Key />
             Login
           </Button>
-          <Link className="text-primary text-sm" href="/forget-password">
+          <Link className="text-primary text-sm" href="/forget-password/user">
             Forget Password?
           </Link>
           <p className="flex gap-2 justify-center items-center text-sm">

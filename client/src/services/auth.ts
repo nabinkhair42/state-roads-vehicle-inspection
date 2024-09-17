@@ -387,3 +387,43 @@ export const useUpdatePassword = ({ onSuccess }: { onSuccess: () => void }) => {
     },
   });
 };
+
+// Function to handle User password reset request
+export const userResetPasswordRequest = async (email: string) => {
+  const response = await fetch(API_URL.USER_RESET_PASSWORD_REQUEST, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  return await response.json();
+};
+
+// Function to handle User password reset verification
+export const userResetPasswordVerify = async (email: string, newPassword: string, otp: string) => {
+  const response = await fetch(API_URL.USER_RESET_PASSWORD_VERIFY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, newPassword, otp }),
+  });
+  return await response.json();
+};
+
+// Function to handle Mechanic password reset request
+export const mechanicResetPasswordRequest = async (email: string) => {
+  const response = await fetch(API_URL.MECHANIC_RESET_PASSWORD_REQUEST, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  return await response.json();
+};
+
+// Function to handle Mechanic password reset verification
+export const mechanicResetPasswordVerify = async (email: string, newPassword: string, otp: string) => {
+  const response = await fetch(API_URL.MECHANIC_RESET_PASSWORD_VERIFY, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, newPassword, otp }),
+  });
+  return await response.json();
+};

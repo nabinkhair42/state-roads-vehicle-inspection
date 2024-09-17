@@ -14,6 +14,14 @@ export const API_URL = {
   VERIFY_OTP_USER_SIGNUP: BASE_URL + "/auth/verify",
   UPDATE_USER_PASSWORD: BASE_URL + "/auth/update-password",
   UPDATE_MECHANIC_PASSWORD: BASE_URL + "/mechanics/auth/update-password",
+  // Password Reset for Users
+  USER_RESET_PASSWORD_REQUEST: BASE_URL + "/auth/reset-password",
+  USER_RESET_PASSWORD_VERIFY: BASE_URL + "/auth/reset-password/verify",
+
+  // Password Reset for Mechanics
+  MECHANIC_RESET_PASSWORD_REQUEST: BASE_URL + "/mechanics/auth/reset-password",
+  MECHANIC_RESET_PASSWORD_VERIFY:
+    BASE_URL + "/mechanics/auth/reset-password/verify",
 
   //services
   CREATE_SERVICE: BASE_URL + "/services",
