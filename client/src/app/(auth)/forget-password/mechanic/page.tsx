@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -20,16 +21,12 @@ import {
 } from "@/components/ui/input-otp";
 import { useRouter } from "next/navigation";
 import {
-  userResetPasswordRequest,
-  userResetPasswordVerify,
   mechanicResetPasswordRequest,
   mechanicResetPasswordVerify,
 } from "@/services/auth";
 import { Loader2 } from "lucide-react";
 
-type ResetPasswordMode = "user" | "mechanic";
-
-const ResetPassword = ({ mode }: { mode: ResetPasswordMode }) => {
+const MechanicResetPassword = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -40,26 +37,14 @@ const ResetPassword = ({ mode }: { mode: ResetPasswordMode }) => {
   const handleRequestOtp = async () => {
     setLoading(true);
     try {
-      if (mode === "user") {
-        await userResetPasswordRequest(email);
-      } else {
-        await mechanicResetPasswordRequest(email);
-      }
+      await mechanicResetPasswordRequest(email);
       setStep("verify");
       toast.success("OTP sent to your email!");
     } catch (error) {
       if (error instanceof Error) {
-        if (error instanceof Error) {
-          if (error instanceof Error) {
-            toast.error(error.message);
-          } else {
-            toast.error("An unknown error occurred.");
-          }
-        } else {
-          toast.error("An unknown error occurred.");
-        }
+        toast.error(error.message);
       } else {
-        toast.error("An unknown error occurred.");
+        toast.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);
@@ -69,18 +54,14 @@ const ResetPassword = ({ mode }: { mode: ResetPasswordMode }) => {
   const handleVerifyOtp = async () => {
     setLoading(true);
     try {
-      if (mode === "user") {
-        await userResetPasswordVerify(email, newPassword, otp);
-      } else {
-        await mechanicResetPasswordVerify(email, newPassword, otp);
-      }
+      await mechanicResetPasswordVerify(email, newPassword, otp);
       toast.success("Your password is updated, you can login now!");
       router.push("/sign-in");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error("An unknown error occurred.");
+        toast.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);
@@ -104,9 +85,7 @@ const ResetPassword = ({ mode }: { mode: ResetPasswordMode }) => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder={
-                    mode === "user" ? "user@gmail.com" : "mechanic@gmail.com"
-                  }
+                  placeholder="mechanic@gmail.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -180,4 +159,4 @@ const ResetPassword = ({ mode }: { mode: ResetPasswordMode }) => {
   );
 };
 
-export default ResetPassword;
+export default MechanicResetPassword;
