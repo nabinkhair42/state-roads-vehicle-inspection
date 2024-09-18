@@ -26,8 +26,8 @@ const Page = () => {
     setNotifications({ read, unread });
   }, [isLoading, isError, data]);
   return (
-    <div className="grid gap-y-6 grid-cols-1 md:grid-cols-2 gap-x-10 max-w-4xl">
-      <div className="flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
         <h3 className="text-xl font-semibold">Unread Notifications</h3>
         {isLoading && <Loading />}
         {notifications.unread.length === 0 && (
