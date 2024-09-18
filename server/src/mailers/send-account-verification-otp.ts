@@ -17,7 +17,9 @@ It looks like you requested to resend your OTP for verifying your account. Pleas
 
 *This OTP will expire in ${OPT_EXPIRATION_IN_SEC / 60} minutes.*
 
-If you did not request this OTP or need any further assistance, feel free to reach out to us at support@autoinspector.com.au.
+If you did not request this OTP or need any further assistance, feel free to reach out to us at ${
+    process.env.SUPPORT_EMAIL
+  }.
 
 Best regards,  
 The Auto Inspector Team

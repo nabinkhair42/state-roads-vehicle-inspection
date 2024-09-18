@@ -22,7 +22,9 @@ To get started, please verify your account by using the provided otp.
 
 This will ensure you can access all the features our platform has to offer.
 
-If you have any questions or need assistance, feel free to reach out to us at support@autoinspector.com.au. We're here to help!
+If you have any questions or need assistance, feel free to reach out to us at ${
+    process.env.SUPPORT_EMAIL
+  }. We're here to help!
 
 Thank you for joining Auto Inspector, and we look forward to serving you.
 

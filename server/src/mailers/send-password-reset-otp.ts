@@ -17,7 +17,9 @@ We received a request to reset your password. Please use the OTP below to procee
 
 *This OTP will expire in ${OPT_EXPIRATION_IN_SEC / 60} minutes.*
 
-If you did not request this password reset, please ignore this email or contact our support team at support@autoinspector.com.au.
+If you did not request this password reset, please ignore this email or contact our support team at ${
+    process.env.SUPPORT_EMAIL
+  }.
 
 Best regards,  
 The Auto Inspector Team

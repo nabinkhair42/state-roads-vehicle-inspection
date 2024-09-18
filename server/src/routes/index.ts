@@ -6,6 +6,7 @@ import notificationRouter from "./notification";
 import appointmentRouter from "./appointment";
 import statsRouter from "./stats";
 import workshopRouter from "./workshop";
+import contactRouter from "./contact";
 const appRouter = Router();
 
 appRouter.use("/auth", authRouter);
@@ -15,5 +16,6 @@ appRouter.use("/notifications", notificationRouter);
 appRouter.use("/appointments", appointmentRouter);
 appRouter.use("/stats", statsRouter);
 appRouter.use("/workshops", workshopRouter);
+appRouter.use("/contact", contactRouter);
 
 export default appRouter;
