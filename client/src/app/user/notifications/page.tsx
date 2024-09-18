@@ -37,9 +37,8 @@ const Page = () => {
           <NotificationComponent
             key={notification._id}
             notification={notification}
-            avatarFallback="U"
-            avatarSrc="https://ui-avatars.com/api/?name=John+Doe"
             hasShadow
+            hideDeleteButton
           />
         ))}
       </div>
@@ -53,8 +52,7 @@ const Page = () => {
           <NotificationComponent
             key={notification._id}
             notification={notification}
-            avatarFallback="U"
-            avatarSrc="https://ui-avatars.com/api/?name=John+Doe"
+            hideDeleteButton
             hasShadow
           />
         ))}

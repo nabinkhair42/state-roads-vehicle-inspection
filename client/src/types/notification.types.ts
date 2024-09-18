@@ -4,4 +4,5 @@ export interface INotification {
   message: string;
   isViewed: boolean;
   createdAt: string;
+  isHidden: boolean;
 }

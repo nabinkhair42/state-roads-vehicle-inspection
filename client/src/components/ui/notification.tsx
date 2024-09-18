@@ -6,20 +6,23 @@ import { Trash } from "lucide-react";
 import { useInView } from "framer-motion";
 import { INotification } from "@/types/notification.types";
 import { handleViewNotification } from "@/services/notifications";
+import Loading from "../reusable/loading";
 interface NotificationProps {
-  avatarSrc: string;
-  avatarFallback: string;
   icon?: React.ReactNode;
   hasShadow: boolean;
   notification: INotification;
+  hideDeleteButton?: boolean;
+  onDeleted?: () => void;
+  isDeleting?: boolean;
 }
 
 const NotificationComponent: React.FC<NotificationProps> = ({
-  avatarSrc,
-  avatarFallback,
   icon,
   hasShadow = true,
   notification,
+  hideDeleteButton = false,
+  isDeleting,
+  onDeleted,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref);
@@ -37,10 +40,10 @@ const NotificationComponent: React.FC<NotificationProps> = ({
         hasShadow ? "shadow-md" : "shadow-none"
       } w-[350px] rounded-md px-2 py-4 gap-3 justify-center items-center`}
     >
-      <Avatar>
+      {/* <Avatar>
         <AvatarImage src={avatarSrc} alt={avatarFallback} />
         <AvatarFallback>{avatarFallback}</AvatarFallback>
-      </Avatar>
+      </Avatar> */}
       <div>
         <p className="font-semibold">{notification.title}</p>
         <p className="text-sm line-clamp-2 text-muted-foreground">
@@ -48,13 +51,22 @@ const NotificationComponent: React.FC<NotificationProps> = ({
         </p>
       </div>
       <div>
-        <Button
-          className="w-10 h-10 rounded-full"
-          variant={"destructive"}
-          size={"sm"}
-        >
-          {icon ? icon : <Trash />}
-        </Button>
+        {!hideDeleteButton && (
+          <>
+            {isDeleting ? (
+              <Loading className="w-10 h-10 rounded-full" />
+            ) : (
+              <Button
+                className="w-10 h-10 rounded-full"
+                variant={"destructive"}
+                size={"sm"}
+                onClick={onDeleted}
+              >
+                {icon ? icon : <Trash />}
+              </Button>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

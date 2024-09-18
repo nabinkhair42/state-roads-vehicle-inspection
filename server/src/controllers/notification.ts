@@ -64,6 +64,10 @@ export const handleHideNotification = async (req: Request, res: Response) => {
     });
   }
 
+  await notificationModel.findByIdAndUpdate(id, {
+    isHidden: true,
+  });
+
   return sendRes(res, {
     status: 200,
     message: "Notification hidden!",
