@@ -53,6 +53,7 @@ const Page = () => {
             className="w-full"
             onClick={() => {
               verifyOTP.mutate(otp);
+              
             }}
             disabled={verifyOTP.isPending}
           >

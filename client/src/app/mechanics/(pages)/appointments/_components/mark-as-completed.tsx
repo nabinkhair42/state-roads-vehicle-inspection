@@ -41,7 +41,9 @@ const MarkAsCompleted: FC<Props> = ({ isOpen, setIsOpen, id }) => {
     },
   });
   return (
-    <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
+    <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)} 
+    
+    >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Upload Report</DialogTitle>

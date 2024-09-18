@@ -9,6 +9,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -29,6 +37,8 @@ import { toast } from "sonner";
 import MarkAsCompleted from "./_components/mark-as-completed";
 
 const MechanicAppointments = () => {
+  const [ViewDetailsDialogOpen, setViewDetailsDialogOpen] = useState(false);
+
   const [isOpen, setIsOpen] = useState(false);
   const [idThatIsBeingModified, setIdThatIsBeingModified] = useState("");
   const queryClient = useQueryClient();
@@ -142,7 +152,11 @@ const MechanicAppointments = () => {
                       )}
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem>View Details</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => setViewDetailsDialogOpen(true)}
+                      >
+                        View Details
+                      </DropdownMenuItem>
                       {data.status === "PENDING" && (
                         <>
                           <DropdownMenuSeparator />
@@ -198,6 +212,22 @@ const MechanicAppointments = () => {
           )}
         </TableBody>
       </Table>
+
+      <Dialog
+        open={ViewDetailsDialogOpen}
+        onOpenChange={setViewDetailsDialogOpen}
+      >
+        <DialogContent
+          onInteractOutside={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>User Details:</DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
