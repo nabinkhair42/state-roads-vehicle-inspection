@@ -43,3 +43,29 @@ export const handleViewNotification = async (req: Request, res: Response) => {
     status: 200,
   });
 };
+
+export const handleHideNotification = async (req: Request, res: Response) => {
+  const id = req.query.id;
+  const userId = res.locals.jwtData.userId;
+
+  const notification = await notificationModel.findById(id);
+
+  if (!notification) {
+    return sendRes(res, {
+      status: 404,
+      message: "Notification not found!",
+    });
+  }
+
+  if (notification.for.toString() !== userId) {
+    return sendRes(res, {
+      status: 403,
+      message: "You are not allowed to hide this notification!",
+    });
+  }
+
+  return sendRes(res, {
+    status: 200,
+    message: "Notification hidden!",
+  });
+};

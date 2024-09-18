@@ -2,6 +2,7 @@ import ENV_CONFIG from "@/config/env.config";
 import {
   handleGetAllNotificationsForMechanic,
   handleGetAllNotificationsForUser,
+  handleHideNotification,
   handleViewNotification,
 } from "@/controllers/notification";
 import { verifyToken } from "@/utils/token-manager";
@@ -22,5 +23,15 @@ notificationRouter.get(
 );
 
 notificationRouter.put("/view", handleViewNotification);
+notificationRouter.put(
+  "/user/hide",
+  verifyToken(ENV_CONFIG.AUTH_HEADER_ID),
+  handleHideNotification
+);
+notificationRouter.put(
+  "/mechanic/hide",
+  verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),
+  handleHideNotification
+);
 
 export default notificationRouter;
