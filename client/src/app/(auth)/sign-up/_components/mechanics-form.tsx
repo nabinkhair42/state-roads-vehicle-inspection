@@ -167,16 +167,16 @@ const MechanicsForm = () => {
             </div>
             <div className="space-y-1 flex gap-2 justify-center items-center">
               <Input
-                disabled
-                type="text"
+                // disabled
+                type="number"
                 placeholder="Longitude"
                 required
                 className="opacity-100 cursor-default"
                 {...register("storeCoordinates.longitude")}
               />
               <Input
-                disabled
-                type="text"
+                // disabled
+                type="number"
                 placeholder="Latitude"
                 className="opacity-100 cursor-default"
                 required

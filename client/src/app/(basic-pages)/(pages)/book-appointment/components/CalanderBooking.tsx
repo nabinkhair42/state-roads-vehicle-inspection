@@ -1,6 +1,6 @@
 "use client";
 import { format } from "date-fns";
-import { CalendarIcon, ClockIcon } from "lucide-react";
+import { CalendarIcon, ClockIcon, CircleCheck } from "lucide-react";
 import Datetime from "react-datetime";
 import moment from "moment";
 import "react-datetime/css/react-datetime.css";
@@ -38,6 +38,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { handleBookAppointment } from "@/services/appointments";
 import { useRouter } from "next/navigation";
+import { Separator } from "@/components/ui/separator";
 
 export function CalendarForm() {
   const [serviceType, setServiceType] = React.useState<string>();
@@ -98,7 +99,7 @@ export function CalendarForm() {
       {!isAuthenticated || !user ? (
         <div className="flex flex-col items-center justify-center gap-4 h-64">
           <h1 className="text-2xl font-semibold">
-            You need to be logged in to book an appointment
+            You need to be logged in as user to book an appointment
           </h1>
 
           <a href="/sign-in">
@@ -170,31 +171,40 @@ export function CalendarForm() {
           </div>
 
           {/* //TO show The Details of the selected service */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Service Details:</CardTitle>
-              <CardDescription>
-                Details of the service you selected.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {data?.map((service, index) => {
-                if (service._id === selectedServiceId) {
-                  return (
-                    <div key={index}>
-                      <h1 className="text-xl font-semibold">
-                        {service.serviceType}
-                      </h1>
-                      <p className="text-sm text-muted-foreground">
-                        {service.description}
-                      </p>
-                    </div>
-                  );
-                }
-              }
-              )}
-            </CardContent>
-          </Card>
+
+          {data?.map((service, index) => {
+            if (service._id === selectedServiceId) {
+              return (
+                <Card className={`flex flex-col border`} key={index}>
+                  <CardHeader className="flex flex-col items-center">
+                    <CardTitle className="text-center">
+                      {service.serviceType}
+                    </CardTitle>
+                    <CardTitle className="text-3xl font-bold text-center mt-2 text-primary">
+                      ${service.price}
+                    </CardTitle>
+                    <CardDescription className="text-center mt-2 flex flex-col gap-2">
+                      <p>{service.description}</p>
+                    </CardDescription>
+                  </CardHeader>
+                  <Separator />
+                  <CardContent className="flex-grow mt-4">
+                    <CardTitle className=" font-semibold mb-4">
+                      Service Included:
+                    </CardTitle>
+                    <ul className="ml-4">
+                      {service.features?.map((item, i) => (
+                        <li key={i} className="flex items-center mb-2 text-sm">
+                          <CircleCheck className="mr-2 w-4 h-4 text-primary" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              );
+            }
+          })}
 
           <Card>
             <CardHeader>
@@ -243,9 +253,10 @@ export function CalendarForm() {
 
           <Card>
             <CardHeader>
-              <CardTitle>
-                If you have any special request, please let us know.
-              </CardTitle>
+              <CardTitle>Message:</CardTitle>
+              <CardDescription>
+                Enter a short message for the store.
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex  gap-4 flex-col">
               <Textarea

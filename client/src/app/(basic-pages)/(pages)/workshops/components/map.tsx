@@ -79,6 +79,7 @@ const Workshop = () => {
             margin: "auto",
             maxHeight: "1000px",
             maxWidth: "1800px",
+            zIndex: 0,
           }}
           center={[userLocation.latitude, userLocation.longitude]}
           zoom={13}

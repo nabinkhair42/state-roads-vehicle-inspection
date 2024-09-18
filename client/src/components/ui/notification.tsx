@@ -44,7 +44,7 @@ const NotificationComponent: React.FC<NotificationProps> = ({
         <AvatarImage src={avatarSrc} alt={avatarFallback} />
         <AvatarFallback>{avatarFallback}</AvatarFallback>
       </Avatar> */}
-      <div>
+      <div className=" flex flex-col gap-2">
         <p className="font-semibold">{notification.title}</p>
         <p className="text-sm line-clamp-2 text-muted-foreground">
           {notification.message}

@@ -54,9 +54,9 @@ const NotificationPopOut = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          className="rounded-full w-fit h-fit p-1 relative"
-          variant={"outline"}
-          size={"icon"}
+          variant="secondary"
+          size="icon"
+          className="rounded-full"
           disabled={isLoading}
         >
           {notifications?.unread?.length > 0 && (
@@ -64,7 +64,7 @@ const NotificationPopOut = () => {
               {notifications?.unread?.length}
             </Badge>
           )}
-          <Bell className="h-4 w-4" />
+          <Bell className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-fit mr-4 mt-3">
