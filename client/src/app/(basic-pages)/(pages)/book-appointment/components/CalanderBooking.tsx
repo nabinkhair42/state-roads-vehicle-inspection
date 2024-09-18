@@ -133,6 +133,7 @@ export function CalendarForm() {
                 </Select>
               </CardContent>
             </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Store:</CardTitle>
@@ -167,6 +168,33 @@ export function CalendarForm() {
               </CardContent>
             </Card>
           </div>
+
+          {/* //TO show The Details of the selected service */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Service Details:</CardTitle>
+              <CardDescription>
+                Details of the service you selected.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {data?.map((service, index) => {
+                if (service._id === selectedServiceId) {
+                  return (
+                    <div key={index}>
+                      <h1 className="text-xl font-semibold">
+                        {service.serviceType}
+                      </h1>
+                      <p className="text-sm text-muted-foreground">
+                        {service.description}
+                      </p>
+                    </div>
+                  );
+                }
+              }
+              )}
+            </CardContent>
+          </Card>
 
           <Card>
             <CardHeader>
