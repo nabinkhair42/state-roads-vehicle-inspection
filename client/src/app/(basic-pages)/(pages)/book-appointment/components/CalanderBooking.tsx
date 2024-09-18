@@ -175,7 +175,7 @@ export function CalendarForm() {
           {data?.map((service, index) => {
             if (service._id === selectedServiceId) {
               return (
-                <Card className={`flex flex-col border`}>
+                <Card className={`flex flex-col border`} key={index}>
                   <CardHeader className="flex flex-col items-center">
                     <CardTitle className="text-center">
                       {service.serviceType}
