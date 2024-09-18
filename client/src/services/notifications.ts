@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "./axios";
 import { API_URL } from ".";
 import { INotification } from "@/types/notification.types";
@@ -65,5 +65,39 @@ export const handleViewNotification = (id: string) => {
       .catch(() => {
         reject(false);
       });
+  });
+};
+
+export const useHideNotifications = (type: "user" | "mechanic") => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (notificationId: string) => {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(
+            type === "user"
+              ? API_URL.HIDE_USER_NOTIFICATIONS
+              : API_URL.HIDE_MECHANIC_NOTIFICATIONS,
+            {},
+            {
+              params: {
+                id: notificationId,
+              },
+            }
+          )
+          .then(() => {
+            queryClient
+              .invalidateQueries({
+                queryKey: ["notifications", type],
+              })
+              .finally(() => {
+                resolve(true);
+              });
+          })
+          .catch(() => {
+            reject(false);
+          });
+      });
+    },
   });
 };

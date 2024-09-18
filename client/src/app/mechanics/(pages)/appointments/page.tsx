@@ -37,7 +37,8 @@ import { toast } from "sonner";
 import MarkAsCompleted from "./_components/mark-as-completed";
 
 const MechanicAppointments = () => {
-  const [ViewDetailsDialogOpen, setViewDetailsDialogOpen] = useState(false);
+  const [viewDetailsDialogOpen, setViewDetailsDialogOpen] = useState(false);
+  const [viewDetailsDialogId, setViewDetailsDialogId] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
   const [idThatIsBeingModified, setIdThatIsBeingModified] = useState("");
@@ -153,7 +154,10 @@ const MechanicAppointments = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem
-                        onClick={() => setViewDetailsDialogOpen(true)}
+                        onClick={() => {
+                          setViewDetailsDialogId(data._id);
+                          setViewDetailsDialogOpen(true);
+                        }}
                       >
                         View Details
                       </DropdownMenuItem>
@@ -214,7 +218,7 @@ const MechanicAppointments = () => {
       </Table>
 
       <Dialog
-        open={ViewDetailsDialogOpen}
+        open={viewDetailsDialogOpen}
         onOpenChange={setViewDetailsDialogOpen}
       >
         <DialogContent
@@ -223,8 +227,72 @@ const MechanicAppointments = () => {
           }}
         >
           <DialogHeader>
-            <DialogTitle>User Details:</DialogTitle>
-            <DialogDescription></DialogDescription>
+            <DialogTitle>Appointment Details:</DialogTitle>
+            {(() => {
+              const appointment = data?.find(
+                (d) => d._id === viewDetailsDialogId
+              );
+              if (!appointment) return null;
+              return (
+                <DialogDescription className="flex flex-col space-y-2">
+                  <div>
+                    <span className="font-semibold">Booked By:</span>{" "}
+                    {appointment.bookedBy.name}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Contact No:</span>{" "}
+                    {appointment.bookedBy.phone}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Email:</span>{" "}
+                    {appointment.bookedBy.email}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Booked For:</span>{" "}
+                    {appointment.bookedFor.name}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Service:</span>{" "}
+                    {appointment.service.serviceType}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Appointment Date:</span>{" "}
+                    {new Date(appointment.appointmentDate).toLocaleDateString(
+                      "en-US",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Appointment Time:</span>{" "}
+                    {appointment.appointmentTime}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Message:</span>{" "}
+                    {appointment.message}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Status:</span>{" "}
+                    <Badge
+                      variant={
+                        appointment.status === "PENDING"
+                          ? "pending"
+                          : appointment.status === "APPROVED"
+                          ? "success"
+                          : appointment.status === "REJECTED"
+                          ? "destructive"
+                          : "outline"
+                      }
+                    >
+                      {appointment.status}
+                    </Badge>
+                  </div>
+                </DialogDescription>
+              );
+            })()}
           </DialogHeader>
         </DialogContent>
       </Dialog>

@@ -11,7 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import NotificationComponent from "@/components/ui/notification";
-import { useUserNotifications } from "@/services/notifications";
+import {
+  useHideNotifications,
+  useUserNotifications,
+} from "@/services/notifications";
 import { INotification } from "@/types/notification.types";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +22,9 @@ import { useRouter } from "next/navigation";
 
 const NotificationPopOut = () => {
   const { isLoading, data, isError } = useUserNotifications();
+  const [hidingNotification, setHidingNotification] = useState<string | null>(
+    null
+  );
   const router = useRouter();
   const [notifications, setNotifications] = useState<{
     read: INotification[];
@@ -30,12 +36,17 @@ const NotificationPopOut = () => {
 
   useEffect(() => {
     if (isLoading || isError) return;
-
-    const read = data?.filter((notification) => notification.isViewed) ?? [];
-    const unread = data?.filter((notification) => !notification.isViewed) ?? [];
+    const nonHidden =
+      data?.filter((notification) => !notification.isHidden) ?? [];
+    const read =
+      nonHidden?.filter((notification) => notification.isViewed) ?? [];
+    const unread =
+      nonHidden?.filter((notification) => !notification.isViewed) ?? [];
 
     setNotifications({ read, unread });
   }, [isLoading, isError, data]);
+
+  const { mutate, isPending } = useHideNotifications("user");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -72,10 +83,15 @@ const NotificationPopOut = () => {
               {notifications?.unread?.map((notification) => (
                 <NotificationComponent
                   key={notification._id}
-                  avatarSrc="https://github.com/shadcn.png"
-                  avatarFallback="N"
                   hasShadow={true}
                   notification={notification}
+                  onDeleted={() => {
+                    setHidingNotification(notification._id);
+                    mutate(notification._id);
+                  }}
+                  isDeleting={
+                    isPending && hidingNotification === notification._id
+                  }
                 />
               ))}
             </DropdownMenuGroup>
@@ -93,10 +109,15 @@ const NotificationPopOut = () => {
               {notifications?.read?.map((notification) => (
                 <NotificationComponent
                   key={notification._id}
-                  avatarSrc="https://github.com/shadcn.png"
-                  avatarFallback="R"
                   hasShadow={false}
                   notification={notification}
+                  onDeleted={() => {
+                    setHidingNotification(notification._id);
+                    mutate(notification._id);
+                  }}
+                  isDeleting={
+                    isPending && hidingNotification === notification._id
+                  }
                 />
               ))}
             </DropdownMenuGroup>

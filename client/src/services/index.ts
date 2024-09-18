@@ -48,4 +48,6 @@ export const API_URL = {
   GET_USER_NOTIFICATIONS: BASE_URL + "/notifications/user",
   GET_MECHANIC_NOTIFICATIONS: BASE_URL + "/notifications/mechanic",
   VIEW_NOTIFICATIONS: BASE_URL + "/notifications/view",
+  HIDE_USER_NOTIFICATIONS: BASE_URL + "/notifications/user/hide",
+  HIDE_MECHANIC_NOTIFICATIONS: BASE_URL + "/notifications/mechanic/hide",
 };
