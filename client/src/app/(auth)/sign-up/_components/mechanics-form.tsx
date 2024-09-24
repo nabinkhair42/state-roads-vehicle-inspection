@@ -169,6 +169,7 @@ const MechanicsForm = () => {
               <Input
                 // disabled
                 type="number"
+                step={"any"}
                 placeholder="Longitude"
                 required
                 className="opacity-100 cursor-default"
@@ -180,6 +181,7 @@ const MechanicsForm = () => {
                 placeholder="Latitude"
                 className="opacity-100 cursor-default"
                 required
+                step={"any"}
                 {...register("storeCoordinates.latitude")}
               />
               <ErrorLine message={errors.storeCoordinates?.message} />
