@@ -64,10 +64,13 @@ export const useResendOTPForUserSignup = () => {
             withCredentials: true,
           })
           .then((res) => {
-            queryClient.invalidateQueries({
-              queryKey: ["user"],
-            });
-            resolve(res.data?.message);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["user"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
           })
           .catch((err) => {
             reject(err.response.data?.message);
@@ -84,6 +87,7 @@ export const useResendOTPForUserSignup = () => {
 };
 
 export const useVerifyOTPForUserSignup = () => {
+  const queryClient = useQueryClient();
   const router = useRouter();
   return useMutation({
     mutationFn: (otp: string): Promise<string> => {
@@ -97,7 +101,13 @@ export const useVerifyOTPForUserSignup = () => {
             }
           )
           .then((res) => {
-            resolve(res.data?.message);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["user"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
           })
           .catch((err) => {
             reject(err.response.data?.message);
@@ -225,10 +235,13 @@ export const useResendOTPForMechanicsSignup = () => {
             withCredentials: true,
           })
           .then((res) => {
-            queryClient.invalidateQueries({
-              queryKey: ["mechanics"],
-            });
-            resolve(res.data?.message);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["mechanics"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
           })
           .catch((err) => {
             reject(err.response.data?.message);
@@ -246,6 +259,7 @@ export const useResendOTPForMechanicsSignup = () => {
 
 export const useVerifyOTPForMechanicsSignup = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (otp: string): Promise<string> => {
       return new Promise((resolve, reject) => {
@@ -258,7 +272,13 @@ export const useVerifyOTPForMechanicsSignup = () => {
             }
           )
           .then((res) => {
-            resolve(res.data?.message);
+            queryClient
+              .invalidateQueries({
+                queryKey: ["mechanics"],
+              })
+              .finally(() => {
+                resolve(res.data?.message);
+              });
           })
           .catch((err) => {
             reject(err.response.data?.message);
@@ -391,18 +411,22 @@ export const useUpdatePassword = ({ onSuccess }: { onSuccess: () => void }) => {
 // Function to handle User password reset request
 export const userResetPasswordRequest = async (email: string) => {
   const response = await fetch(API_URL.USER_RESET_PASSWORD_REQUEST, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
   });
   return await response.json();
 };
 
 // Function to handle User password reset verification
-export const userResetPasswordVerify = async (email: string, newPassword: string, otp: string) => {
+export const userResetPasswordVerify = async (
+  email: string,
+  newPassword: string,
+  otp: string
+) => {
   const response = await fetch(API_URL.USER_RESET_PASSWORD_VERIFY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, newPassword, otp }),
   });
   return await response.json();
@@ -411,18 +435,22 @@ export const userResetPasswordVerify = async (email: string, newPassword: string
 // Function to handle Mechanic password reset request
 export const mechanicResetPasswordRequest = async (email: string) => {
   const response = await fetch(API_URL.MECHANIC_RESET_PASSWORD_REQUEST, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email }),
   });
   return await response.json();
 };
 
 // Function to handle Mechanic password reset verification
-export const mechanicResetPasswordVerify = async (email: string, newPassword: string, otp: string) => {
+export const mechanicResetPasswordVerify = async (
+  email: string,
+  newPassword: string,
+  otp: string
+) => {
   const response = await fetch(API_URL.MECHANIC_RESET_PASSWORD_VERIFY, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, newPassword, otp }),
   });
   return await response.json();
