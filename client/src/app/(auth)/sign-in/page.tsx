@@ -1,22 +1,10 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 import DotPattern from "@/components/ui/dotPattern";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Key } from "lucide-react";
 import UserForm from "./_components/user-fom";
 import MechanicsForm from "./_components/mechanics-form";
+import { Metadata } from "next";
 
 const LoginPage = () => {
   return (
@@ -26,7 +14,7 @@ const LoginPage = () => {
           "[mask-image:radial-gradient(400px_circle_at_center,white,transparent)]"
         )}
       />
-      <div className="bg-white z-10">
+      <div className=" z-10">
         <Tabs defaultValue="user" className="w-[400px]">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="user">User</TabsTrigger>
@@ -45,3 +33,25 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+export const metadata: Metadata = {
+  title: "Sign In - Auto Inspector",
+  description:
+    "Sign in to your Auto Inspector account. Schedule a car inspection, view your inspection reports, and manage your bookings with ease.",
+  keywords: "car inspection login, Auto Inspector login, car inspection account",
+  openGraph: {
+    type: "website",
+    url: "https://www.autoinspector.com.au/sign-in",
+    title: "Sign In - Auto Inspector",
+    description:
+      "Sign in to your Auto Inspector account. Schedule a car inspection, view your inspection reports, and manage your bookings with ease.",
+    images: [
+      {
+        url: "https://www.autoinspector.com.au/sign-in-og-image.jpg",
+        width: 800,
+        height: 600,
+        alt: "Auto Inspector Sign In",
+      },
+    ],
+  },
+};

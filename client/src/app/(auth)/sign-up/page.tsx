@@ -1,10 +1,10 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import DotPattern from "@/components/ui/dotPattern";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import UserForm from "./_components/user-form";
 import MechanicsForm from "./_components/mechanics-form";
+import { Metadata } from "next";
 
 const SignupPage = () => {
   return (
@@ -33,3 +33,25 @@ const SignupPage = () => {
 };
 
 export default SignupPage;
+
+export const metadata: Metadata = {
+  title: "Sign Up - Auto Inspector",
+  description:
+    "Sign up for an Auto Inspector account. Schedule a car inspection, view your inspection reports, and manage your bookings with ease.",
+  keywords: "car inspection sign up, Auto Inspector sign up, car inspection account",
+  openGraph: {
+    type: "website",
+    url: "https://www.autoinspector.com.au/sign-up",
+    title: "Sign Up - Auto Inspector",
+    description:
+      "Sign up for an Auto Inspector account. Schedule a car inspection, view your inspection reports, and manage your bookings with ease.",
+    images: [
+      {
+        url: "https://www.autoinspector.com.au/sign-up-og-image.jpg",
+        width: 800,
+        height: 600,
+        alt: "Auto Inspector Sign Up",
+      },
+    ],
+  },
+};
