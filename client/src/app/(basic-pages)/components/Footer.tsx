@@ -9,7 +9,7 @@ import {
   Links,
   SocialMediaLinks,
 } from "@/constants/Footer";
-import Logo from "@/assets/logo.png";
+import Logo from "@/assets/logo.svg";
 
 const Footer = () => {
   return (

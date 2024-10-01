@@ -7,22 +7,19 @@ import { usePathname } from "next/navigation";
 import { useAppSelector } from "@/hooks/store";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import Logo from "@/assets/logo.png";
+import Logo from "@/assets/logo.svg";
 import {
   AlignLeft,
   Home,
@@ -43,7 +40,7 @@ const NavMenuList = [
 ];
 
 export default function NavigationMenuDemo() {
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isAuthenticated } = useAppSelector((state: { auth: { isAuthenticated: boolean } }) => state.auth);
   const pathname = usePathname();
 
   return (

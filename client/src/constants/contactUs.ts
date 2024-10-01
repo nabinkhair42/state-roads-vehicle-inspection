@@ -9,7 +9,7 @@ export const ContactContent = [
 ];
 
 export const contactInfo = [
-  { icon: Phone, title: "Phone", value: "+1 (555) 000-0000" },
+  // { icon: Phone, title: "Phone", value: "" },
   { icon: Mail, title: "Email", value: "contact@example.com" },
   { icon: MapPin, title: "Address", value: "123 Business St, City, Country" },
 ];
