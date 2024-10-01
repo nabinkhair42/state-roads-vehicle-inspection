@@ -4,15 +4,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Car, FileText, Shield } from "lucide-react";
 import { useRouter } from "next/navigation";
-
-const features = [
-  { icon: CheckCircle, text: "250+ Point Inspection" },
-  { icon: Car, text: "Certified Mechanics" },
-  { icon: FileText, text: "Detailed Reports" },
-  { icon: Shield, text: "30-Day Guarantee" },
-];
+import { DynamicHeroFeatures } from "@/constants/HomePage";
 
 const DynamicHero = () => {
   const router = useRouter();
@@ -34,7 +27,7 @@ const DynamicHero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Badge variant="outline" className="mb-4 text-lg py-1 px-3">
+            <Badge variant="outline" className="mb-4  py-1 px-3">
               Auto Inspector
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -67,7 +60,7 @@ const DynamicHero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            {features.map((feature, index) => (
+            {DynamicHeroFeatures.map((feature, index) => (
               <div
                 key={index}
                 className="flex flex-col items-center text-center"

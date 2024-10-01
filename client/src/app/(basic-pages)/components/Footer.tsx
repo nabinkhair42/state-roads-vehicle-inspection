@@ -4,36 +4,12 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Phone,
-  Mail,
-  MapPin,
-  Facebook,
-  Twitter,
-  Instagram,
-  Linkedin,
-} from "lucide-react";
+  ContactsDetails,
+  CarInspections,
+  Links,
+  SocialMediaLinks,
+} from "@/constants/Footer";
 import Logo from "@/assets/logo.png";
-
-const ContactUs = [
-  { place: "Melbourne", contact: "03 98508000", icon: Phone },
-  { place: "NSW", contact: "02 96551411", icon: Phone },
-  { place: "Bris/Gold Coast", contact: "07 33678000", icon: Phone },
-  { place: "Perth", contact: "08 63232069", icon: Phone },
-];
-
-const CarInspections = [
-  { name: "Body & Chassis Car Inspections", url: "#" },
-  { name: "Comprehensive Vehicle Inspections", url: "#" },
-  { name: "Mechanical Inspections", url: "#" },
-  { name: "Testimonials - customers love us!", url: "#" },
-];
-
-const Links = [
-  { name: "Car Checks Melbourne", url: "#" },
-  { name: "Mobile Vehicle Inspections Melbourne", url: "#" },
-  { name: "Car Inspections Melbourne", url: "#" },
-  { name: "Vehicle Inspections Australia Wide", url: "#" },
-];
 
 const Footer = () => {
   return (
@@ -50,30 +26,15 @@ const Footer = () => {
               Just Car Inspections operates in several states around Australia
             </p>
             <div className="flex space-x-4">
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-primary"
-              >
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-primary"
-              >
-                <Twitter className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-primary"
-              >
-                <Instagram className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-primary"
-              >
-                <Linkedin className="h-5 w-5" />
-              </Link>
+              {SocialMediaLinks.map(({ icon: Icon, url }, index) => (
+                <Link
+                  key={index}
+                  href={url}
+                  className="text-muted-foreground hover:text-primary"
+                >
+                  <Icon className="h-5 w-5" />
+                </Link>
+              ))}
             </div>
           </div>
 
@@ -82,7 +43,7 @@ const Footer = () => {
               Contact Us
             </h2>
             <ul className="space-y-3">
-              {ContactUs.map((contact, index) => (
+              {ContactsDetails.map((contact, index) => (
                 <li key={index} className="flex items-center space-x-2">
                   <contact.icon className="h-5 w-5 text-primary" />
                   <div>

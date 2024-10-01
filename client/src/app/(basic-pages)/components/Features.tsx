@@ -1,40 +1,13 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { Cog, ShipWheel, CircleGauge, Hammer } from "lucide-react";
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-
-const features = [
-  {
-    title: "Qualified Mechanics",
-    description:
-      "Our hand-picked team of mechanics brings years of industry experience, ensuring you're in capable hands.",
-    icon: Hammer,
-  },
-  {
-    title: "Peace of Mind",
-    description:
-      "We eliminate the risk of expensive mistakes, ensuring no nasty surprises when purchasing a car.",
-    icon: ShipWheel,
-  },
-  {
-    title: "Detailed Reports",
-    description:
-      "Our comprehensive 250+ point inspection report includes a one-on-one review with an expert mechanic.",
-    icon: CircleGauge,
-  },
-  {
-    title: "30-Day Guarantee",
-    description:
-      "We offer a 30-day Stateroads vehicle protection guarantee, backing our commitment to excellence.",
-    icon: Cog,
-  },
-];
+import { FeaturesDemoSection } from "@/constants/HomePage";
 
 export function Features() {
   return (
@@ -49,7 +22,7 @@ export function Features() {
           Why Choose Auto Inspector?
         </motion.h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {features.map((feature, index) => (
+          {FeaturesDemoSection.map((feature, index) => (
             <Feature key={feature.title} {...feature} index={index} />
           ))}
         </div>

@@ -3,46 +3,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Briefcase, Car, CheckCheck } from "lucide-react";
-
-const inspectionCategories = [
-  {
-    name: "Engine",
-    icon: Car,
-    points: [
-      "Oil levels and quality",
-      "Coolant system integrity",
-      "Belts and hoses condition",
-      "Engine mounts stability",
-      "Exhaust system check",
-      "Fuel system inspection",
-    ],
-  },
-  {
-    name: "Interior",
-    icon: Briefcase,
-    points: [
-      "Seats and upholstery condition",
-      "Dashboard controls functionality",
-      "Air conditioning performance",
-      "Audio system quality",
-      "Safety features test",
-      "Interior lighting check",
-    ],
-  },
-  {
-    name: "Exterior",
-    icon: Car,
-    points: [
-      "Body condition assessment",
-      "Paint quality and finish",
-      "Lights and signals operation",
-      "Tires tread and pressure",
-      "Windshield and wipers check",
-      "Suspension system inspection",
-    ],
-  },
-];
+import { CheckCheck } from "lucide-react";
+import { inspectionCategories } from "@/constants/HomePage";
 
 const InspectionPoints: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState("Engine");

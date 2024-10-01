@@ -2,10 +2,10 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 import Image from "next/image";
 import Hero from "@/assets/hero/OIG3.jpeg";
+import { Points, AlternativeContent } from "@/constants/HomePage";
 
 const SimpleHero = () => {
   return (
@@ -15,23 +15,22 @@ const SimpleHero = () => {
     >
       <div className="container mx-auto px-4 py-20 md:py-32 flex flex-col md:flex-row items-center">
         <div className="w-full md:w-1/2 mb-10 md:mb-0 container">
-          <motion.h1
-            className="text-4xl md:text-6xl font-bold mb-6"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            Most Trusted Inspection Service
-          </motion.h1>
-          <motion.p
-            className="text-muted-foreground mb-8"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Our certified mechanics will provide you with a detailed report
-            within 24 hours of your inspection.
-          </motion.p>
+          {AlternativeContent.map((item, index) => (
+            <motion.div
+              key={index}
+              className="text-center"
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="text-4xl md:text-6xl font-bold mb-6">
+                {item.title}
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                {item.description}
+              </p>
+            </motion.div>
+          ))}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -43,11 +42,7 @@ const SimpleHero = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            {[
-              "Certified Mechanics",
-              "Detailed Reports",
-              "30-Day Guarantee",
-            ].map((item, index) => (
+            {Points.map((item, index) => (
               <li
                 key={index}
                 className="flex items-center text-muted-foreground"

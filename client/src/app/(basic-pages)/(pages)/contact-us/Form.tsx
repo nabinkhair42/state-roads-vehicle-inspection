@@ -1,6 +1,6 @@
 "use client";
+
 import React from "react";
-import { Phone, Mail, PinIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -8,10 +8,15 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { ContactSchema, IContactSchema } from "@/zod/contact.zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import ErrorLine from "@/components/reusable/error-line";
 import { useContact } from "@/services/contact";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  ContactContent,
+  contactForm,
+  contactInfo,
+} from "@/constants/contactUs";
 
-const ContactUS = () => {
+export default function ContactUS() {
   const {
     register,
     handleSubmit,
@@ -27,173 +32,89 @@ const ContactUS = () => {
   };
 
   return (
-    <main className="overflow-x-clip">
-      <section className="py-10 sm:py-16 lg:py-24">
-        <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl mb-16">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold leading-tight sm:text-4xl lg:text-5xl">
-              Contact us
-            </h2>
-            <p className="max-w-xl mx-auto mt-4 text-base leading-relaxed text-muted-foreground">
-              {" "}
+    <main className="container mx-auto px-4 py-16">
+      <section className="space-y-16">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold tracking-tight">
+            {ContactContent[0].title}
+          </h1>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            {ContactContent[0].description}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {contactInfo.map(({ icon: Icon, title, value }, index) => (
+            <Card key={index}>
+              <CardHeader className="flex flex-row items-center space-x-4 pb-2">
+                <Icon className="h-6 w-6" />
+                <CardTitle>{title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{value}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center">
+              {contactForm.title}
+            </CardTitle>
+            <p className="text-muted-foreground text-center">
+              {contactForm.description}
             </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto mt-12 sm:mt-16">
-            <div className="grid grid-cols-1 gap-6 px-8 text-center md:px-0 md:grid-cols-3">
-              <div className="overflow-hidden border shadow-sm rounded-xl">
-                <div className="p-6 flex flex-col justify-center items-center">
-                  <Phone className="h-10 w-10 text-muted-foreground" />
-                  <p className="mt-6 text-lg font-medium">Melbourne</p>
-                  <a
-                    className="mt-1 text-lg font-medium"
-                    href="tel:(03) 9850 8000"
-                  >
-                    (03) 98508000
-                  </a>
-                </div>
-              </div>
-
-              <div className="overflow-hidden border shadow-sm rounded-xl">
-                <div className="p-6 flex flex-col justify-center items-center">
-                  <Mail className="h-10 w-10 text-muted-foreground" />
-                  <p className="mt-6 text-lg font-medium">
-                    contact@example.com
-                  </p>
-                  <p className="mt-1 text-lg font-medium">hr@example.com</p>
-                </div>
-              </div>
-
-              <div className="overflow-hidden border shadow-sm rounded-xl">
-                <div className="p-6 flex flex-col justify-center items-center">
-                  <PinIcon className="h-10 w-10 text-muted-foreground" />
-                  <p className="mt-6 text-lg font-medium leading-relaxed">
-                    8502 Preston Rd. Ingle, Maine 98380, USA
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 overflow-hidden border shadow-sm rounded-xl">
-              <div className="px-6 py-12 sm:p-12">
-                <h3 className="text-3xl font-semibold text-center">
-                  Send us a message
-                </h3>
-
-                <form onSubmit={handleSubmit(onSubmit)} className="mt-14">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-4">
-                    <div>
-                      <Label htmlFor="name" className="text-base font-medium">
-                        {" "}
-                        Your name{" "}
-                      </Label>
-                      <div className="mt-2.5 relative">
-                        <Input
-                          type="text"
-                          placeholder="Enter your full name"
-                          {...register("name")}
-                        />
-                        <ErrorLine message={errors.name?.message} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="email" className="text-base font-medium">
-                        {" "}
-                        Email address{" "}
-                      </Label>
-                      <div className="mt-2.5 relative">
-                        <Input
-                          type="email"
-                          placeholder="Enter your full name"
-                          {...register("email")}
-                        />
-                      </div>
-                      <ErrorLine message={errors.email?.message} />
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="phoneNumber"
-                        className="text-base font-medium"
-                      >
-                        {" "}
-                        Phone number{" "}
-                      </Label>
-                      <div className="mt-2.5 relative">
-                        <Input
-                          type="tel"
-                          {...register("phoneNumber")}
-                          placeholder="Enter your full name"
-                        />
-                      </div>
-                      <ErrorLine message={errors.phoneNumber?.message} />
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="companyName"
-                        className="text-base font-medium"
-                      >
-                        {" "}
-                        Company name{" "}
-                      </Label>
-                      <div className="mt-2.5 relative">
-                        <Input
-                          type="text"
-                          {...register("companyName")}
-                          placeholder="Enter your full name"
-                        />
-                      </div>
-                      <ErrorLine message={errors.companyName?.message} />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <Label
-                        htmlFor="message"
-                        className="text-base font-medium"
-                      >
-                        {" "}
-                        Message{" "}
-                      </Label>
-                      <div className="mt-2.5 relative">
-                        <Textarea
-                          placeholder="Type your message here."
-                          {...register("message")}
-                        ></Textarea>
-                      </div>
-                      <ErrorLine message={errors.message?.message} />
-                    </div>
-
-                    <div className="sm:col-span-2">
-                      <Button
-                        isLoading={isPending}
-                        type="submit"
-                        className="w-full "
-                      >
-                        Send
-                      </Button>
-                    </div>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {contactForm.fields.map((field, index) => (
+                  <div className="space-y-2" key={index}>
+                    <Label htmlFor={field.name}>{field.label}</Label>
+                    {field.type === "textarea" ? (
+                      <Textarea
+                        id={field.name}
+                        placeholder={field.placeholder}
+                        className="min-h-[120px]"
+                        {...register(field.name as keyof IContactSchema)}
+                      />
+                    ) : (
+                      <Input
+                        id={field.name}
+                        type={field.type}
+                        placeholder={field.placeholder}
+                        {...register(field.name as keyof IContactSchema)}
+                      />
+                    )}
+                    {errors[field.name as keyof IContactSchema] && (
+                      <p className="text-sm text-destructive">
+                        {errors[field.name as keyof IContactSchema]?.message}
+                      </p>
+                    )}
                   </div>
-                </form>
+                ))}
               </div>
-            </div>
-          </div>
 
-          <div>
-            <iframe
-              className="w-full h-96 mt-16"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3152.154320165223!2d144.9619503152587!3d-37.79910597975403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad643d6e1e6a1f7%3A0x9e4b1c6d2c1b4f4c!2sUniversity%20of%20Melbourne!5e0!3m2!1sen!2sau!4v1631862946487!5m2!1sen!2sau"
-              width="600"
-              height="450"
-              style={{ border: 0 }}
-              loading="lazy"
-            ></iframe>
-          </div>
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? "Sending..." : contactForm.submit.label}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        <div className="aspect-video rounded-lg overflow-hidden">
+          <iframe
+            title="Our Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3152.154320165223!2d144.9619503152587!3d-37.79910597975403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad643d6e1e6a1f7%3A0x9e4b1c6d2c1b4f4c!2sUniversity%20of%20Melbourne!5e0!3m2!1sen!2sau!4v1631862946487!5m2!1sen!2sau"
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            loading="lazy"
+            allowFullScreen
+          />
         </div>
       </section>
     </main>
   );
-};
-
-export default ContactUS;
+}
