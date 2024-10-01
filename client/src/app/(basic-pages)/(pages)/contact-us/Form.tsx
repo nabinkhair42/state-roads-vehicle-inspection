@@ -43,9 +43,9 @@ export default function ContactUS() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="flex-col md:flex-row flex gap-4 items-center justify-center">
           {contactInfo.map(({ icon: Icon, title, value }, index) => (
-            <Card key={index}>
+            <Card key={index} className="w-64 h-32   ">
               <CardHeader className="flex flex-row items-center space-x-4 pb-2">
                 <Icon className="h-6 w-6" />
                 <CardTitle>{title}</CardTitle>
