@@ -9,8 +9,8 @@ export const ContactContent = [
 ];
 
 export const contactInfo = [
-  // { icon: Phone, title: "Phone", value: "" },
-  { icon: Mail, title: "Email", value: "contact@example.com" },
+  { icon: Phone, title: "Phone", value: "03 9850 8000" },
+  { icon: Mail, title: "Email", value: "support@autoinspector.com.au" },
   { icon: MapPin, title: "Address", value: "123 Business St, City, Country" },
 ];
 
