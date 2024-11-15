@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import AppointmentList from "@/app/user/components/UserAppointment";
+import AppointmentList from "@/app/user/_components/UserAppointment";
 import { useAppSelector } from "@/hooks/store";
 import NotFound from "@/components/pages/not-found";
 const Page = () => {

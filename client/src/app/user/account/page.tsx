@@ -1,6 +1,6 @@
 import React from "react";
-import UserDetails from "@/app/user/account/components/UserDetails";
-import UserChangePassword from "@/app/user/account/components/ChangePassword";
+import UserDetails from "@/app/user/account/_components/UserDetails";
+import UserChangePassword from "@/app/user/account/_components/ChangePassword";
 
 const page = () => {
   return (

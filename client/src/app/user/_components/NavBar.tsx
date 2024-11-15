@@ -2,8 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Clock1, Menu, User2 } from "lucide-react";
-import Notifications from "@/app/user/components/Notification";
-import UserControl from "@/app/user/components/UserControl";
+import Notifications from "@/app/user/_components/Notification";
+import UserControl from "@/app/user/_components/UserControl";
 import Link from "next/link";
 import { Home, Bell } from "lucide-react"; // Import the missing components
 import { Badge } from "@/components/ui/badge"; // Import the missing component

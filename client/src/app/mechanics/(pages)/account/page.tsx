@@ -1,5 +1,5 @@
-import MechanicDetails from "@/app/mechanics/(pages)/account/components/MechanicDetails";
-import MechanicChangePassword from "@/app/mechanics/(pages)/account/components/ChangePassword";
+import MechanicDetails from "@/app/mechanics/(pages)/account/_components/MechanicDetails";
+import MechanicChangePassword from "@/app/mechanics/(pages)/account/_components/ChangePassword";
 
 const Page = () => {
   return (

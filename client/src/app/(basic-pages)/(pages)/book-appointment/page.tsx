@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import CalenderBooking from "./components/CalanderBooking";
+import CalenderBooking from "./_components/CalanderBooking";
 
 const BookAppointment = () => {
   return (

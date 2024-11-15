@@ -1,8 +1,6 @@
 "use client";
-import SideBar from "@/app/user/components/SideBar";
-import NavBar from "@/app/user/components/NavBar";
-import { useUserProfile } from "@/services/auth";
-import Loading from "@/components/reusable/loading";
+import SideBar from "@/app/user/_components/SideBar";
+import NavBar from "@/app/user/_components/NavBar";
 import NotFound from "@/components/pages/not-found";
 import { useAppSelector } from "@/hooks/store";
 

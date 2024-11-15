@@ -1,9 +1,9 @@
-import FeaturesSectionDemo from "@/app/(basic-pages)/components/Features";
-import Inquiry from "@/app/(basic-pages)/components/Inquiry";
+import FeaturesSectionDemo from "@/app/(basic-pages)/_components/Features";
+import Inquiry from "@/app/(basic-pages)/_components/Inquiry";
 import React from "react";
-import AlternativeHero from "@/app/(basic-pages)/components/AlternativeHeroSection";
-import DynamicHero from "@/app/(basic-pages)/components/DynamicHero";
-import InspectionPoints from "@/app/(basic-pages)/components/Points";
+import AlternativeHero from "@/app/(basic-pages)/_components/AlternativeHeroSection";
+import DynamicHero from "@/app/(basic-pages)/_components/DynamicHero";
+import InspectionPoints from "@/app/(basic-pages)/_components/Points";
 import { Metadata } from "next";
 
 const Page = () => {

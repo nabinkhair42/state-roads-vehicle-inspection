@@ -15,14 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Key } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  IMechanicsLoginSchema,
-  LoginSchema,
-  MechanicsLoginSchema,
-} from "@/zod";
+import { IMechanicsLoginSchema, MechanicsLoginSchema } from "@/zod";
 import ErrorLine from "@/components/reusable/error-line";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useMechanicLogin } from "@/services/auth";
 
@@ -80,7 +75,10 @@ const MechanicsForm = () => {
               <Key />
               Login
             </Button>
-            <Link className="text-primary text-sm" href="/forget-password/mechanic">
+            <Link
+              className="text-primary text-sm"
+              href="/forget-password/mechanic"
+            >
               Forget Password?
             </Link>
             <p className="flex gap-2 justify-center items-center text-sm">

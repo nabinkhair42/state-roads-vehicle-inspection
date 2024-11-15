@@ -1,7 +1,6 @@
 "use client";
 import Loading from "@/components/reusable/loading";
 import NotificationComponent from "@/components/ui/notification";
-import { Separator } from "@/components/ui/separator";
 import { useUserNotifications } from "@/services/notifications";
 import { INotification } from "@/types/notification.types";
 import React, { useEffect, useState } from "react";

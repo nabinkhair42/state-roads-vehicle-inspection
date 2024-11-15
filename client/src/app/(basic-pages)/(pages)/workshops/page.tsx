@@ -2,7 +2,7 @@ import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 
 const MapComponent = dynamic(
-  () => import("@/app/(basic-pages)/(pages)/workshops/components/map"),
+  () => import("@/app/(basic-pages)/(pages)/workshops/_components/map"),
   { ssr: false }
 );
 

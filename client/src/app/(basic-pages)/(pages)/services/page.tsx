@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import React from "react";
-import ServiceTypes from "@/app/(basic-pages)/(pages)/services/components/ServiceTypes";
-import Testimonial from "@/app/(basic-pages)/(pages)/services/components/Testimonial";
+import ServiceTypes from "@/app/(basic-pages)/(pages)/services/_components/ServiceTypes";
+import Testimonial from "@/app/(basic-pages)/(pages)/services/_components/Testimonial";
 const BookAppointment = () => {
   return (
     <div className="container min-h-screen overflow-x-clip">
