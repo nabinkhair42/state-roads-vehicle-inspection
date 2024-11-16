@@ -53,4 +53,12 @@ export const API_URL = {
 
   // contact
   CONTACT: BASE_URL + "/contact",
+
+  // ADMIN
+  GET_DASHBOARD_STATS: "http://localhost:5000/api/v1" + "/admin/stats",
+  GET_MECHANICS_LISTS: "http://localhost:5000/api/v1" + "/admin/mechanics",
 };
+
+
+
+export const adminLoginToken = process.env.NEXT_PUBLIC_ADMIN_LOGIN_TOKEN;
