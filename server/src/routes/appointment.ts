@@ -42,7 +42,6 @@ appointmentRouter.get(
 );
 
 // change status
-
 appointmentRouter.put(
   "/status/approve/:appointmentId",
   verifyToken(ENV_CONFIG.MECHANICS_AUTH_HEADER_ID),

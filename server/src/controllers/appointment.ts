@@ -130,7 +130,7 @@ export const handleApproveAppointmentByMechanic = async (
   const mechanicId = res.locals.jwtData.userId;
 
   const appointment: any = await appointmentModel
-    .findById(appointmentId)
+    .find({ _id: appointmentId, isApprovedByAdmin: true })
     .populate("bookedBy service bookedFor");
 
   if (!appointment) {

@@ -36,6 +36,10 @@ export const appointmentModel = new mongoose.Schema(
       default: "PENDING",
     },
     report: FileModel,
+    isApprovedByAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
