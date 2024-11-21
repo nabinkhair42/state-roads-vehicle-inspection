@@ -2,6 +2,7 @@ import { sendRes } from "@/middlewares/send-response";
 import appointmentModel from "@/models/appointment.model";
 import mechanicsModel from "@/models/mechanics.model";
 import userModel from "@/models/user.model";
+import { queryDocuments } from "@/utils/query-documents";
 import { Request, Response } from "express";
 
 export const handleGetAdminStats = async (req: Request, res: Response) => {
@@ -23,15 +24,21 @@ export const handleGetMechanicsDetailByAdmin = async (
   req: Request,
   res: Response
 ) => {
-  const mechanics = await mechanicsModel.find().select("-password");
+  const data = await queryDocuments({
+    model: mechanicsModel,
+    query: req.query as unknown as any,
+    searchFields: ["name", "description", "subject"],
+  });
 
   const mechanicsWithTotalAppointments = await Promise.all(
-    mechanics.map(async (mechanic) => {
+    data?.results.map(async (mechanic) => {
       const totalAppointments = await appointmentModel.countDocuments({
+        //@ts-ignore
         bookedFor: mechanic._id,
       });
 
       return {
+        //@ts-ignore
         ...mechanic.toObject(),
         totalAppointments,
       };
@@ -40,7 +47,10 @@ export const handleGetMechanicsDetailByAdmin = async (
 
   return sendRes(res, {
     status: 200,
-    data: mechanicsWithTotalAppointments,
+    data: {
+      ...data,
+      results: mechanicsWithTotalAppointments,
+    },
   });
 };
 export const handleGetAppointmentsNotApprovedByAdmin = async (

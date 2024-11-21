@@ -19,6 +19,10 @@ appRouter.use("/appointments", appointmentRouter);
 appRouter.use("/stats", statsRouter);
 appRouter.use("/workshops", workshopRouter);
 appRouter.use("/contact", contactRouter);
-appRouter.use("/admin", isAdminMiddleware, adminRouter);
+appRouter.use(
+  "/admin",
+  // isAdminMiddleware,
+  adminRouter
+);
 
 export default appRouter;
