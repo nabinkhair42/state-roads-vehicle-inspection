@@ -1,8 +1,6 @@
-// @ts-nocheck
+'use client'
 
-"use client";
-
-import React from "react";
+import React, { useEffect, useState } from "react"
 import {
   Table,
   TableBody,
@@ -10,164 +8,229 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
+import { handleGetAllMechanicsLists } from "@/services/admin"
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from "@/components/ui/pagination";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ArrowUpDown, Search } from "lucide-react";
-
-// This would typically come from an API call
-const mechanicsData = Array.from({ length: 1000 }, (_, i) => ({
-  id: i + 1,
-  name: `Mechanic ${i + 1}`,
-  customersServed: Math.floor(Math.random() * 1000),
-}));
+  PaginationEllipsis
+} from "@/components/ui/pagination"
+import { IMechanicsLists, IMechanicsResponse } from "@/types/admin"
+import { ChevronUp, ChevronDown, Loader2 } from 'lucide-react'
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function MechanicStats() {
-  const [mechanics, setMechanics] = React.useState(mechanicsData);
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [sortConfig, setSortConfig] = React.useState({
-    key: null,
-    direction: "ascending",
-  });
+  const [mechanics, setMechanics] = useState<IMechanicsLists[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [sortBy, setSortBy] = useState("name")
+  const [sortOrder, setSortOrder] = useState("asc")
 
-  const itemsPerPage = 10;
-  const totalPages = Math.ceil(mechanics.length / itemsPerPage);
+  useEffect(() => {
+    const fetchMechanics = async () => {
+      try {
+        setLoading(true);
+        const data: IMechanicsResponse = await handleGetAllMechanicsLists(
+          page,
+          searchQuery,
+          sortBy,
+          sortOrder
+        );
+        console.log("Fetched data:", data);
+        setMechanics(data.results);
+        setTotalPages(data.pagination.totalPages);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching mechanics:", err);
+        setError("Failed to fetch mechanics data. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const filteredMechanics = React.useMemo(() => {
-    return mechanics.filter((mechanic) =>
-      mechanic.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [mechanics, searchTerm]);
+    fetchMechanics();
+  }, [page, searchQuery, sortBy, sortOrder]);
 
-  const sortedMechanics = React.useMemo(() => {
-    let sortableMechanics = [...filteredMechanics];
-    if (sortConfig.key !== null) {
-      sortableMechanics.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value)
+    setPage(1)
+  }
+
+  const handleSortChange = (field: string) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+    } else {
+      setSortBy(field)
+      setSortOrder("asc")
     }
-    return sortableMechanics;
-  }, [filteredMechanics, sortConfig]);
+    setPage(1)
+  }
 
-  const currentMechanics = sortedMechanics.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const requestSort = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
+  const handlePageChange = (newPage: number) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      console.log("Changing to page:", newPage);
+      setPage(newPage);
     }
-    setSortConfig({ key, direction });
   };
 
+  const renderPaginationItems = () => {
+    const items = []
+    const maxVisiblePages = 5
+    const halfVisible = Math.floor(maxVisiblePages / 2)
+
+    let startPage = Math.max(1, page - halfVisible)
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1)
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1)
+    }
+
+    if (startPage > 1) {
+      items.push(
+        <PaginationItem key="start-ellipsis">
+          <PaginationEllipsis />
+        </PaginationItem>
+      )
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      items.push(
+        <PaginationItem key={i}>
+          <PaginationLink
+            onClick={() => handlePageChange(i)}
+            isActive={i === page}
+          >
+            {i}
+          </PaginationLink>
+        </PaginationItem>
+      )
+    }
+
+    if (endPage < totalPages) {
+      items.push(
+        <PaginationItem key="end-ellipsis">
+          <PaginationEllipsis />
+        </PaginationItem>
+      )
+    }
+
+    return items
+  }
+
+  const renderSortIcon = (field: string) => {
+    if (sortBy === field) {
+      return sortOrder === "asc" ? (
+        <ChevronUp className="ml-2 h-4 w-4" />
+      ) : (
+        <ChevronDown className="ml-2 h-4 w-4" />
+      )
+    }
+    return null
+  }
+
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Mechanic Statistics</h1>
-      <div className="flex justify-between items-center mb-4">
-        <div className="relative">
-          <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>Mechanic Statistics</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="mb-4 flex items-center justify-between">
           <Input
             type="text"
             placeholder="Search mechanics..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 w-64"
+            value={searchQuery}
+            onChange={handleSearch}
+            className="max-w-sm"
           />
         </div>
-        <Select onValueChange={(value) => setCurrentPage(1)}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="customersAsc">Customers (Ascending)</SelectItem>
-            <SelectItem value="customersDesc">
-              Customers (Descending)
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="border rounded-md">
-        <Table >
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[100px]">ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>
-                <Button
-                  variant="ghost"
-                  onClick={() => requestSort("customersServed")}
-                >
-                  Customers Served
-                  <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {currentMechanics.map((mechanic) => (
-              <TableRow key={mechanic.id}>
-                <TableCell className="font-medium">{mechanic.id}</TableCell>
-                <TableCell>{mechanic.name}</TableCell>
-                <TableCell>{mechanic.customersServed}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            />
-          </PaginationItem>
-          {[...Array(Math.min(5, totalPages))].map((_, i) => (
-            <PaginationItem key={i}>
-              <PaginationLink
-                onClick={() => setCurrentPage(i + 1)}
-                isActive={currentPage === i + 1}
-              >
-                {i + 1}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
-          {totalPages > 5 && <PaginationEllipsis />}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-    </div>
-  );
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
+        ) : error ? (
+          <div className="text-center text-red-500">{error}</div>
+        ) : (
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSortChange("name")}
+                  >
+                    <div className="flex items-center">
+                      Name
+                      {renderSortIcon("name")}
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSortChange("email")}
+                  >
+                    <div className="flex items-center">
+                      Email
+                      {renderSortIcon("email")}
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSortChange("phone")}
+                  >
+                    <div className="flex items-center">
+                      Phone
+                      {renderSortIcon("phone")}
+                    </div>
+                  </TableHead>
+                  <TableHead>Store Name</TableHead>
+                  <TableHead>Store Address</TableHead>
+                  <TableHead>Appointments Served</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {mechanics.map((mechanic) => (
+                  <TableRow key={mechanic._id}>
+                    <TableCell className="font-medium">{mechanic.name}</TableCell>
+                    <TableCell>{mechanic.email}</TableCell>
+                    <TableCell>{mechanic.phone}</TableCell>
+                    <TableCell>{mechanic.storeName}</TableCell>
+                    <TableCell>{mechanic.storeAddress}</TableCell>
+                    <TableCell>{mechanic.totalAppointments}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
+        <div className="mt-4">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={page === 1}
+                />
+              </PaginationItem>
+              {renderPaginationItems()}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={page === totalPages}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      </CardContent>
+    </Card>
+  )
 }
+

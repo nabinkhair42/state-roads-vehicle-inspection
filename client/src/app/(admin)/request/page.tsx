@@ -1,51 +1,36 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PendingRequests } from "./_components/pending-request";
 import { RequestActionDialog } from "./_components/request-action-dialog";
-
-interface Request {
-  id: string;
-  user: string;
-  mechanic: string;
-  requestedDate: string;
-  appointmentDate: string;
-  status: "Pending" | "Accepted" | "Rejected";
-}
+import {
+  handleGetAppointmentRequests,
+  handleApproveAppointmentRequest,
+  handleRejectAppointmentRequest,
+} from "@/services/admin";
+import { IAppointmentRequest } from "@/types/admin";
 
 const Page: React.FC = () => {
-  const [requests, setRequests] = useState<Request[]>([
-    {
-      id: "1",
-      user: "John Doe",
-      mechanic: "Mike Smith",
-      requestedDate: "2023-05-15",
-      appointmentDate: "2023-05-20",
-      status: "Pending",
-    },
-    {
-      id: "2",
-      user: "Jane Smith",
-      mechanic: "Sarah Johnson",
-      requestedDate: "2023-05-16",
-      appointmentDate: "2023-05-22",
-      status: "Pending",
-    },
-    {
-      id: "3",
-      user: "Bob Johnson",
-      mechanic: "Tom Brown",
-      requestedDate: "2023-05-17",
-      appointmentDate: "2023-05-23",
-      status: "Pending",
-    },
-  ]);
-
+  const [requests, setRequests] = useState<IAppointmentRequest[]>([]); // Ensure this is initialized as an empty array
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [selectedRequest, setSelectedRequest] = useState<Request | null>(null);
+  const [selectedRequest, setSelectedRequest] =
+    useState<IAppointmentRequest | null>(null);
+
+  useEffect(() => {
+    const fetchRequests = async () => {
+      try {
+        const data = await handleGetAppointmentRequests();
+        setRequests(data.results);
+      } catch (error) {
+        console.error("Error fetching appointment requests:", error);
+      }
+    };
+
+    fetchRequests();
+  }, []);
 
   const handleOpenDialog = (requestId: string) => {
     const request =
-      requests.find((request) => request.id === requestId.toString()) || null;
+      requests.find((request) => request.id === requestId) || null;
     setSelectedRequest(request);
     setIsDialogOpen(true);
   };
@@ -55,10 +40,11 @@ const Page: React.FC = () => {
     setSelectedRequest(null);
   };
 
-  const handleAcceptRequest = () => {
+  const handleAcceptRequest = async () => {
     if (selectedRequest) {
-      setRequests(
-        requests.map((request) =>
+      await handleApproveAppointmentRequest(selectedRequest.id);
+      setRequests((prev) =>
+        prev.map((request) =>
           request.id === selectedRequest.id
             ? { ...request, status: "Accepted" }
             : request
@@ -68,14 +54,11 @@ const Page: React.FC = () => {
     handleCloseDialog();
   };
 
-  const handleDeclineRequest = () => {
+  const handleDeclineRequest = async () => {
     if (selectedRequest) {
-      setRequests(
-        requests.map((request) =>
-          request.id === selectedRequest.id
-            ? { ...request, status: "Rejected" }
-            : request
-        )
+      await handleRejectAppointmentRequest(selectedRequest.id);
+      setRequests((prev) =>
+        prev.filter((request) => request.id !== selectedRequest.id)
       );
     }
     handleCloseDialog();

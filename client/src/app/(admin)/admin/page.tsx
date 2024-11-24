@@ -12,27 +12,35 @@ import {
   MdOutlineEngineering,
   MdPerson,
   MdDirectionsCar,
-  MdStar,
 } from "react-icons/md";
 
+import { handleGetAllDashboardDetails } from "@/services/admin";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+
 export default function DashboardStats() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["dashboardStats"],
+    queryFn: handleGetAllDashboardDetails,
+  });
+
   const stats = [
     {
       icon: MdOutlineEngineering,
       title: "Mechanics",
-      value: "98+",
+      value: data?.mechanicsCount, 
       description: "have signed up for the service",
     },
     {
       icon: MdPerson,
       title: "Users",
-      value: "198+",
+      value: data?.usersCount,
       description: "are exploring the service",
     },
     {
       icon: MdDirectionsCar,
-      title: "Inspections",
-      value: "1,250+",
+      title: "Appointments",
+      value: data?.appointmentsCount, 
       description: "completed this month",
     },
   ];
@@ -50,7 +58,7 @@ export default function DashboardStats() {
             </CardHeader>
             <CardContent className="text-center">
               <CardTitle className="text-3xl font-bold mb-2">
-                {stat.value}
+                {isLoading ? <Loader2 className="animate-spin" /> : stat.value}
               </CardTitle>
               <CardDescription className="text-lg font-medium">
                 {stat.title}

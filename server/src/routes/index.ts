@@ -7,6 +7,8 @@ import appointmentRouter from "./appointment";
 import statsRouter from "./stats";
 import workshopRouter from "./workshop";
 import contactRouter from "./contact";
+import adminRouter from "./admin";
+import { isAdminMiddleware } from "@/middlewares/is-admin-middleware";
 const appRouter = Router();
 
 appRouter.use("/auth", authRouter);
@@ -17,5 +19,10 @@ appRouter.use("/appointments", appointmentRouter);
 appRouter.use("/stats", statsRouter);
 appRouter.use("/workshops", workshopRouter);
 appRouter.use("/contact", contactRouter);
+appRouter.use(
+  "/admin",
+  // isAdminMiddleware,
+  adminRouter
+);
 
 export default appRouter;

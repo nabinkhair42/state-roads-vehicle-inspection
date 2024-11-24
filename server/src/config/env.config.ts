@@ -29,6 +29,9 @@ const ENV_CONFIG = {
   SMTP_USER_EMAIL: process.env.SMTP_USER_EMAIL,
   SMTP_USER_PASSWORD: process.env.SMTP_USER_PASSWORD,
   SMTP_HOST: process.env.SMTP_HOST ?? "smtp.gmail.com",
+
+  //admin login cred
+  ADMIN_LOGIN_TOKEN: process.env.ADMIN_LOGIN_TOKEN,
 } as const;
 
 export default ENV_CONFIG;
