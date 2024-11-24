@@ -61,33 +61,47 @@ PaginationLink.displayName = "PaginationLink";
 
 const PaginationPrevious = ({
   className,
-  ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
-    aria-label="Go to previous page"
-    size="default"
-    className={cn("gap-1 pl-2.5 cursor-pointer", className)}
-    {...props}
-  >
-    <ChevronLeft className="h-4 w-4" />
-    <span>Previous</span>
-  </PaginationLink>
+  onClick,
+  disabled,
+}: {
+  className?: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) => (
+  <span className={disabled ? "cursor-not-allowed opacity-50" : ""}>
+    <PaginationLink
+      aria-label="Go to previous page"
+      size="default"
+      className={cn("gap-1 pl-2.5 cursor-pointer", className)}
+      onClick={disabled ? undefined : onClick}
+    >
+      <ChevronLeft className="h-4 w-4" />
+      <span>Previous</span>
+    </PaginationLink>
+  </span>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
 
 const PaginationNext = ({
   className,
-  ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
-  <PaginationLink
-    aria-label="Go to next page"
-    size="default"
-    className={cn("gap-1 pr-2.5 cursor-pointer", className)}
-    {...props}
-  >
-    <span>Next</span>
-    <ChevronRight className="h-4 w-4" />
-  </PaginationLink>
+  onClick,
+  disabled,
+}: {
+  className?: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) => (
+  <span className={disabled ? "cursor-not-allowed opacity-50" : ""}>
+    <PaginationLink
+      aria-label="Go to next page"
+      size="default"
+      className={cn("gap-1 pr-2.5 cursor-pointer", className)}
+      onClick={disabled ? undefined : onClick}
+    >
+      <span>Next</span>
+      <ChevronRight className="h-4 w-4" />
+    </PaginationLink>
+  </span>
 );
 PaginationNext.displayName = "PaginationNext";
 
