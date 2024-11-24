@@ -1,6 +1,6 @@
 import axios from "./axios";
 import { adminLoginToken, API_URL } from ".";
-import { IDashboardDetails, IMechanicsResponse } from "@/types/admin";
+import { IAppointmentRequestsResponse, IDashboardDetails, IMechanicsResponse } from "@/types/admin";
 
 export const handleGetAllDashboardDetails =
   async (): Promise<IDashboardDetails> => {
@@ -42,5 +42,53 @@ export const handleGetAllDashboardDetails =
       return response.data.data;
     } catch (error) {
       throw new Error('An unexpected error occurred');
+    }
+  };
+
+
+  export const handleGetAppointmentRequests =
+    async (): Promise<IAppointmentRequestsResponse> => {
+      try {
+        const response = await axios.get(API_URL.GET_APPOINTMENT_REQUESTS, {
+          headers: {
+            "admin-login-token": adminLoginToken,
+          },
+        });
+        return response.data.data; // Ensure this matches your expected response structure
+      } catch (error) {
+        throw new Error("An unexpected error occurred");
+      }
+    };
+
+  export const handleApproveAppointmentRequest = async (requestId: string) => {
+    try {
+      const response = await axios.put(
+        `${API_URL.APPROVE_APPOINTMENT_REQUEST}/${requestId}`,
+        {},
+        {
+          headers: {
+            "admin-login-token": adminLoginToken,
+          },
+        }
+      );
+      return response.data.data; // Return the updated appointment request
+    } catch (error) {
+      throw new Error("An unexpected error occurred");
+    }
+  };
+
+  export const handleRejectAppointmentRequest = async (requestId: string) => {
+    try {
+      const response = await axios.delete(
+        `${API_URL.REJECT_APPOINTMENT_REQUEST}/${requestId}`,
+        {
+          headers: {
+            "admin-login-token": adminLoginToken,
+          },
+        }
+      );
+      return response.data.data; // Return the deleted appointment request
+    } catch (error) {
+      throw new Error("An unexpected error occurred");
     }
   };

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Table,
   TableBody,
@@ -6,9 +6,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 interface Request {
   id: string;
@@ -16,7 +16,7 @@ interface Request {
   mechanic: string;
   requestedDate: string;
   appointmentDate: string;
-  status: 'Pending' | 'Accepted' | 'Rejected';
+  status: "Pending" | "Accepted" | "Rejected";
 }
 
 interface PendingRequestsProps {
@@ -24,44 +24,53 @@ interface PendingRequestsProps {
   onOpenDialog: (id: string) => void;
 }
 
-export function PendingRequests({ requests, onOpenDialog }: PendingRequestsProps) {
+export function PendingRequests({
+  requests = [],
+  onOpenDialog,
+}: PendingRequestsProps) {
   return (
-    <div className="border rounded-md">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>User</TableHead>
-            <TableHead>Mechanic</TableHead>
-            <TableHead>Requested Date</TableHead>
-            <TableHead>Appointment Date</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {requests.map((request) => (
-            <TableRow key={request.id}>
-              <TableCell>{request.user}</TableCell>
-              <TableCell>{request.mechanic}</TableCell>
-              <TableCell>{request.requestedDate}</TableCell>
-              <TableCell>{request.appointmentDate}</TableCell>
-              <TableCell>
-                <Badge 
-                  variant={request.status === 'Pending' ? 'outline' : 
-                           request.status === 'Accepted' ? 'success' : 'destructive'}
-                >
-                  {request.status}
-                </Badge>
-              </TableCell>
-              <TableCell>
-                {request.status === 'Pending' && (
-                  <Button onClick={() => onOpenDialog(request.id)}>View Details</Button>
-                )}
-              </TableCell>
+    <div className="container mx-auto py-10">
+      
+      <div className="border rounded-md">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>User</TableHead>
+              <TableHead>Mechanic</TableHead>
+              <TableHead>Requested Date</TableHead>
+              <TableHead>Appointment Date</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {requests.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  No pending requests
+                </TableCell>
+              </TableRow>
+            ) : (
+              requests.map((request) => (
+                <TableRow key={request.id}>
+                  <TableCell>{request.user}</TableCell>
+                  <TableCell>{request.mechanic}</TableCell>
+                  <TableCell>{request.requestedDate}</TableCell>
+                  <TableCell>{request.appointmentDate}</TableCell>
+                  <TableCell>
+                    <Badge>{request.status}</Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Button onClick={() => onOpenDialog(request.id)}>
+                      View Details
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
     </div>
-  )
+  );
 }

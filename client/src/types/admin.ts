@@ -32,3 +32,17 @@ export interface IMechanicsResponse {
   results: IMechanicsLists[]; // Array of mechanics
   pagination: IPagination; // Pagination information
 }
+
+export interface IAppointmentRequest {
+  id: string; // Unique identifier for the request
+  user: string; // User who made the request
+  mechanic: string; // Mechanic assigned to the request
+  requestedDate: string; // Date when the request was made
+  appointmentDate: string; // Date of the appointment
+  status: "Pending" | "Accepted" | "Rejected"; // Status of the request
+}
+
+export interface IAppointmentRequestsResponse {
+  results: IAppointmentRequest[]; // Array of appointment requests
+  pagination: IPagination; // Pagination information
+}

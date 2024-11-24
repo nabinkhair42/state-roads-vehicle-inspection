@@ -58,6 +58,8 @@ adminRouter.get(
   ),
   tryCatch(handleGetMechanicsDetailByAdmin)
 );
+
+
 adminRouter.get(
   "/appointments",
   tryCatch(handleGetAppointmentsNotApprovedByAdmin)
