@@ -55,13 +55,11 @@ export const API_URL = {
   CONTACT: BASE_URL + "/contact",
 
   // ADMIN
-  GET_DASHBOARD_STATS: "http://localhost:5000/api/v1" + "/admin/stats",
-  GET_MECHANICS_LISTS: "http://localhost:5000/api/v1" + "/admin/mechanics",
-  GET_APPOINTMENT_REQUESTS: "http://localhost:5000/api/v1/admin/appointments", 
-  APPROVE_APPOINTMENT_REQUEST:
-    "http://localhost:5000/api/v1/admin/appointments/approve",
-  REJECT_APPOINTMENT_REQUEST:
-    "http://localhost:5000/api/v1/admin/appointments/reject",
+  GET_DASHBOARD_STATS: BASE_URL + "/admin/stats",
+  GET_MECHANICS_LISTS: BASE_URL + "/admin/mechanics",
+  GET_APPOINTMENT_REQUESTS: BASE_URL + "admin/appointments",
+  APPROVE_APPOINTMENT_REQUEST: BASE_URL + "admin/appointments/approve",
+  REJECT_APPOINTMENT_REQUEST: BASE_URL + "admin/appointments/reject",
 };
 
 export const adminLoginToken = process.env.NEXT_PUBLIC_ADMIN_LOGIN_TOKEN;
