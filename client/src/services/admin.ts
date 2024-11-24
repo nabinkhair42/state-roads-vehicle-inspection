@@ -21,13 +21,21 @@ export const handleGetAllDashboardDetails =
     });
   };
 
+  interface IMechanicsResponse {
+    results: IMechanicsLists[]; 
+    totalPages: number; 
+  }
 export const handleGetAllMechanicsLists =
-  async (): Promise<IMechanicsLists> => {
+  async (page: number, searchQuery: string): Promise<IMechanicsResponse> => {
     return new Promise((resolve, reject) => {
       axios
         .get(API_URL.GET_MECHANICS_LISTS, {
           headers: {
             "admin-login-token": adminLoginToken,
+          },
+          params: {
+            page,
+            regexSearch: { name: searchQuery }, 
           },
         })
         .then((res) => {
@@ -36,5 +44,5 @@ export const handleGetAllMechanicsLists =
         .catch((err) => {
           reject(err?.response?.data?.message);
         });
-    });
-  };
+  });
+}

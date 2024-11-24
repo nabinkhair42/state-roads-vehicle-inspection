@@ -5,10 +5,11 @@ export interface IDashboardDetails {
 }
 
 export interface IMechanicsLists {
+  id: string; 
   name: string;
   email: string;
   phone: string;
-  storeName: string;
+  storeName: string; 
   storeAddress: string;
   totalAppointments: number;
 }
