@@ -4,9 +4,7 @@ import appointmentModel from "@/models/appointment.model";
 import notificationModel from "@/models/notification.model";
 import serviceModel from "@/models/service.model";
 import userModel from "@/models/user.model";
-import { mailTemplates } from "@/utils/mail-templates";
 import { sendHTMLMail } from "@/utils/send-html-mail";
-import { sendMail } from "@/utils/send-mail";
 import { Request, Response } from "express";
 
 export const handleMakeAppointment = async (req: Request, res: Response) => {
