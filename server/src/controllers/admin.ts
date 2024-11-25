@@ -1,8 +1,11 @@
+//@ts-nocheck
+
 import { sendRes } from "@/middlewares/send-response";
 import appointmentModel from "@/models/appointment.model";
 import mechanicsModel from "@/models/mechanics.model";
 import userModel from "@/models/user.model";
 import { queryDocuments } from "@/utils/query-documents";
+import { sendHTMLMail } from "@/utils/send-html-mail";
 import { Request, Response } from "express";
 
 export const handleGetAdminStats = async (req: Request, res: Response) => {
@@ -73,11 +76,41 @@ export const handleApproveAppointmentByAdmin = async (
 ) => {
   const appointmentId = req.params.appointmentId;
 
-  const appointment = await appointmentModel.findOneAndUpdate(
-    { _id: appointmentId },
-    { isApprovedByAdmin: true },
-    { new: true }
-  );
+  const appointment = await appointmentModel
+    .findOneAndUpdate(
+      { _id: appointmentId },
+      { isApprovedByAdmin: true },
+      { new: true }
+    )
+    .populate("bookedBy service bookedFor");
+
+  sendHTMLMail({
+    email: appointment.bookedBy.email,
+    template: "appointment-approved-by-admin",
+    variables: {
+      USER_NAME: appointment.bookedBy.name,
+      SERVICE_TITLE: appointment.service.serviceType,
+      APPOINTMENT_DATE: appointment.appointmentDate.toLocaleString(),
+      APPOINTMENT_TIME: appointment.appointmentTime,
+      STORE_NAME: appointment.bookedFor.storeName,
+      SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+    },
+  });
+
+  sendHTMLMail({
+    email: appointment.bookedFor.email,
+    template: "appointment-approved-by-admin-to-mechanics",
+    variables: {
+      MECHANIC_NAME: appointment.bookedFor.name,
+      SERVICE_TITLE: appointment.service.serviceType,
+      APPOINTMENT_DATE: appointment.appointmentDate.toLocaleString(),
+      APPOINTMENT_TIME: appointment.appointmentTime,
+      SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+      USER_NAME: appointment.bookedBy.name,
+      USER_EMAIL: appointment.bookedBy.email,
+      USER_PHONE: appointment.bookedBy.phone,
+    },
+  });
 
   return sendRes(res, {
     status: 200,
@@ -91,8 +124,25 @@ export const handleRejectAppointmentByAdmin = async (
 ) => {
   const appointmentId = req.params.appointmentId;
 
-  const appointment = await appointmentModel.findOneAndDelete({
-    _id: appointmentId,
+  const appointment = await appointmentModel
+    .findOneAndDelete({
+      _id: appointmentId,
+      isApprovedByAdmin: false,
+    })
+    .populate("bookedBy service bookedFor");
+
+  sendHTMLMail({
+    //@ts-ignore
+    email: appointment.bookedBy.email,
+    template: "appointment-rejected-by-admin",
+    variables: {
+      USER_NAME: appointment.bookedBy.name,
+      SERVICE_TITLE: appointment.service.serviceType,
+      APPOINTMENT_DATE: appointment.appointmentDate.toLocaleString(),
+      APPOINTMENT_TIME: appointment.appointmentTime,
+      STORE_NAME: appointment.bookedFor.storeName,
+      SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
+    },
   });
 
   return sendRes(res, {

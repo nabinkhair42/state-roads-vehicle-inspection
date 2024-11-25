@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appointment Rejected</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #f8f8f8;
+        padding: 10px;
+        text-align: center;
+      }
+      .details {
+        margin-top: 20px;
+      }
+      .details p {
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="details">
+        <p>Dear {{USER_NAME}},</p>
+        <p>
+          We regret to inform you that your appointment request has been
+          rejected by the admin. Below are the details of the appointment
+          request:
+        </p>
+
+        <p>
+          <strong>Service Title:</strong> {{SERVICE_TITLE}}<br />
+          <strong>Requested Appointment Date:</strong>
+          {{APPOINTMENT_DATE}}<br />
+          <strong>Requested Appointment Time:</strong> {{APPOINTMENT_TIME}}
+        </p>
+
+        <p>
+          We apologize for the inconvenience caused. If you believe this was a
+          mistake or would like to reschedule, please feel free to reach out to
+          us at:
+        </p>
+        <p><strong>Support Email:</strong> {{SUPPORT_EMAIL}}</p>
+
+        <p>
+          If you have any further questions, do not hesitate to get in touch.
+          We're here to assist you!
+        </p>
+
+        <p>Regards,<br />{{STORE_NAME}} Team</p>
+      </div>
+    </div>
+  </body>
+</html>

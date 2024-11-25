@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Appointment Has Been Completed</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background-color: #f7f7f7;
+      }
+      .header {
+        background-color: #4caf50;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      .details {
+        margin-top: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .details p {
+        line-height: 1.6;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 0.9em;
+        text-align: center;
+        color: #555;
+      }
+      .invoice-link {
+        font-weight: bold;
+        color: #007bff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>Your Appointment Has Been Successfully Completed!</h2>
+      </div>
+      <div class="details">
+        <p>Dear {{USER_NAME}},</p>
+        <p>
+          We are pleased to inform you that your appointment for the service
+          <strong>{{SERVICE_TITLE}}</strong> on
+          <strong>{{APPOINTMENT_DATE}}</strong> has been successfully completed.
+        </p>
+
+        <p>
+          Thank you for choosing <strong>{{STORE_NAME}}</strong>. We hope you
+          are satisfied with the service provided. Should you have any feedback
+          or require further assistance, please don't hesitate to reach out to
+          us.
+        </p>
+
+        <p>
+          <strong>Store Details:</strong><br />
+          <strong>Store Name:</strong> {{STORE_NAME}}<br />
+          <strong>Store Address:</strong> {{STORE_ADDRESS}}<br />
+          <strong>Contact:</strong> {{STORE_PHONE}} |
+          <strong>Email:</strong> {{STORE_EMAIL}}
+        </p>
+
+        <p>We look forward to serving you again soon.</p>
+
+        <p>Thank you,<br />{{STORE_NAME}} Team</p>
+
+        <p>
+          <strong>Here is the link to your report:</strong>
+          <a href="{{INVOICE_LINK}}" class="invoice-link">View Report</a>
+        </p>
+      </div>
+      <div class="footer">
+        <p>
+          If you need any assistance or have questions, don't hesitate to reach
+          out to us: <strong>{{SUPPORT_EMAIL}}</strong>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
