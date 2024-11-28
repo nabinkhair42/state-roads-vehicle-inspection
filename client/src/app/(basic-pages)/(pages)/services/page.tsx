@@ -4,7 +4,7 @@ import ServiceTypes from "@/app/(basic-pages)/(pages)/services/_components/Servi
 import Testimonial from "@/app/(basic-pages)/(pages)/services/_components/Testimonial";
 const BookAppointment = () => {
   return (
-    <div className="container min-h-screen overflow-x-clip">
+    <div className="flex flex-col mx-auto items-center justify-center min-h-screen overflow-x-clip">
       <ServiceTypes />
       <Testimonial />
     </div>

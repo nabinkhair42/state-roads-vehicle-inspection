@@ -1,121 +1,155 @@
-"use client";
-
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  ContactsDetails,
-  CarInspections,
-  Links,
-  SocialMediaLinks,
+import { 
+  ContactsDetails, 
+  SocialMediaLinks, 
+  CarInspections, 
+  Links 
 } from "@/constants/Footer";
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { 
+  Tooltip, 
+  TooltipContent, 
+  TooltipProvider, 
+  TooltipTrigger 
+} from "@/components/ui/tooltip";
 import Logo from "@/assets/logo.svg";
+import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="border-t bg-background">
+    <footer className="bg-background flex mx-auto items-center justify-center">
       <div className="container px-4 py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          <div className="flex flex-col space-y-4">
-            <Image
-              src={Logo}
-              className="h-16 w-auto object-contain"
-              alt="Just Car Inspections Logo"
-            />
-            <p className="text-sm text-muted-foreground">
-              Just Car Inspections operates in several states around Australia
-            </p>
-            <div className="flex space-x-4">
-              {SocialMediaLinks.map(({ icon: Icon, url }, index) => (
-                <Link
-                  key={index}
-                  href={url}
-                  className="text-muted-foreground hover:text-primary"
-                >
-                  <Icon className="h-5 w-5" />
-                </Link>
-              ))}
-            </div>
-          </div>
+          {/* Brand Section */}
+          <Card className="border-none shadow-none bg-transparent">
+            <CardHeader className="p-0 pb-4">
+              <Image 
+                src={Logo} 
+                alt="Just Car Inspections Logo" 
+                className="h-16 w-auto object-contain" 
+              />
+            </CardHeader>
+            <CardContent className="p-0 space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Providing trusted car inspection services across Australia
+              </p>
+              
+              {/* Social Media Links with Tooltips */}
+              <TooltipProvider>
+                <div className="flex space-x-4">
+                  {SocialMediaLinks.map(({ icon: Icon, url, name }) => (
+                    <Tooltip key={url}>
+                      <TooltipTrigger asChild>
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className="hover:bg-primary/10"
+                          asChild
+                        >
+                          <Link href={url} target="_blank">
+                            <Icon className="h-5 w-5" />
+                          </Link>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>{name}</TooltipContent>
+                    </Tooltip>
+                  ))}
+                </div>
+              </TooltipProvider>
+            </CardContent>
+          </Card>
 
-          <div>
-            <h2 className="mb-4 text-lg font-semibold text-foreground">
-              Contact Us
-            </h2>
-            <ul className="space-y-3">
-              {ContactsDetails.map((contact, index) => (
-                <li key={index} className="flex items-center space-x-2">
-                  <contact.icon className="h-5 w-5 text-primary" />
+          {/* Contact Details Section */}
+          <Card className="border-none shadow-none bg-transparent">
+            <CardHeader className="p-0 pb-4">
+              <CardTitle className="text-lg">Contact Us</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 space-y-4">
+              {ContactsDetails.map(({ icon: Icon, place, contact }) => (
+                <div 
+                  key={place} 
+                  className="flex items-center space-x-3 group"
+                >
+                  <Icon 
+                    className="h-5 w-5 text-primary 
+                    transition-transform group-hover:scale-110" 
+                  />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      {contact.place}
+                      {place}
                     </p>
-                    <p className="text-sm text-muted-foreground">
-                      {contact.contact}
+                    <p className="text-xs text-muted-foreground">
+                      {contact}
                     </p>
                   </div>
-                </li>
+                </div>
               ))}
-            </ul>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div>
-            <h2 className="mb-4 text-lg font-semibold text-foreground">
-              Car Inspections
-            </h2>
-            <ul className="space-y-2">
-              {CarInspections.map((inspection, index) => (
-                <li key={index}>
-                  <Link
-                    href={inspection.url}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {inspection.name}
-                  </Link>
-                </li>
+          {/* Car Inspections Section */}
+          <Card className="border-none shadow-none bg-transparent">
+            <CardHeader className="p-0 pb-4">
+              <CardTitle className="text-lg">Inspections</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 space-y-2">
+              {CarInspections.map(({ name, url }) => (
+                <Button 
+                  key={name} 
+                  variant="link" 
+                  className="p-0 text-muted-foreground" 
+                  asChild
+                >
+                  <Link href={url}>{name}</Link>
+                </Button>
               ))}
-            </ul>
-          </div>
+            </CardContent>
+          </Card>
 
-          <div>
-            <h2 className="mb-4 text-lg font-semibold text-foreground">
-              Quick Links
-            </h2>
-            <ul className="space-y-2">
-              {Links.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    href={link.url}
-                    className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
+          {/* Quick Links Section */}
+          <Card className="border-none shadow-none bg-transparent">
+            <CardHeader className="p-0 pb-4">
+              <CardTitle className="text-lg">Quick Links</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0 space-y-2">
+              {Links.map(({ name, url }) => (
+                <Button 
+                  key={name} 
+                  variant="link" 
+                  className="p-0 text-muted-foreground" 
+                  asChild
+                >
+                  <Link href={url}>{name}</Link>
+                </Button>
               ))}
-            </ul>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
-        <hr className="my-8 border-border" />
+        <Separator className="my-8" />
 
-        <div className="flex flex-col items-center justify-between space-y-4 text-center sm:flex-row sm:space-y-0 sm:text-left">
-          <p className="text-sm text-muted-foreground">
-            © 2024 Vehicle Testing Pty Ltd T/A Stateroads Inspections ABN
-            86123807447. All Rights Reserved.
+        <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
+          <p className="text-xs text-muted-foreground text-center sm:text-left">
+            © 2024 Vehicle Testing Pty Ltd T/A Stateroads Inspections 
+            <br className="sm:hidden" />
+            <span className="hidden sm:inline"> | </span> 
+            ABN 86123807447. All Rights Reserved.
           </p>
           <div className="flex space-x-4">
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              Privacy Policy
-            </Link>
-            <Link
-              href="/about"
-              className="text-sm text-muted-foreground hover:text-primary transition-colors"
-            >
-              About Us
-            </Link>
+            <Button variant="link" size="sm" asChild>
+              <Link href="/privacy">Privacy Policy</Link>
+            </Button>
+            <Button variant="link" size="sm" asChild>
+              <Link href="/about">About Us</Link>
+            </Button>
           </div>
         </div>
       </div>

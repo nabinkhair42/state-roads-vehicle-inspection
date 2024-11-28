@@ -4,7 +4,7 @@ import CalenderBooking from "./_components/CalanderBooking";
 
 const BookAppointment = () => {
   return (
-    <div className="container flex flex-col">
+    <div className="flex flex-col mx-auto items-center justify-center min-h-screen overflow-x-clip">
       <CalenderBooking />
     </div>
   );

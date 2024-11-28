@@ -103,7 +103,7 @@ export function CalendarForm() {
           </h1>
 
           <a href="/sign-in">
-            <Button className="min-w-32">Sign in</Button>
+            <Button className="min-w-32" size={"lg"} variant={"default"}>Sign in</Button>
           </a>
         </div>
       ) : (

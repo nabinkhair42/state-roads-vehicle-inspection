@@ -44,7 +44,7 @@ export default function NavigationMenuDemo() {
   const pathname = usePathname();
 
   return (
-    <NavigationMenu className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <NavigationMenu className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex item justify-center">
       <div className="container flex h-16 items-center justify-between px-4 sm:px-8 lg:px-16">
         <Link href="/" className="flex items-center space-x-2">
           <Image

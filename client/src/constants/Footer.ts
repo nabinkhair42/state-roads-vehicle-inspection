@@ -10,9 +10,7 @@ import {
 
 export const ContactsDetails = [
   { place: "Melbourne", contact: "03 9850 8000", icon: Phone },
-  // { place: "NSW", contact: "02 9655 1411", icon: Phone },
-  // { place: "Brisbane/Gold Coast", contact: "07 3367 8000", icon: Phone },
-  // { place: "Perth", contact: "08 6323 2069", icon: Phone },
+ 
 ];
 
 export const SocialMediaLinks = [
