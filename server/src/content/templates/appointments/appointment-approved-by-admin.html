@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Appointment Approved</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #f8f8f8;
+        padding: 10px;
+        text-align: center;
+      }
+      .details {
+        margin-top: 20px;
+      }
+      .details p {
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="details">
+        <p>Dear {{USER_NAME}},</p>
+        <p>
+          We are happy to inform you that your appointment has been successfully
+          approved by the admin. Here are the details of your appointment:
+        </p>
+
+        <p>
+          <strong>Service Title:</strong> {{SERVICE_TITLE}}<br />
+          <strong>Appointment Date:</strong> {{APPOINTMENT_DATE}}<br />
+          <strong>Appointment Time:</strong> {{APPOINTMENT_TIME}}
+        </p>
+        <p>
+          Your appointment is now confirmed! The mechanic will contact you
+          shortly to provide more details and assist you with your service.
+        </p>
+        <p>
+          We look forward to providing you with the best service on the
+          scheduled date. If you have any questions or need assistance, feel
+          free to contact us at:
+        </p>
+        <p><strong>Support Email:</strong> {{SUPPORT_EMAIL}}</p>
+
+        <p>Thank you for choosing {{STORE_NAME}}!</p>
+
+        <p>Regards,<br />{{STORE_NAME}} Team</p>
+      </div>
+    </div>
+  </body>
+</html>

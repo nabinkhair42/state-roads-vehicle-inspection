@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Appointment - Approved</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+      }
+      .header {
+        background-color: #f8f8f8;
+        padding: 10px;
+        text-align: center;
+      }
+      .details {
+        margin-top: 20px;
+      }
+      .details p {
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>New Appointment - Approved</h2>
+      </div>
+      <div class="details">
+        <p>Dear {{MECHANIC_NAME}},</p>
+        <p>
+          You have a new appointment that has been approved by the admin. Here
+          are the details:
+        </p>
+
+        <p>
+          <strong>Customer Name:</strong> {{USER_NAME}}<br />
+          <strong>Customer Phone:</strong> {{USER_PHONE}}<br />
+          <strong>Customer Email:</strong> {{USER_EMAIL}}<br />
+          <strong>Service Title:</strong> {{SERVICE_TITLE}}<br />
+          <strong>Appointment Date:</strong> {{APPOINTMENT_DATE}}<br />
+          <strong>Appointment Time:</strong> {{APPOINTMENT_TIME}}
+        </p>
+
+        <p>
+          Please contact the customer directly and confirm the details of the
+          appointment. If you need further information, feel free to reach out
+          to the admin team.
+        </p>
+
+        <p>If you have any questions, don't hesitate to contact us at:</p>
+        <p><strong>Support Email:</strong> {{SUPPORT_EMAIL}}</p>
+
+        <p>
+          Thank you for your prompt attention to this appointment, and for
+          providing excellent service to our customers!
+        </p>
+
+        <p>Regards,<br />Auto Inspector Team</p>
+      </div>
+    </div>
+  </body>
+</html>

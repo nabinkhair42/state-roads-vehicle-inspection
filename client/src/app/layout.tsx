@@ -5,6 +5,7 @@ import ReactQueryProvider from "@/providers/react-query-provider";
 import { Toaster } from "sonner";
 import AuthProvider from "@/providers/auth-provider";
 import StoreProvider from "@/providers/store-provider";
+import { AdminAuthProvider } from "./(admin)/_components/AdminAuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +32,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,7 +43,9 @@ export default function RootLayout({
         <Toaster richColors position="bottom-right" />
         <StoreProvider>
           <ReactQueryProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <AdminAuthProvider>{children}</AdminAuthProvider>
+            </AuthProvider>
           </ReactQueryProvider>
         </StoreProvider>
       </body>

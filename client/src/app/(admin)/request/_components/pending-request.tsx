@@ -9,18 +9,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
-interface Request {
-  id: string;
-  user: string;
-  mechanic: string;
-  requestedDate: string;
-  appointmentDate: string;
-  status: "Pending" | "Accepted" | "Rejected";
-}
+import { IAppointment } from "@/types/admin";
 
 interface PendingRequestsProps {
-  requests: Request[];
+  requests: IAppointment[];
   onOpenDialog: (id: string) => void;
 }
 
@@ -30,16 +22,15 @@ export function PendingRequests({
 }: PendingRequestsProps) {
   return (
     <div className="container mx-auto py-10">
-      
       <div className="border rounded-md">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>User</TableHead>
               <TableHead>Mechanic</TableHead>
-              <TableHead>Requested Date</TableHead>
+              <TableHead>Service</TableHead>
               <TableHead>Appointment Date</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Appointment Time</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -52,16 +43,14 @@ export function PendingRequests({
               </TableRow>
             ) : (
               requests.map((request) => (
-                <TableRow key={request.id}>
-                  <TableCell>{request.user}</TableCell>
-                  <TableCell>{request.mechanic}</TableCell>
-                  <TableCell>{request.requestedDate}</TableCell>
-                  <TableCell>{request.appointmentDate}</TableCell>
+                <TableRow key={request._id}>
+                  <TableCell>{request.bookedBy.name}</TableCell>
+                  <TableCell>{request.bookedFor.name}</TableCell>
+                  <TableCell>{request.service.serviceType}</TableCell>
+                  <TableCell>{new Date(request.appointmentDate).toLocaleDateString()}</TableCell>
+                  <TableCell>{request.appointmentTime}</TableCell>
                   <TableCell>
-                    <Badge>{request.status}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Button onClick={() => onOpenDialog(request.id)}>
+                    <Button onClick={() => onOpenDialog(request._id)}>
                       View Details
                     </Button>
                   </TableCell>
@@ -74,3 +63,4 @@ export function PendingRequests({
     </div>
   );
 }
+
