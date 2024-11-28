@@ -1,48 +1,78 @@
 export interface IDashboardDetails {
-  mechanicsCount: number;
-  usersCount: number;
-  appointmentsCount: number;
+  mechanicsCount: number
+  usersCount: number
+  appointmentsCount: number
 }
 
 export interface IMechanicsLists {
-  _id: string; // Unique identifier for the mechanic
-  name: string; // Name of the mechanic
-  email: string; // Email of the mechanic
-  phone: string; // Phone number of the mechanic
-  isVerified: boolean; // Verification status
-  storeName: string; // Name of the store
-  storeAddress: string; // Address of the store
+  _id: string
+  name: string
+  email: string
+  phone: string
+  isVerified: boolean
+  storeName: string
+  storeAddress: string
   storeCoordinates: {
-    latitude: string; // Latitude of the store
-    longitude: string; // Longitude of the store
-  };
-  createdAt: string; // Creation date
-  updatedAt: string; // Last updated date
-  totalAppointments: number; // Total number of appointments
+    latitude: string
+    longitude: string
+  }
+  createdAt: string
+  updatedAt: string
+  totalAppointments: number
 }
 
 export interface IPagination {
-  pageNo: number; // Current page number
-  limit: number; // Number of items per page
-  hasNextPage: boolean; // Indicates if there is a next page
-  totalPages: number; // Total number of pages
+  pageNo: number
+  limit: number
+  hasNextPage: boolean
+  totalPages: number
 }
 
 export interface IMechanicsResponse {
-  results: IMechanicsLists[]; // Array of mechanics
-  pagination: IPagination; // Pagination information
+  results: IMechanicsLists[]
+  pagination: IPagination
 }
 
 export interface IAppointmentRequest {
-  id: string; // Unique identifier for the request
-  user: string; // User who made the request
-  mechanic: string; // Mechanic assigned to the request
-  requestedDate: string; // Date when the request was made
-  appointmentDate: string; // Date of the appointment
-  status: "Pending" | "Accepted" | "Rejected"; // Status of the request
+  id: string
+  user: string
+  mechanic: string
+  requestedDate: string
+  appointmentDate: string
+  status: "Pending" | "Accepted" | "Rejected"
 }
 
 export interface IAppointmentRequestsResponse {
-  results: IAppointmentRequest[]; // Array of appointment requests
-  pagination: IPagination; // Pagination information
+  results: IAppointmentRequest[]
+  pagination: IPagination
 }
+
+export interface IAppointment {
+  _id: string;
+  bookedBy: {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+  };
+  service: {
+    _id: string;
+    serviceType: string;
+  };
+  bookedFor: {
+    _id: string;
+    name: string;
+    email: string;
+    storeName: string;
+  };
+  appointmentDate: string;
+  appointmentTime: string;
+  isApprovedByAdmin: boolean;
+}
+
+export interface IAppointmentResponse {
+  status: number;
+  data: IAppointment[];
+}
+
+

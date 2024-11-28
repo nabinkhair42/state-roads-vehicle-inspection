@@ -4,6 +4,7 @@ import {
   handleGetAppointmentsNotApprovedByAdmin,
   handleGetMechanicsDetailByAdmin,
   handleRejectAppointmentByAdmin,
+  handleValidateAdminToken,
 } from "@/controllers/admin";
 import { tryCatch } from "@/middlewares/try-catch";
 import { validateQueries } from "@/middlewares/validate-queries";
@@ -14,6 +15,7 @@ import { Router } from "express";
 const adminRouter = Router();
 
 adminRouter.get("/stats", tryCatch(handleGetAdminStats));
+
 adminRouter.get(
   "/mechanics",
   validateQueries(
@@ -74,5 +76,8 @@ adminRouter.delete(
   "/appointments/:appointmentId/reject",
   tryCatch(handleRejectAppointmentByAdmin)
 );
+
+
+adminRouter.post("/token", handleValidateAdminToken);
 
 export default adminRouter;

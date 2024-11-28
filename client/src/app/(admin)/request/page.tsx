@@ -1,27 +1,32 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
-import { PendingRequests } from "./_components/pending-request";
-import { RequestActionDialog } from "./_components/request-action-dialog";
 import {
   handleGetAppointmentRequests,
   handleApproveAppointmentRequest,
   handleRejectAppointmentRequest,
 } from "@/services/admin";
-import { IAppointmentRequest } from "@/types/admin";
+import { IAppointment } from "@/types/admin";
+import { RequestActionDialog } from "./_components/request-action-dialog";
+import { PendingRequests } from "./_components/pending-request";
+import { toast } from "sonner";
 
-const Page: React.FC = () => {
-  const [requests, setRequests] = useState<IAppointmentRequest[]>([]); // Ensure this is initialized as an empty array
+export default function AppointmentRequestsPage() {
+  const [requests, setRequests] = useState<IAppointment[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [selectedRequest, setSelectedRequest] =
-    useState<IAppointmentRequest | null>(null);
+  const [selectedRequest, setSelectedRequest] = useState<IAppointment | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
+        setIsLoading(true);
         const data = await handleGetAppointmentRequests();
-        setRequests(data.results);
+        setRequests(data.data);
       } catch (error) {
-        console.error("Error fetching appointment requests:", error);
+        toast.error("Failed to fetch appointment requests. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -29,8 +34,7 @@ const Page: React.FC = () => {
   }, []);
 
   const handleOpenDialog = (requestId: string) => {
-    const request =
-      requests.find((request) => request.id === requestId) || null;
+    const request = requests.find((request) => request._id === requestId) || null;
     setSelectedRequest(request);
     setIsDialogOpen(true);
   };
@@ -42,32 +46,38 @@ const Page: React.FC = () => {
 
   const handleAcceptRequest = async () => {
     if (selectedRequest) {
-      await handleApproveAppointmentRequest(selectedRequest.id);
-      setRequests((prev) =>
-        prev.map((request) =>
-          request.id === selectedRequest.id
-            ? { ...request, status: "Accepted" }
-            : request
-        )
-      );
+      try {
+        await handleApproveAppointmentRequest(selectedRequest._id);
+        setRequests((prev) => prev.filter((request) => request._id !== selectedRequest._id));
+       toast.success("Appointment request approved successfully.");
+      } catch (error) {
+        toast.error("Failed to approve appointment request. Please try again.");
+      }
     }
     handleCloseDialog();
   };
 
   const handleDeclineRequest = async () => {
     if (selectedRequest) {
-      await handleRejectAppointmentRequest(selectedRequest.id);
-      setRequests((prev) =>
-        prev.filter((request) => request.id !== selectedRequest.id)
-      );
+      try {
+        await handleRejectAppointmentRequest(selectedRequest._id);
+        setRequests((prev) => prev.filter((request) => request._id !== selectedRequest._id));
+        toast.success("Appointment request rejected successfully.");
+      } catch (error) {
+        toast.error("Failed to reject appointment request. Please try again.");
+      }
     }
     handleCloseDialog();
   };
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Request Management</h1>
-      <PendingRequests requests={requests} onOpenDialog={handleOpenDialog} />
+      <h1 className="text-3xl font-bold mb-6">Appointment Request Management</h1>
+      {isLoading ? (
+        <div className="text-center">Loading...</div>
+      ) : (
+        <PendingRequests requests={requests} onOpenDialog={handleOpenDialog} />
+      )}
       <RequestActionDialog
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
@@ -77,6 +87,5 @@ const Page: React.FC = () => {
       />
     </div>
   );
-};
+}
 
-export default Page;

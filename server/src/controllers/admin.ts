@@ -150,3 +150,40 @@ export const handleRejectAppointmentByAdmin = async (
     data: appointment,
   });
 };
+
+
+export const handleValidateAdminToken = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+    if (!token) {
+      return sendRes(res, {
+        status: 400,
+        message: 'Token is required',
+      });
+    }
+
+    const validAdminToken = process.env.ADMIN_LOGIN_TOKEN;
+
+    if (!validAdminToken) {
+      console.error('ADMIN_TOKEN is not set in environment variables');
+      return sendRes(res, {
+        status: 500,
+        message: 'Server configuration error',
+      });
+    }
+
+    const isValid = token === validAdminToken;
+
+    return sendRes(res, {
+      status: 200,
+      data: { isValid },
+    });
+
+  } catch (error) {
+    console.error('Error validating admin token:', error);
+    return sendRes(res, {
+      status: 500,
+      message: 'An unexpected error occurred while validating the token',
+    });
+  }
+};

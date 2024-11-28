@@ -1,6 +1,12 @@
 import axios from "./axios";
-import { adminLoginToken, API_URL } from ".";
-import { IAppointmentRequestsResponse, IDashboardDetails, IMechanicsResponse } from "@/types/admin";
+import {
+  IAppointmentResponse,
+  IAppointment,
+  IDashboardDetails,
+  IMechanicsResponse,
+} from "@/types/admin";
+import { API_URL } from "@/services";
+const adminLoginToken = process.env.NEXT_PUBLIC_ADMIN_LOGIN_TOKEN;
 
 export const handleGetAllDashboardDetails =
   async (): Promise<IDashboardDetails> => {
@@ -20,75 +26,112 @@ export const handleGetAllDashboardDetails =
     });
   };
 
-  export const handleGetAllMechanicsLists = async (
-    page: number,
-    searchQuery: string,
-    sortBy: string,
-    sortOrder: string
-  ): Promise<IMechanicsResponse> => {
+export const handleGetAllMechanicsLists = async (
+  page: number,
+  searchQuery: string,
+  sortBy: string,
+  sortOrder: "asc" | "desc"
+): Promise<IMechanicsResponse> => {
+  try {
+    const response = await axios.get(API_URL.GET_MECHANICS_LISTS, {
+      headers: {
+        "admin-login-token": adminLoginToken,
+      },
+      params: {
+        page,
+        limit: 10,
+        regexSearch: {
+          name: searchQuery,
+          email: searchQuery,
+          storeName: searchQuery,
+        },
+        sortBy,
+        sortOrder,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error("Error fetching mechanics:", error);
+    throw new Error(
+      "An unexpected error occurred while fetching mechanics data"
+    );
+  }
+};
+
+export const handleGetAppointmentRequests =
+  async (): Promise<IAppointmentResponse> => {
     try {
-      const response = await axios.get(API_URL.GET_MECHANICS_LISTS, {
+      const response = await axios.get(API_URL.GET_APPOINTMENT_REQUESTS, {
         headers: {
           "admin-login-token": adminLoginToken,
         },
-        params: {
-          page,
-          limit: 10, 
-          regexSearch: { name: searchQuery },
-          sortBy,
-          sortOrder,
-        },
       });
-      return response.data.data;
+      return response.data;
     } catch (error) {
-      throw new Error('An unexpected error occurred');
+      console.error("Error fetching appointment requests:", error);
+      throw new Error(
+        "An unexpected error occurred while fetching appointment requests"
+      );
     }
   };
 
-
-  export const handleGetAppointmentRequests =
-    async (): Promise<IAppointmentRequestsResponse> => {
-      try {
-        const response = await axios.get(API_URL.GET_APPOINTMENT_REQUESTS, {
-          headers: {
-            "admin-login-token": adminLoginToken,
-          },
-        });
-        return response.data.data; // Ensure this matches your expected response structure
-      } catch (error) {
-        throw new Error("An unexpected error occurred");
+export const handleApproveAppointmentRequest = async (
+  appointmentId: string
+): Promise<IAppointment> => {
+  try {
+    const response = await axios.put(
+      `${API_URL.APPROVE_APPOINTMENT_REQUEST}/${appointmentId}/approve`,
+      {},
+      {
+        headers: {
+          "admin-login-token": adminLoginToken,
+        },
       }
-    };
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error approving appointment request:", error);
+    throw new Error(
+      "An unexpected error occurred while approving the appointment request"
+    );
+  }
+};
 
-  export const handleApproveAppointmentRequest = async (requestId: string) => {
-    try {
-      const response = await axios.put(
-        `${API_URL.APPROVE_APPOINTMENT_REQUEST}/${requestId}`,
-        {},
-        {
-          headers: {
-            "admin-login-token": adminLoginToken,
-          },
-        }
-      );
-      return response.data.data; // Return the updated appointment request
-    } catch (error) {
-      throw new Error("An unexpected error occurred");
-    }
-  };
+export const handleRejectAppointmentRequest = async (
+  appointmentId: string
+): Promise<IAppointment> => {
+  try {
+    const response = await axios.delete(
+      `${API_URL.REJECT_APPOINTMENT_REQUEST}/${appointmentId}/reject`,
+      {
+        headers: {
+          "admin-login-token": adminLoginToken,
+        },
+      }
+    );
+    return response.data.data;
+  } catch (error) {
+    console.error("Error rejecting appointment request:", error);
+    throw new Error(
+      "An unexpected error occurred while rejecting the appointment request"
+    );
+  }
+};
 
-  export const handleRejectAppointmentRequest = async (requestId: string) => {
-    try {
-      const response = await axios.delete(
-        `${API_URL.REJECT_APPOINTMENT_REQUEST}/${requestId}`,
-        {
-          headers: {
-            "admin-login-token": adminLoginToken,
-          },
-        }
-      );
-      return response.data.data; // Return the deleted appointment request
-    } catch (error) {
-      throw new Error("An unexpected error occurred");
-    }
-  };
+export const validateAdminToken = async (token: string): Promise<boolean> => {
+  try {
+    const response = await axios.post(API_URL.VALIDATE_TOKEN, { token },
+      {
+        headers: {
+          "admin-login-token": adminLoginToken,
+        },
+      }
+    );
+    console.log("response", response.data.data);
+    return response.data.data.isValid;
+   
+  } catch (error) {
+    console.error("Error validating admin token:", error);
+    return false;
+  }
+};
