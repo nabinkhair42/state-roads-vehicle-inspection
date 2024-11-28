@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Appointment Has Been Rejected</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        width: 80%;
+        margin: auto;
+        padding: 20px;
+        background-color: #f7f7f7;
+      }
+      .header {
+        background-color: #f44336;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      .details {
+        margin-top: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      .details p {
+        line-height: 1.6;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 0.9em;
+        text-align: center;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h2>Your Appointment Has Been Rejected</h2>
+      </div>
+      <div class="details">
+        <p>Dear {{USER_NAME}},</p>
+        <p>
+          We regret to inform you that your appointment request has been
+          rejected. Below are the details of your appointment request:
+        </p>
+
+        <p>
+          <strong>Appointment Date:</strong> {{APPOINTMENT_DATE}}<br />
+          <strong>Appointment Time:</strong> {{APPOINTMENT_TIME}}<br />
+          <strong>Service Title:</strong> {{SERVICE_TITLE}}
+        </p>
+
+        <p>
+          <strong>Store Details:</strong><br />
+          <strong>Store Name:</strong> {{STORE_NAME}}<br />
+          <strong>Store Address:</strong> {{STORE_ADDRESS}}<br />
+          <strong>Contact:</strong> {{STORE_PHONE}} |
+          <strong>Email:</strong> {{STORE_EMAIL}}
+        </p>
+
+        <p>
+          We understand that this may be disappointing. If you have any
+          questions or need assistance, please do not hesitate to contact us.
+          We're here to help!
+        </p>
+
+        <p>Thank you,<br />{{STORE_NAME}} Team</p>
+      </div>
+      <div class="footer">
+        <p>
+          If you need any assistance or have questions, don't hesitate to reach
+          out to us: <strong>{{SUPPORT_EMAIL}}</strong>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

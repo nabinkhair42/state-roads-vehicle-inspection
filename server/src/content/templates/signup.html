@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Auto Inspector! Please Verify Your Account</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        color: #333333;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .header {
+        background-color: #007bff;
+        color: #ffffff;
+        padding: 20px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .content {
+        padding: 20px;
+        line-height: 1.6;
+      }
+      .content h2 {
+        font-size: 20px;
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+      .content p {
+        margin: 10px 0;
+      }
+      .otp-box {
+        background-color: #f1f1f1;
+        border-left: 5px solid #007bff;
+        padding: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .footer {
+        background-color: #f1f1f1;
+        text-align: center;
+        padding: 10px 20px;
+        font-size: 14px;
+        color: #555555;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <!-- Content Section -->
+      <div class="content">
+        <p>Dear <strong>{{NAME}}</strong>,</p>
+        <p>
+          Welcome to Auto Inspector! We're thrilled to have you on board as part
+          of our community. Auto Inspector is dedicated to helping you inspect
+          and manage your vehicle's details with ease.
+        </p>
+
+        <h2>Verify Your Account</h2>
+        <p>
+          To get started, please verify your account by using the OTP below:
+        </p>
+
+        <div class="otp-box">{{OTP}}</div>
+
+        <p><em>OTP will expire in {{OTP_EXPIRATION}} minutes.</em></p>
+
+        <p>
+          If you have any questions or need assistance, feel free to reach out
+          to us at <a href="mailto:{{SUPPORT_EMAIL}}">{{SUPPORT_EMAIL}}</a>.
+          We're here to help!
+        </p>
+        <p>
+          Thank you for joining Auto Inspector. We look forward to serving you!
+        </p>
+      </div>
+
+      <!-- Footer Section -->
+      <div class="footer">
+        <p>Best regards,</p>
+        <p>The Auto Inspector Team</p>
+      </div>
+    </div>
+  </body>
+</html>

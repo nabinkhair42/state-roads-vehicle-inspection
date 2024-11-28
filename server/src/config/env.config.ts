@@ -32,6 +32,7 @@ const ENV_CONFIG = {
 
   //admin login cred
   ADMIN_LOGIN_TOKEN: process.env.ADMIN_LOGIN_TOKEN,
+  SUPPORT_EMAIL: process.env.SUPPORT_EMAIL,
 } as const;
 
 export default ENV_CONFIG;

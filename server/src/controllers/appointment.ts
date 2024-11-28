@@ -1,10 +1,10 @@
+import ENV_CONFIG from "@/config/env.config";
 import { sendRes } from "@/middlewares/send-response";
 import appointmentModel from "@/models/appointment.model";
 import notificationModel from "@/models/notification.model";
 import serviceModel from "@/models/service.model";
 import userModel from "@/models/user.model";
-import { mailTemplates } from "@/utils/mail-templates";
-import { sendMail } from "@/utils/send-mail";
+import { sendHTMLMail } from "@/utils/send-html-mail";
 import { Request, Response } from "express";
 
 export const handleMakeAppointment = async (req: Request, res: Response) => {
@@ -34,52 +34,74 @@ export const handleMakeAppointment = async (req: Request, res: Response) => {
 
   const user = await userModel.findById(userId);
 
+  const userDetails: Record<string, string> = {
+    USER_NAME: user.name,
+    USER_PHONE: user.email,
+    USER_EMAIL: user.phone,
+  };
+
+  const appointmentDetails: Record<string, string> = {
+    APPOINTMENT_DATE: appointment.appointmentDate.toLocaleDateString(),
+    APPOINTMENT_TIME: appointment.appointmentTime,
+    SERVICE_TITLE: service.serviceType,
+    APPOINTMENT_MESSAGE: appointment.message ?? "No message provided",
+  };
+
+  const storeDetails: Record<string, string> = {
+    STORE_NAME: service.postedBy.storeName,
+    STORE_ADDRESS: service.postedBy.storeAddress,
+    STORE_PHONE: service.postedBy.phone,
+    STORE_EMAIL: service.postedBy.email,
+  };
+
   await notificationModel.create({
     for: user?.id,
     role: "User",
-    title: "Appointment Created",
-    message: `Your appointment for ${service.serviceType} in ${service.postedBy.storeName} has been created.`,
+    title: "Appointment Request Submitted",
+    message: `Your appointment for ${service.serviceType} in ${service.postedBy.storeName} has been submitted.`,
   });
 
   await notificationModel.create({
     for: service.postedBy._id,
     role: "Mechanics",
-    title: "New Appointment",
+    title: "Upcoming Appointment Request",
     message: `${user.name} has scheduled a new appointment for ${service.serviceType}`,
   });
 
-  // send mail to the user
-  const mailDataForUser = mailTemplates.toUser.appointmentCreated({
-    date: appointment.appointmentDate,
-    usersName: user.name,
-    serviceName: service.title,
-    storeAddress: service.postedBy.storeAddress,
-    storeEmail: service.postedBy.email,
-    storeName: service.postedBy.name,
-    storePhone: service.postedBy.phone,
+  //send mail to the admin
+  sendHTMLMail({
+    email: "079bct094@ioepc.edu.np",
+    template: "make-appointment-admin",
+    variables: {
+      ...appointmentDetails,
+      ...userDetails,
+      ...storeDetails,
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
   });
 
-  // // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: user.email,
-    ...mailDataForUser,
+  // send mail to the user
+  sendHTMLMail({
+    email: user.email,
+    template: "make-appointment-user",
+    variables: {
+      ...appointmentDetails,
+      ...userDetails,
+      ...storeDetails,
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
   });
 
   // send mail to the mechanic
-  const mailDataForMechanic = mailTemplates.toMechanic.appointmentCreated({
-    date: appointment.appointmentDate,
-    userEmail: user.email,
-    userPhone: user.phone,
-    message: appointment.message,
-    serviceTitle: service.title,
-    userName: user.name,
-    storeName: service.postedBy.storeName,
-  });
-
-  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: service.postedBy.email,
-    ...mailDataForMechanic,
+  sendHTMLMail({
+    email: service.postedBy.email,
+    template: "make-appointment-mechanic",
+    variables: {
+      ...appointmentDetails,
+      ...userDetails,
+      ...storeDetails,
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
   });
 
   return sendRes(res, {
@@ -157,21 +179,20 @@ export const handleApproveAppointmentByMechanic = async (
   appointment.status = "APPROVED";
   await appointment.save();
 
-  // send mail to the user
-  const mailDataForUser = mailTemplates.toUser.appointmentApproved({
-    date: appointment.appointmentDate,
-    serviceTitle: appointment.service.title,
-    storeAddress: appointment.bookedFor.storeAddress,
-    storeEmail: appointment.bookedFor.email,
-    storeName: appointment.bookedFor.storeName,
-    storePhone: appointment.bookedFor.phone,
-    userName: appointment.bookedBy.name,
-  });
-
-  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: appointment.bookedBy.email,
-    ...mailDataForUser,
+  sendHTMLMail({
+    email: appointment.bookedBy.email,
+    template: "appointment-approved-by-mechanics",
+    variables: {
+      USER_NAME: appointment.bookedBy.name,
+      APPOINTMENT_DATE: appointment.appointmentDate.toLocaleDateString(),
+      APPOINTMENT_TIME: appointment.appointmentTime,
+      SERVICE_TITLE: appointment.service.serviceType,
+      STORE_NAME: appointment.bookedFor.storeName,
+      STORE_ADDRESS: appointment.bookedFor.storeAddress,
+      STORE_PHONE: appointment.bookedFor.phone,
+      STORE_EMAIL: appointment.bookedFor.email,
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
   });
 
   //  send notification to the user
@@ -224,22 +245,20 @@ export const handleRejectAppointmentByMechanic = async (
   appointment.status = "REJECTED";
   await appointment.save();
 
-  // send mail to the user
-
-  const mailDataForUser = mailTemplates.toUser.appointmentRejected({
-    date: appointment.appointmentDate,
-    serviceTitle: appointment.service.title,
-    storeAddress: appointment.bookedFor.storeAddress,
-    storeEmail: appointment.bookedFor.email,
-    storeName: appointment.bookedFor.name,
-    storePhone: appointment.bookedFor.phone,
-    userName: appointment.bookedBy.name,
-  });
-
-  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: appointment.bookedBy.email,
-    ...mailDataForUser,
+  sendHTMLMail({
+    email: appointment.bookedBy.email,
+    template: "appointment-rejected-by-mechanics",
+    variables: {
+      USER_NAME: appointment.bookedBy.name,
+      APPOINTMENT_DATE: appointment.appointmentDate.toLocaleDateString(),
+      APPOINTMENT_TIME: appointment.appointmentTime,
+      SERVICE_TITLE: appointment.service.serviceType,
+      STORE_NAME: appointment.bookedFor.storeName,
+      STORE_ADDRESS: appointment.bookedFor.storeAddress,
+      STORE_PHONE: appointment.bookedFor.phone,
+      STORE_EMAIL: appointment.bookedFor.email,
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
   });
 
   //  send notification to the user
@@ -299,21 +318,21 @@ export const handleCompleteAppointmentByMechanic = async (
   appointment.report = report;
   await appointment.save();
 
-  // send mail to the user
-  const mailDataForUser = mailTemplates.toUser.appointmentCompleted({
-    date: appointment.appointmentDate,
-    serviceTitle: appointment.service.title,
-    storeAddress: appointment.bookedFor.storeAddress,
-    storeEmail: appointment.bookedFor.email,
-    storeName: appointment.bookedFor.storeName,
-    storePhone: appointment.bookedFor.phone,
-    userName: appointment.bookedBy.name,
-  });
-
-  // await is not used here because we don't want to wait for the mail to be sent which will slow down the response
-  sendMail({
-    to: appointment.bookedBy.email,
-    ...mailDataForUser,
+  sendHTMLMail({
+    email: appointment.bookedBy.email,
+    template: "appointment-complete",
+    variables: {
+      USER_NAME: appointment.bookedBy.name,
+      APPOINTMENT_DATE: appointment.appointmentDate.toLocaleDateString(),
+      APPOINTMENT_TIME: appointment.appointmentTime,
+      SERVICE_TITLE: appointment.service.serviceType,
+      STORE_NAME: appointment.bookedFor.storeName,
+      STORE_ADDRESS: appointment.bookedFor.storeAddress,
+      STORE_PHONE: appointment.bookedFor.phone,
+      STORE_EMAIL: appointment.bookedFor.email,
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+      INVOICE_LINK: appointment.report.url,
+    },
   });
 
   // send notification to the user

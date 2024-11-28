@@ -5,11 +5,10 @@ import bcrypt from "bcrypt";
 import { generateOTP, validateOTP } from "@/utils/generate-otp";
 import { ILoginSchema, ISignupSchema } from "@/zod";
 import OTPModel from "@/models/otp.model";
-import { sendWelcomeMailToUser } from "@/mailers/welcome-user";
-import { sendAccountVerificationOTP } from "@/mailers/send-account-verification-otp";
-import { sendPasswordResetOtp } from "@/mailers/send-password-reset-otp";
 import { createToken } from "@/utils/token-manager";
 import ENV_CONFIG from "@/config/env.config";
+import { sendHTMLMail } from "@/utils/send-html-mail";
+import { OPT_EXPIRATION_IN_SEC } from "@/constants/time.const";
 
 export const handleUserSignup = async (
   req: Request<{}, {}, ISignupSchema>,
@@ -40,8 +39,16 @@ export const handleUserSignup = async (
     purpose: "ACCOUNT_VERIFICATION",
   });
 
-  // don t await this
-  sendWelcomeMailToUser(otp, newUser.email, newUser.name);
+  sendHTMLMail({
+    email: newUser.email,
+    template: "signup",
+    variables: {
+      NAME: newUser.name,
+      OTP: otp,
+      OTP_EXPIRATION: String(OPT_EXPIRATION_IN_SEC / 60),
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
+  });
 
   const token = createToken(
     {
@@ -97,7 +104,16 @@ export const handleResendOTPForSignup = async (req: Request, res: Response) => {
     purpose: "ACCOUNT_VERIFICATION",
   });
 
-  sendAccountVerificationOTP(otp, userDoc.email, userDoc.name);
+  sendHTMLMail({
+    email: userDoc.email,
+    template: "resend-signup-otp",
+    variables: {
+      NAME: userDoc.name,
+      OTP: otp,
+      OTP_EXPIRATION: String(OPT_EXPIRATION_IN_SEC / 60),
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
+  });
 
   return sendRes(res, {
     status: 200,
@@ -238,7 +254,16 @@ export const handleResetPassword = async (req: Request, res: Response) => {
     purpose: "RESET_PASSWORD",
   });
 
-  sendPasswordResetOtp(otp, user.email, user.name);
+  sendHTMLMail({
+    email: user.email,
+    template: "reset-password-otp",
+    variables: {
+      NAME: user.name,
+      OTP: otp,
+      OTP_EXPIRATION: String(OPT_EXPIRATION_IN_SEC / 60),
+      SUPPORT_EMAIL: ENV_CONFIG.SUPPORT_EMAIL,
+    },
+  });
 
   return sendRes(res, {
     status: 200,
@@ -280,7 +305,6 @@ export const handleVerifyOTPForResetPassword = async (
       message: "OTP is expired, Please request a new one!",
     });
   }
-  console.log(otpRecord.otp, userOtp);
 
   const { isValid, reason } = validateOTP({
     existingOTP: otpRecord.otp,
