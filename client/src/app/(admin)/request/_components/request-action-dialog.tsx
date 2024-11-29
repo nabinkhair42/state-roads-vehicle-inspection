@@ -31,8 +31,12 @@ export function RequestActionDialog({ isOpen, onClose, onAccept, onDecline, requ
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
-          <p><strong>User:</strong> {request.bookedBy.name}</p>
-          <p><strong>Mechanic:</strong> {request.bookedFor.name}</p>
+          <p><strong>User Name:</strong> {request.bookedBy.name}</p>
+          <p><strong>User Contact Number:</strong> {request.bookedBy.phone}</p>
+          {/* Mechanic Name */}
+          <p><strong>Mechanic Name:</strong> {request.bookedFor.name}</p>
+          {/* Mechanic Contact Number */}
+          <p><strong>Mechanic Contact Number:</strong> {request.bookedFor.phone}</p>
           <p><strong>Service:</strong> {request.service.serviceType}</p>
           <p><strong>Appointment Date:</strong> {new Date(request.appointmentDate).toLocaleDateString()}</p>
           <p><strong>Appointment Time:</strong> {request.appointmentTime}</p>

@@ -63,7 +63,7 @@ const UserControl = () => {
               }}
               className="cursor-pointer"
             >
-              View Profile
+              User Dashboard
             </DropdownMenuItem>
           )}
           {mechanic ? (

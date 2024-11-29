@@ -65,7 +65,7 @@ const UserControl = () => {
             {user?.phone}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => mutate()}>
+          <DropdownMenuItem onClick={() => mutate()} className="cursor-pointer">
             <LogInIcon className="mr-2 text-muted-foreground w-5 " />
             Logout
           </DropdownMenuItem>

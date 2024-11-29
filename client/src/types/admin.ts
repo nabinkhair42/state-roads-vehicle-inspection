@@ -63,6 +63,7 @@ export interface IAppointment {
     _id: string;
     name: string;
     email: string;
+    phone: string;
     storeName: string;
   };
   appointmentDate: string;

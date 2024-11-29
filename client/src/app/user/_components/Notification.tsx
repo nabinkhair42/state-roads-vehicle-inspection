@@ -57,7 +57,7 @@ const NotificationPopOut = () => {
           className="rounded-full"
         >
           {notifications?.unread?.length > 0 && (
-            <Badge className="absolute top-0 right-0 rounded-full p-1 text-xs">
+            <Badge className="absolute top-0 right-[5%] p-1 text-xs">
               {notifications?.unread?.length}
             </Badge>
           )}

@@ -44,7 +44,7 @@ export default function NavBar() {
         </SheetContent>
       </Sheet>
       <div className="w-full flex justify-between items-center gap-4 pr-12 md:pr-0">
-        Mechanic Admin Side
+        Mechanic Dashboard
         <div className="flex gap-4 items-center">
           <Notifications />
           <UserControl />
