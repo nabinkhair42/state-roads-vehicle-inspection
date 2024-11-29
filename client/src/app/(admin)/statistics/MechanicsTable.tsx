@@ -30,17 +30,23 @@ export function MechanicsTable({ mechanics, sortBy, sortOrder, onSortChange }: M
     return null
   }
 
-  const sortableFields = ['name', 'email', 'storeName', 'phone', 'storeAddress', 'totalAppointments']
+  const fields = ['name', 'email', 'storeName', 'phone', 'storeAddress', 'totalAppointments']
+  const sortableFields = ['name', 'email', 'phone',]
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          {sortableFields.map((field) => (
+          {fields.map((field) => (
             <TableHead
               key={field}
               className="cursor-pointer"
-              onClick={() => onSortChange(field)}
+              onClick={() => {
+                if (sortableFields.includes(field)) {
+                  onSortChange(field)
+                }
+              }
+              }
             >
               <div className="flex items-center">
                 {field.charAt(0).toUpperCase() + field.slice(1)}

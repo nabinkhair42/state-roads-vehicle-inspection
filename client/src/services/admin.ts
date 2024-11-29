@@ -29,6 +29,7 @@ export const handleGetAllDashboardDetails =
 export const handleGetAllMechanicsLists = async (
   page: number,
   searchQuery: string,
+  searchBy: string,
   sortBy: string,
   sortOrder: "asc" | "desc"
 ): Promise<IMechanicsResponse> => {
@@ -38,13 +39,8 @@ export const handleGetAllMechanicsLists = async (
         "admin-login-token": adminLoginToken,
       },
       params: {
-        page,
-        limit: 10,
-        regexSearch: {
-          name: searchQuery,
-          email: searchQuery,
-          storeName: searchQuery,
-        },
+        pageNo: page,
+        [`search.${searchBy}`]: searchQuery,
         sortBy,
         sortOrder,
       },
@@ -120,7 +116,9 @@ export const handleRejectAppointmentRequest = async (
 
 export const validateAdminToken = async (token: string): Promise<boolean> => {
   try {
-    const response = await axios.post(API_URL.VALIDATE_TOKEN, { token },
+    const response = await axios.post(
+      API_URL.VALIDATE_TOKEN,
+      { token },
       {
         headers: {
           "admin-login-token": adminLoginToken,
@@ -129,7 +127,6 @@ export const validateAdminToken = async (token: string): Promise<boolean> => {
     );
     console.log("response", response.data.data);
     return response.data.data.isValid;
-   
   } catch (error) {
     console.error("Error validating admin token:", error);
     return false;
