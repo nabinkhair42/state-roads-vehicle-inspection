@@ -43,7 +43,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^0.408.0",
     "moment": "^2.30.1",
-    "next": "14.2.5",
+    "next": "^14.2.18",
     "next-sitemap": "^4.2.3",
     "next-themes": "^0.3.0",
     "next-video": "^1.1.1",

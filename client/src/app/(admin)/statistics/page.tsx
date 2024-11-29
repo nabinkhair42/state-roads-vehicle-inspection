@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useMechanicsData } from "@/hooks/useMechanicsData"
-import { MechanicsTable } from "./MechanicsTable"
+import { MechanicsTable } from "./_components/MechanicsTable"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2 } from 'lucide-react'

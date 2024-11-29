@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAdminAuth } from '../../(admin)/_components/AdminAuthContext'
-
+import { toast } from 'sonner'
 export default function AdminLoginPage() {
   const [token, setToken] = useState('')
   const router = useRouter()
@@ -17,8 +17,9 @@ export default function AdminLoginPage() {
     const success = await login(token)
     if (success) {
       router.push('/admin')
+      toast.success('Logged in successfully')
     } else {
-      alert('Invalid token')
+      toast.error('Invalid token')
     }
   }
 

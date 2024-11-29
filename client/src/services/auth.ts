@@ -116,7 +116,7 @@ export const useVerifyOTPForUserSignup = () => {
     },
     onSuccess: (msg) => {
       toast.success(msg);
-      router.push("/");
+      router.push("/book-appointment");
     },
     onError: (err: string) => {
       toast.error(err);
@@ -178,7 +178,7 @@ export const useUserLogin = () => {
     },
     onSuccess: (msg) => {
       toast.success(msg);
-      router.push("/");
+      router.push("/book-appointment");
     },
     onError: (err: string) => {
       toast.error(err);
@@ -287,7 +287,7 @@ export const useVerifyOTPForMechanicsSignup = () => {
     },
     onSuccess: (msg) => {
       toast.success(msg);
-      router.push("/");
+      router.push("/mechanics");
     },
     onError: (err: string) => {
       toast.error(err);
